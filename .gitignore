@@ -3,6 +3,10 @@ cmake-build-debug/
 bin-release/
 cmake-build-debug_wls/
 gtest/
+gtest/lib
+gtest/include
+gtest/include/gtest
+gtest/include/gtest/internal
 .idea/
 [Oo]bj/
 [Bb]in/
