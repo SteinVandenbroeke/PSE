@@ -5,11 +5,11 @@
 #include "Exception.h"
 
 
-Exception::Exception(const char * error, int errorCode) {
+Exception::Exception(std::string error, int errorCode) {
     errorValue = error;
     this->errorCode = errorCode;
 }
 
-const char *Exception::value() const throw() {
+std::string Exception::value() const throw() {
     return errorValue;
 }

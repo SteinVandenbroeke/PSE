@@ -4,10 +4,10 @@
 
 #ifndef TTT_EXCEPTION_H
 #define TTT_EXCEPTION_H
-
+#include <string>
 
 class Exception {
-    const char* errorValue;
+    std::string errorValue;
     int errorCode;
 public:
     /*
@@ -15,12 +15,12 @@ public:
      * @param error:        een string met de fout text
      * @param errorCode:    een int die om een fout code mee te geven
      */
-    Exception(const char* error, int errorCode = 0);
+    Exception(std::string error, int errorCode = 0);
 
     /*
      * Geeft de fout text terug
      * @return de fout text als const char*
      */
-    const char* value() const throw ();
+    std::string value() const throw ();
 };
 #endif //TTT_EXCEPTION_H

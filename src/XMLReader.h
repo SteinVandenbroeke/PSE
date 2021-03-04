@@ -14,6 +14,7 @@ class XMLReader {
     TiXmlDocument* doc;
 public:
     XMLReader(const char* filePad);
+    ~XMLReader();
     TiXmlElement* getElement(TiXmlElement& elmt, const char *name);
     TiXmlElement* getElement(const char *name);
     const char* getElementValue(TiXmlElement& elmt, const char *name);

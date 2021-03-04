@@ -1,10 +1,16 @@
 #include <iostream>
-#include "Vaccinatiecentra.h"
+#include "Simulatie.h"
 
 using namespace std;
 
 int main() {
-    Vaccinatiecentra* vaccinatiecentra = new Vaccinatiecentra();
-    vaccinatiecentra->loadXml("simulatiecentra.xml");
+    Simulatie s;
+    try{
+        s.readXmlFile("simulatiecentra.xml");
+        s.exportFile("test");
+    }
+    catch (Exception ex) {
+        cerr << ex.value() << endl;
+    }
     return 0;
 }

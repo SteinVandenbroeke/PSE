@@ -12,10 +12,10 @@ include_directories(gtest/include)
 link_directories(gtest/lib)
 
 # Set source files for RELEASE target
-set(RELEASE_SOURCE_FILES src/Main.cpp src/XMLReader.cpp src/XMLReader.h src/XMLReader.cpp src/XMLReader.h src/xml/tinystr.cpp src/xml/tinyxmlerror.cpp src/xml/tinystr.h src/xml/tinyxml.h src/xml/tinyxml.cpp src/xml/tinyxmlparser.cpp src/Exception.cpp src/Exception.h src/Vaccinatiecentrum.cpp src/Vaccinatiecentrum.h src/Hub.cpp src/Hub.h src/Simulatie.cpp src/Simulatie.h src/Vaccinatiecentra.cpp src/Vaccinatiecentra.h)
+set(RELEASE_SOURCE_FILES src/Main.cpp src/XMLReader.cpp src/XMLReader.h src/XMLReader.cpp src/XMLReader.h src/xml/tinystr.cpp src/xml/tinyxmlerror.cpp src/xml/tinystr.h src/xml/tinyxml.h src/xml/tinyxml.cpp src/xml/tinyxmlparser.cpp src/Exception.cpp src/Exception.h src/Vaccinatiecentrum.cpp src/Vaccinatiecentrum.h src/Hub.cpp src/Hub.h src/Simulatie.cpp src/Simulatie.h)
 
 # Set source files for DEBUG target
-set(DEBUG_SOURCE_FILES src/MainTest.cpp src/XMLReader.cpp src/XMLReader.h src/XMLReader.cpp src/XMLReader.h src/xml/tinystr.cpp src/xml/tinyxmlerror.cpp src/xml/tinystr.h src/xml/tinyxml.h src/xml/tinyxml.cpp src/xml/tinyxmlparser.cpp src/Exception.cpp src/Exception.h src/Vaccinatiecentrum.cpp src/Vaccinatiecentrum.h src/Hub.cpp src/Hub.h src/Simulatie.cpp src/Simulatie.h src/Vaccinatiecentra.cpp src/Vaccinatiecentra.h)
+set(DEBUG_SOURCE_FILES src/MainTest.cpp src/XMLReader.cpp src/XMLReader.h src/XMLReader.cpp src/XMLReader.h src/xml/tinystr.cpp src/xml/tinyxmlerror.cpp src/xml/tinystr.h src/xml/tinyxml.h src/xml/tinyxml.cpp src/xml/tinyxmlparser.cpp src/Exception.cpp src/Exception.h src/Vaccinatiecentrum.cpp src/Vaccinatiecentrum.h src/Hub.cpp src/Hub.h src/Simulatie.cpp src/Simulatie.h)
 
 # Create RELEASE target
 add_executable(ttt ${RELEASE_SOURCE_FILES})

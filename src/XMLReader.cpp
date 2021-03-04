@@ -6,17 +6,18 @@
 
 TiXmlElement* XMLReader::getElement(TiXmlElement& elmt, const char *name) {
     TiXmlElement* node = elmt.NextSiblingElement(name);
+    if(node == NULL) throw Exception("Element not found: " + string(name));
     return node;
 }
 
 const char* XMLReader::getElementValue(TiXmlElement& elmt, const char *name) {
     TiXmlNode* node = elmt.FirstChild(name);
-    if(node == NULL) throw Exception("Element not found");
-    if(node->FirstChild() == NULL) throw Exception("Element is empty");
+    if(node == NULL) throw Exception("Element not found: " + string(name));
+    if(node->FirstChild() == NULL) throw Exception("Element is empty: " + string(name));
 
     TiXmlText* text = node->FirstChild()->ToText();
     if(text != NULL) return text->Value();
-    throw Exception("Element not found");
+    throw Exception("Element not found " + string(name));
 }
 
 XMLReader::XMLReader(const char* filePad) {
@@ -28,5 +29,12 @@ XMLReader::XMLReader(const char* filePad) {
 }
 
 TiXmlElement *XMLReader::getElement(const char *name) {
-    return doc->FirstChildElement(name);
+    TiXmlElement* node = doc->FirstChildElement(name);
+    if(node == NULL) throw Exception("Element not found: " + string(name));
+    return node;
+}
+
+XMLReader::~XMLReader() {
+    doc->Clear();
+    delete doc;
 }

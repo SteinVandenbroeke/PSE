@@ -23,6 +23,18 @@ int Vaccinatiecentrum::getInwoners() {
     return inwoners;
 }
 
-int Vaccinatiecentrum::getcapacitiet() {
+int Vaccinatiecentrum::getVaccins() {
+    return vaccins;
+}
+
+int Vaccinatiecentrum::getCapacitiet() {
     return capacitiet;
+}
+
+int Vaccinatiecentrum::getGevaccineerd() {
+    return gevaccineerd;
+}
+
+void Vaccinatiecentrum::print(ofstream &stream) {
+    stream << naam << ": " << getGevaccineerd() << " gevaccineerd, nog " << (getInwoners() - getGevaccineerd()) << " inwoners niet gevaccineerd\n";
 }

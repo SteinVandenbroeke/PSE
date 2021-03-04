@@ -8,6 +8,8 @@
 #include <map>
 #include <string>
 #include "XMLReader.h"
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -16,12 +18,18 @@ class Vaccinatiecentrum {
     string adres;
     int inwoners;
     int capacitiet;
+    int vaccins;
+    int gevaccineerd;
 public:
+    Vaccinatiecentrum(){};
     Vaccinatiecentrum(string& naam, string& adres, int inwoners, int capacitiet);
     string getNaam();
     string getAdres();
     int getInwoners();
-    int getcapacitiet();
+    int getCapacitiet();
+    int getVaccins();
+    int getGevaccineerd();
+    void print(ofstream &stream);
 };
 
 
