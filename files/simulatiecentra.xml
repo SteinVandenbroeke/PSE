@@ -1,0 +1,35 @@
+<HUB>
+    <levering>93000</levering>
+    <interval>6</interval>
+    <transport>2000</transport>
+    <CENTRA>
+        <centrum>Park Spoor Oost</centrum>
+        <centrum>AED Studios</centrum>
+        <centrum>De Zoerla</centrum>
+        <centrum>Flanders Expo</centrum>
+    </CENTRA>
+</HUB>
+<VACCINATIECENTRUM>
+<naam>Park Spoor Oost</naam>
+<adres>Noordersingel 40, Antwerpen</adres>
+<inwoners>540173</inwoners>
+<capaciteit>7500</capaciteit>
+</VACCINATIECENTRUM>
+<VACCINATIECENTRUM>
+<naam>AED Studios</naam>
+<adres>Fabriekstraat 38, Lint</adres>
+<inwoners>76935</inwoners>
+<capaciteit>2000</capaciteit>
+</VACCINATIECENTRUM>
+<VACCINATIECENTRUM>
+<naam>De Zoerla</naam>
+<adres>Gevaertlaan 1, Westerlo</adres>
+<inwoners>49451</inwoners>
+<capaciteit>1000</capaciteit>
+</VACCINATIECENTRUM>
+<VACCINATIECENTRUM>
+<naam>Flanders Expo</naam>
+<adres>Maaltekouter 1, Sint-Denijs-Westrem</adres>
+<inwoners>257029</inwoners>
+<capaciteit>3000</capaciteit>
+</VACCINATIECENTRUM>

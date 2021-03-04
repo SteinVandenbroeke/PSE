@@ -1,8 +1,10 @@
 #include <iostream>
+#include "Vaccinatiecentra.h"
 
 using namespace std;
 
 int main() {
-    cout << "test: ok 11;";
+    Vaccinatiecentra* vaccinatiecentra = new Vaccinatiecentra();
+    vaccinatiecentra->loadXml("simulatiecentra.xml");
     return 0;
 }
