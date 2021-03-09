@@ -13,6 +13,9 @@
 #include <fstream>
 #include "DesignByContract.h"
 
+/**
+ * \brief Class implemented for a VaccinationCenter
+ */
 class VaccinationCenter {
 
 private:
@@ -50,25 +53,83 @@ public:
 
     /**
     * \brief Check whether the VaccinationCenter object is properly initialised
-     *
+    *
     * @return true when object is properly initialised, false when not
     */
     bool properlyInitialized() const;
 
+    /**
+     * \brief Get name of the VaccinationCenter
+     *
+     * @pre
+     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Name of VaccinationCenter as string
+     */
     const std::string &getName() const;
 
+    /**
+     * \brief Get address of the VaccinationCenter
+     *
+     * @pre
+     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Address of VaccinationCenter as string
+     */
     const std::string &getAddress() const;
 
+    /**
+     * \brief Get amount of people the VaccinationCenter is responsible for
+     *
+     * @pre
+     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Population as int
+     */
     int getPopulation() const;
 
+    /**
+     * \brief Get capacity of the VaccinationCenter
+     *
+     * @pre
+     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Capacity of VaccinationCenter as int
+     */
     int getCapacity() const;
 
+    /**
+     * \brief Get amount of vaccins of the VaccinationCenter
+     *
+     * @pre
+     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Amount of vaccins of the VaccinationCenter as int
+     */
     int getVaccins() const;
 
+    /**
+     * \brief Get amount of people vaccinated of the VaccinationCenter
+     *
+     * @pre
+     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Amount of people vaccinated as int
+     */
     int getVaccinated() const;
 
+    /**
+     * \brief Print out data of VaccinationCenter
+     *
+     * @param stream Output stream
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @post
+     * TODO kweet eig ni of er een postconditie is
+     */
     void print(std::ofstream &stream);
 };
-
 
 #endif //TTT_VACCINATIONCENTER_H

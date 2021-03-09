@@ -12,6 +12,8 @@
 #include <iostream>
 #include <fstream>
 #include "XMLReader.h"
+#include "DesignByContract.h"
+#include "Utils.h"
 #include "VaccinationCenter.h"
 #include "Hub.h"
 
@@ -21,34 +23,61 @@
 class Simulation {
 
 private:
-    std::vector<VaccinationCenter*> fcentra;
-    Hub* fhub;
+    std::vector<VaccinationCenter*> fcentra; ///< Vector with pointers to VaccinationCenter
+    Hub* fhub; ///< Pointer to Hub object
     Simulation *_initCheck;
 
 public:
     /**
-    * \brief Imports a vaccin simulation from a .xml file
-    *
-    * @param path The path to the file that needs to be imported from
-    *
-    * @return A SuccessEnum, which could have one of the following values
-    * ImportFailed: Something went wrong and we're not sure what has been changed to roadNetwork (This is an error)
-    * ImportAborted: Nothing has been changed to your roadNetwork
-    * PartialImport: There were a few errors in the xml file, so we had to leave some elements out to maintain a valid road situation
-    * Succes: Everything from the file has been read and is added to the roadnetwork
-    *
-    * @pre
-    * REQUIRE(roadNetwork->properlyInitialized(), "Roadnetwork moet juist geinitialiseerd zijn");
-    * REQUIRE(roadNetwork->check(), "The roadnetwork must be valid");
-    * REQUIRE(fileExists(filename), "Het bestand dat je wil inlezen moet bestaan");
-    *
-    * @post
-    * ENSURE(roadNetwork->check(), "The roadnetwork is still valid");
-    *
-    */
+     * \brief Default constructor for a Simulation object
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
+     */
+    Simulation();
+
+    /**
+     * \brief Check whether the Simulation object is properly initialised
+     *
+     * @return true when object is properly initialised, false when not
+     */
+    bool properlyInitialized() const;
+
+    /**
+     * \brief Imports a vaccin distribution simulation from a .xml file
+     *
+     * @param path The path to the .xml file that needs to read from
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(FileExists(path), "The file that needs to be read must exist")
+     * REQUIRE(!FileIsEmpty(path), "THe file that needs to be read must not be empty")
+     *
+     *  TODO de simulatie moet consistent zijn
+     *  TODO exceptions/uitzonderingen returnen
+     *  TOOD weten of dat .xml file met tags enzo correct is
+     *
+     * @post
+     *
+     *
+     * @Exceptions
+     */
     void importXmlFile(const char* path);
 
-    void exportFile(const char* pad);
+    /*
+     * \brief Export all the information of the Simulation to a .txt file
+     *
+     * @param path The path to the file that will be written to
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @post
+     * ENSURE(FileExists(), "File that has been written to must exist")
+     * ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty")
+     *
+     */
+    void exportFile(const char* path);
 };
 
 #endif //TTT_SIMULATION_H

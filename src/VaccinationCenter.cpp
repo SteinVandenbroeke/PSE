@@ -10,14 +10,22 @@
 VaccinationCenter::VaccinationCenter() {
 
     _initCheck = this;
+    fname = "";
+    faddress = "";
+    fpopulation = 0;
+    fcapacity = 0;
+    fvaccins = 0;
+    fvaccinated = 0;
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
 }
 
 VaccinationCenter::VaccinationCenter(const std::string &fname, const std::string &faddress, int fpopulation
                                      ,int fcapacity) :
-
     fname(fname), faddress(faddress), fpopulation(fpopulation),fcapacity(fcapacity){
+
     _initCheck = this;
+    fvaccins = 0;
+    fvaccinated = 0;
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
 }
 
@@ -28,31 +36,37 @@ bool VaccinationCenter::properlyInitialized() const {
 
 const std::string &VaccinationCenter::getName() const {
 
+    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fname;
 }
 
 const std::string &VaccinationCenter::getAddress() const {
 
+    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->faddress;
 }
 
 int VaccinationCenter::getPopulation() const {
 
+    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fpopulation;
 }
 
 int VaccinationCenter::getCapacity() const {
 
+    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fcapacity;
 }
 
 int VaccinationCenter::getVaccins() const {
 
+    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fvaccins;
 }
 
 int VaccinationCenter::getVaccinated() const {
 
+    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fvaccinated;
 }
 

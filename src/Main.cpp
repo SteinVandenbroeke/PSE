@@ -4,8 +4,9 @@
 int main() {
     Simulation s;
     try{
-        s.readXmlFile("simulatiecentra.xml");
-        s.exportFile("test");
+        s.importXmlFile("simulatiecentra.xml");
+
+        s.exportFile("test.txt");
     }
     catch (Exception ex) {
         cerr << ex.value() << endl;
