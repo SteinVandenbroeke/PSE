@@ -1,29 +1,34 @@
-//
-// Created by stein on 4/03/2021.
-//
+/**
+ * @file Simulation.cpp
+ * @brief This file contains the definitions of the members of the Simulation class
+ * @author Stein Vandenbroeke
+ * @date 04/03/2012
+ */
 
-#include "Simulatie.h"
+#include "Simulation.h"
 
 /*
  * Load all information (Hub, centrums) in from XML file
  * @param pad: location to the XML file
  */
-void Simulatie::readXmlFile(const char *pad) {
+void Simulation::importXmlFile(const char *path) {
+
     XMLReader reader(pad);
 
     //load hub in
     try{
         TiXmlElement* xmlHub = reader.getElement("HUB");
-        int levering = atoi(reader.getElementValue(*xmlHub,"levering"));
+        int delivery = atoi(reader.getElementValue(*xmlHub, "levering"));
         int interval = atoi(reader.getElementValue(*xmlHub,"interval"));
         int transport = atoi(reader.getElementValue(*xmlHub,"transport"));
-        hub = new Hub(levering, interval, transport);
+
+        fhub = new Hub(delivery, interval, transport);
 
         TiXmlElement* xmlCentra = xmlHub->FirstChildElement("CENTRA")->FirstChildElement("centrum");
         while(xmlCentra != NULL){
             try {
-                string naam = xmlCentra->GetText();
-                hub->addVaccinatiecentrum(naam, new Vaccinatiecentrum());
+                std::string name = xmlCentra->GetText();
+                fhub->addCenter(name, new VaccinationCenter());
             }
             catch (Exception ex) {
                 cerr << ex.value() << endl;
@@ -36,19 +41,19 @@ void Simulatie::readXmlFile(const char *pad) {
         cerr << ex.value() << endl;
     }
 
-    if(hub == NULL) throw Exception("Kan hub niet correct aanmaken, er ontbreken crusiale elementen.");
+    if(this->fhub == NULL) throw Exception("Kan hub niet correct aanmaken, er ontbreken crusiale elementen.");
 
     //insert all vaccination centers into 'centra'
     TiXmlElement* xmlCentrum = reader.getElement("VACCINATIECENTRUM");
     while(xmlCentrum != NULL){
         try{
-            string naam = reader.getElementValue(*xmlCentrum,"naam");
-            string adres = reader.getElementValue(*xmlCentrum,"adres");
-            int inwoners = atoi(reader.getElementValue(*xmlCentrum,"inwoners"));
-            int capaciteit = atoi(reader.getElementValue(*xmlCentrum,"capaciteit"));
-            Vaccinatiecentrum* centrum = new Vaccinatiecentrum(naam,adres,inwoners,capaciteit);
-            centra.push_back(centrum);
-            hub->updateVaccinatiecentrum(naam, centrum);
+            string name = reader.getElementValue(*xmlCentrum,"naam");
+            string address = reader.getElementValue(*xmlCentrum,"adres");
+            int population = atoi(reader.getElementValue(*xmlCentrum,"inwoners"));
+            int capacity = atoi(reader.getElementValue(*xmlCentrum,"capaciteit"));
+            VaccinationCenter* center = new VaccinationCenter(name, address, population, capacity);
+            this->fcentra.push_back(center);
+            this->fhub->updateCenter(name, center);
         }
         catch (Exception ex) {
             cerr << ex.value() << endl;
@@ -61,13 +66,14 @@ void Simulatie::readXmlFile(const char *pad) {
  * Create a file with all simulation information
  * @param pad: location for the export file
  */
-void Simulatie::exportFile(const char *pad) {
+void Simulation::exportFile(const char *pad) {
+
     ofstream exportFile;
     exportFile.open(pad);
-    hub->print(exportFile);
-    int size =  centra.size();
+    this->fhub->print(exportFile);
+    int size =  this->fcentra.size();
     for(int i = 0; i < size; i++){
-        this->centra[i]->print(exportFile);
+        this->fcentra[i]->print(exportFile);
     }
     exportFile.close();
 }

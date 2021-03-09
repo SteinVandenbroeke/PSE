@@ -1,10 +1,8 @@
 #include <iostream>
-#include "Simulatie.h"
-
-using namespace std;
+#include "Simulation.h"
 
 int main() {
-    Simulatie s;
+    Simulation s;
     try{
         s.readXmlFile("simulatiecentra.xml");
         s.exportFile("test");
