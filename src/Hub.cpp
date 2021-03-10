@@ -93,16 +93,19 @@ int Hub::calculateTransport(const VaccinationCenter* center) const {
     while ((((ftransport * cargo) + center->getVaccins()) <= (2 * center->getCapacity())) &&
            (ftransport * cargo) <= fvaccin) {
 
-        if ((ftransport * cargo) + center->getVaccins() > center->getCapacity() &&
-            ((ftransport * cargo) + center->getVaccins()) - center->getCapacity() <= ftransport) {
+        if ((ftransport * cargo) + center->getVaccins() > center->getCapacity()) {
 
-            vaccinsTransport = cargo * ftransport;
-            cargo ++;
-            break;
+            if (((ftransport * cargo) + center->getVaccins()) - center->getCapacity() < ftransport) {
+                vaccinsTransport = cargo * ftransport;
+                cargo ++;
+                break;
+            }
+            else {
+                break;
+            }
         }
         vaccinsTransport = cargo * ftransport;
         cargo ++;
-
     }
     return vaccinsTransport;
 }
@@ -121,14 +124,14 @@ void Hub::transportVaccin(const std::string &centerName) {
     int vaccinsTransport = calculateTransport(center);
     int cargo = vaccinsTransport / ftransport;
 
-    // Update amount of vaccins in Hub and Center
-    fvaccin -= vaccinsTransport;
-    center->addVaccins(vaccinsTransport);
-
     // Display nothing
     if (cargo == 0) {
         return;
     }
+
+    // Update amount of vaccins in Hub and Center
+    fvaccin -= vaccinsTransport;
+    center->addVaccins(vaccinsTransport);
 
     // Display information of transport
     std::cout << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins) getransporteerd naar ";

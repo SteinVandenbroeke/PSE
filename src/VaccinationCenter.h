@@ -124,8 +124,16 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
+     * @post
+     * ENSURE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity of Center")
+     *
      */
     void addVaccins(int amount);
+
+    // TODO precondities
+    int calculateVaccinationAmount();
+
+    void vaccinateCenter();
 
     /**
      * \brief Print out data of VaccinationCenter

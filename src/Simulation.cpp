@@ -192,9 +192,23 @@ void Simulation::simulateTransport() {
 
         // Transport vaccins from hub to center
         fhub->transportVaccin(centerName);
-
     }
-    // TODO
-    iter += 1;
+    ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+    std::cout << "REMAINING: " <<fhub->getFvaccin() << std::endl;
+}
+
+void Simulation::simulateVaccination() {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
+
+    // Traverse VaccinationCentra
+    for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
+
+        // Vaccinate in center
+        it->second->vaccinateCenter();
+        std::cout << "HOLDING: " << it->second->getVaccins() << std::endl;
+    }
+
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
 }

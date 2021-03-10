@@ -165,6 +165,9 @@ public:
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      */
     void simulateTransport();
+
+    // TODO
+    void simulateVaccination();
 };
 
 #endif //TTT_SIMULATION_H

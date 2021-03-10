@@ -11,8 +11,10 @@ int main() {
         while (true) {
 
             s.simulateTransport();
+            s.simulateVaccination();
 
-            sleep(1);
+            s.exportFile("test.txt");
+            sleep(4);
         }
 
     }

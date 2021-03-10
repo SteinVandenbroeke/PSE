@@ -70,10 +70,42 @@ int VaccinationCenter::getVaccinated() const {
     return this->fvaccinated;
 }
 
-void VaccinationCenter::addVaccins(const int amount) {
+void VaccinationCenter::addVaccins(int amount) {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     fvaccins += amount;
+    ENSURE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity of Center");
+}
+
+int VaccinationCenter::calculateVaccinationAmount() {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
+    int notVaccinated = fpopulation - fvaccinated;
+
+    if (fvaccins <= fcapacity && fvaccins <= notVaccinated) {
+        return fvaccins;
+    }
+    else if (fcapacity <= fvaccins && fcapacity <= notVaccinated) {
+        return fcapacity;
+    }
+    else if (notVaccinated <= fvaccins && notVaccinated <= fcapacity) {
+        return notVaccinated;
+    }
+    return 0;
+}
+
+void VaccinationCenter::vaccinateCenter() {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
+
+    int vaccinationAmount = calculateVaccinationAmount();
+
+    fvaccins -= vaccinationAmount;
+    fvaccinated += vaccinationAmount;
+
+    std::cout << "Er werden " << vaccinationAmount << " inwoners gevaccineerd in " << fname << "." << std::endl;
 }
 
 
@@ -83,6 +115,8 @@ void VaccinationCenter::print(std::ofstream &stream) const {
     stream << this->fname << ": " << this->fvaccinated << " gevaccineerd, nog ";
     stream << (this->fpopulation - this->fvaccinated) << " inwoners niet gevaccineerd\n";
 }
+
+
 
 
 
