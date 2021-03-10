@@ -7,15 +7,34 @@
 
 #include "Simulation.h"
 
-
 Simulation::Simulation() {
 
     _initCheck = this;
+    fhub = NULL;
+    iter = 0;
 }
 
 bool Simulation::properlyInitialized() const {
 
     return Simulation::_initCheck == this;
+}
+
+int Simulation::getIter() const {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    return iter;
+}
+
+const std::map<std::string, VaccinationCenter*> &Simulation::getFcentra() const {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    return fcentra;
+}
+
+Hub *Simulation::getFhub() const {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    return fhub;
 }
 
 void Simulation::importXmlFile(const char *path) {
@@ -25,6 +44,7 @@ void Simulation::importXmlFile(const char *path) {
     REQUIRE(!FileIsEmpty(path), "THe file that needs to be read must not be empty");
 
     XMLReader reader(path);
+
 
     // Load hub in
     try{
@@ -68,7 +88,10 @@ void Simulation::importXmlFile(const char *path) {
 
             VaccinationCenter* center = new VaccinationCenter(name, address, population, capacity);
 
-            this->fcentra.push_back(center);
+            this->fcentra[name] = center;
+
+//            this->fcentra.push_back(center);
+
             this->fhub->addCenter(center->getName(), center);
             // TODO
 //            this->fhub->updateCenter(name, center);
@@ -78,9 +101,54 @@ void Simulation::importXmlFile(const char *path) {
         }
         xmlCentrum = xmlCentrum->NextSiblingElement("VACCINATIECENTRUM");
     }
+    ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+    ENSURE(fhub->getFvaccin() == fhub->getFdelivery()
+    , "Hub must have equal amount of vaccins as delivery on day zero");
 }
 
-void Simulation::exportFile(const char *path) {
+bool Simulation::checkHub() const {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    return fhub != NULL;
+}
+
+bool Simulation::checkCentra() const {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    return !fcentra.empty();
+}
+
+bool Simulation::checkConnections() const {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+
+    // Check whether every VaccinationCenter is connected to the Hub
+    if (fhub->getFcentra().size() != this->fcentra.size()) {
+        return false;
+    }
+
+    // Traverse VaccinationCenters
+    for (std::map<std::string, VaccinationCenter*>::const_iterator it = fcentra.begin(); it != fcentra.end(); it++) {
+
+        // Search in hub for element with key "name"
+        if (fhub->getFcentra().find(it->first) == fhub->getFcentra().end()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Simulation::checkSimulation() const {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+
+    if (checkHub() && checkCentra() && checkConnections()) {
+        return true;
+    }
+    return false;
+}
+
+void Simulation::exportFile(const char *path) const {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
 
@@ -88,12 +156,12 @@ void Simulation::exportFile(const char *path) {
     exportFile.open(path);
 
     // Write hub data
-    this->fhub->print(exportFile);
+    fhub->print(exportFile);
 
-    // Traverse center
-    for (int i = 0; i != this->fcentra.size(); i++) {
-        // Write center data
-        fcentra[i]->print(exportFile);
+    // Traverse VaccinationCenters
+    for (std::map<std::string, VaccinationCenter*>::const_iterator it = fcentra.begin(); it != fcentra.end(); it++) {
+
+        it->second->print(exportFile);
     }
     exportFile.close();
 
@@ -101,4 +169,32 @@ void Simulation::exportFile(const char *path) {
     ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty");
 }
 
+void Simulation::simulateTransport() {
 
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
+
+    if (iter == 0) {
+        REQUIRE(fhub->getFdelivery() == fhub->getFvaccin()
+        , "Hub must have equal amount of vaccins as delivery on day zero");
+    }
+
+    // Interval between deliveries is over
+    if (iter % fhub->getFinterval() == 0 && iter != 0) {
+        std::cout << "Delivery!" << std::endl;
+        fhub->updateVaccins();
+    }
+
+    // Traverse VaccinationCentra
+    for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
+
+        std::string centerName = fhub->getFcentra().find(it->first)->first;
+
+        // Transport vaccins from hub to center
+        fhub->transportVaccin(centerName);
+
+    }
+    // TODO
+    iter += 1;
+    ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+}

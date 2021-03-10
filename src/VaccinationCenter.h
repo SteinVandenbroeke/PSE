@@ -62,7 +62,7 @@ public:
      * \brief Get name of the VaccinationCenter
      *
      * @pre
-     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
      * @return Name of VaccinationCenter as string
      */
@@ -72,7 +72,7 @@ public:
      * \brief Get address of the VaccinationCenter
      *
      * @pre
-     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
      * @return Address of VaccinationCenter as string
      */
@@ -82,7 +82,7 @@ public:
      * \brief Get amount of people the VaccinationCenter is responsible for
      *
      * @pre
-     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
      * @return Population as int
      */
@@ -92,7 +92,7 @@ public:
      * \brief Get capacity of the VaccinationCenter
      *
      * @pre
-     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
      * @return Capacity of VaccinationCenter as int
      */
@@ -102,7 +102,7 @@ public:
      * \brief Get amount of vaccins of the VaccinationCenter
      *
      * @pre
-     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
      * @return Amount of vaccins of the VaccinationCenter as int
      */
@@ -112,11 +112,20 @@ public:
      * \brief Get amount of people vaccinated of the VaccinationCenter
      *
      * @pre
-     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
      * @return Amount of people vaccinated as int
      */
     int getVaccinated() const;
+
+    /**
+     * \brief Add amount of vaccins to Center
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     */
+    void addVaccins(int amount);
 
     /**
      * \brief Print out data of VaccinationCenter
@@ -129,7 +138,7 @@ public:
      * @post
      * TODO kweet eig ni of er een postconditie is
      */
-    void print(std::ofstream &stream);
+    void print(std::ofstream &stream) const;
 };
 
 #endif //TTT_VACCINATIONCENTER_H

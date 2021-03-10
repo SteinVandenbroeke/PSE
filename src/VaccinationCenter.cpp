@@ -36,43 +36,50 @@ bool VaccinationCenter::properlyInitialized() const {
 
 const std::string &VaccinationCenter::getName() const {
 
-    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fname;
 }
 
 const std::string &VaccinationCenter::getAddress() const {
 
-    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->faddress;
 }
 
 int VaccinationCenter::getPopulation() const {
 
-    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fpopulation;
 }
 
 int VaccinationCenter::getCapacity() const {
 
-    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fcapacity;
 }
 
 int VaccinationCenter::getVaccins() const {
 
-    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fvaccins;
 }
 
 int VaccinationCenter::getVaccinated() const {
 
-    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fvaccinated;
 }
 
+void VaccinationCenter::addVaccins(const int amount) {
 
-void VaccinationCenter::print(std::ofstream &stream) {
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    fvaccins += amount;
+}
 
+
+void VaccinationCenter::print(std::ofstream &stream) const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     stream << this->fname << ": " << this->fvaccinated << " gevaccineerd, nog ";
     stream << (this->fpopulation - this->fvaccinated) << " inwoners niet gevaccineerd\n";
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include "Simulation.h"
 
 int main() {
@@ -6,7 +7,14 @@ int main() {
     try{
         s.importXmlFile("simulatiecentra.xml");
 
-        s.exportFile("test.txt");
+
+        while (true) {
+
+            s.simulateTransport();
+
+            sleep(1);
+        }
+
     }
     catch (Exception ex) {
         cerr << ex.value() << endl;
