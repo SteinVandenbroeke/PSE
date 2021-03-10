@@ -212,3 +212,9 @@ void Simulation::simulateVaccination() {
 
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
 }
+
+void Simulation::increaseIterator() {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    iter ++;
+}

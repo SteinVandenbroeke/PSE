@@ -14,6 +14,7 @@ int main() {
             s.simulateVaccination();
 
             s.exportFile("test.txt");
+            s.increaseIterator();
             sleep(4);
         }
 

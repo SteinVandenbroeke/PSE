@@ -168,6 +168,14 @@ public:
 
     // TODO
     void simulateVaccination();
+
+    /**
+     * \brief Increase iterator value
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     */
+    void increaseIterator();
 };
 
 #endif //TTT_SIMULATION_H
