@@ -178,6 +178,7 @@ void Simulation::simulateTransport() {
     // Traverse VaccinationCentra
     for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
 
+        //get name of first center connected to hub
         std::string centerName = fhub->getFcentra().find(it->first)->first;
 
         // Transport vaccins from hub to center

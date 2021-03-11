@@ -7,7 +7,6 @@ int main() {
     try{
         s.importXmlFile("simulatiecentra.xml");
 
-
         while (true) {
 
             s.simulateTransport();
@@ -17,7 +16,6 @@ int main() {
             s.increaseIterator();
             sleep(4);
         }
-
     }
     catch (Exception ex) {
         cerr << ex.value() << endl;

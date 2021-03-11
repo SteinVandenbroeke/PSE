@@ -38,7 +38,7 @@ public:
      * @post
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
-    Hub(int fdelivery, int finterval, int ftransport);
+    Hub(int delivery, int interval, int transport);
 
     /**
      * \brief Check whether the Hub object is properly initialised

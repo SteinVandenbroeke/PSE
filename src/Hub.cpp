@@ -7,9 +7,9 @@
 
 #include "Hub.h"
 
-Hub::Hub(int fdelivery, int finterval, int ftransport) :
-        fdelivery(fdelivery), finterval(finterval),
-        ftransport(ftransport) {
+Hub::Hub(int delivery, int interval, int transport) :
+        fdelivery(delivery), finterval(interval),
+        ftransport(transport) {
 
     // Initial delivery of vaccins
     fvaccin = fdelivery;
@@ -114,7 +114,7 @@ int Hub::calculateTransport(const VaccinationCenter* center) const {
 void Hub::transportVaccin(const std::string &centerName) {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-    VaccinationCenter* center = fcentra.find(centerName)->second;
+    VaccinationCenter* center = fcentra[centerName];
     REQUIRE(center->getName() == centerName, "Name of found center and given center name must be equal");
 
     int vaccinsHub = fvaccin;
