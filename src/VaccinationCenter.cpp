@@ -10,14 +10,22 @@
 VaccinationCenter::VaccinationCenter() {
 
     _initCheck = this;
+    fname = "";
+    faddress = "";
+    fpopulation = 0;
+    fcapacity = 0;
+    fvaccins = 0;
+    fvaccinated = 0;
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
 }
 
-VaccinationCenter::VaccinationCenter(const std::string &name, const std::string &address, int population
-                                     ,int capacity) :
+VaccinationCenter::VaccinationCenter(const std::string &fname, const std::string &faddress, int fpopulation
+                                     ,int fcapacity) :
+    fname(fname), faddress(faddress), fpopulation(fpopulation),fcapacity(fcapacity){
 
-    fname(name), faddress(address), fpopulation(population),fcapacity(capacity){
     _initCheck = this;
+    fvaccins = 0;
+    fvaccinated = 0;
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
 }
 
@@ -27,54 +35,88 @@ bool VaccinationCenter::properlyInitialized() const {
 }
 
 const std::string &VaccinationCenter::getName() const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fname;
 }
 
 const std::string &VaccinationCenter::getAddress() const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->faddress;
 }
 
 int VaccinationCenter::getPopulation() const {
 
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fpopulation;
 }
 
 int VaccinationCenter::getCapacity() const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fcapacity;
 }
 
 int VaccinationCenter::getVaccins() const {
 
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fvaccins;
 }
 
 int VaccinationCenter::getVaccinated() const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     return this->fvaccinated;
 }
 
+void VaccinationCenter::addVaccins(int amount) {
 
-void VaccinationCenter::print(std::ofstream &stream) {
-
-    stream << getName() << ": " << getVaccinated() << " gevaccineerd, nog ";
-    stream << (getPopulation() - getVaccinated()) << " inwoners niet gevaccineerd\n";
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    fvaccins += amount;
+    ENSURE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity of Center");
 }
 
-void VaccinationCenter::runVaccination(){
-    int unvaccinatedPop = getPopulation() - getVaccinated();
-    fvaccinated  += std::min(getVaccins(),getCapacity(), unvaccinatedPop);
-}
+int VaccinationCenter::calculateVaccinationAmount() {
 
-int VaccinationCenter::getFreeStockSpace() const {
-    return 2*getCapacity() - fvaccins;
-}
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
-bool VaccinationCenter::deliveryVaccines(int vaccinAmount) {
-    if(vaccinAmount > getFreeStockSpace()){
-        return false;
+    int notVaccinated = fpopulation - fvaccinated;
+
+    if (fvaccins <= fcapacity && fvaccins <= notVaccinated) {
+        return fvaccins;
     }
-    fvaccins += vaccinAmount;
-    return true;
+    else if (fcapacity <= fvaccins && fcapacity <= notVaccinated) {
+        return fcapacity;
+    }
+    else if (notVaccinated <= fvaccins && notVaccinated <= fcapacity) {
+        return notVaccinated;
+    }
+    return 0;
 }
+
+void VaccinationCenter::vaccinateCenter() {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
+
+    int vaccinationAmount = calculateVaccinationAmount();
+
+    fvaccins -= vaccinationAmount;
+    fvaccinated += vaccinationAmount;
+
+    std::cout << "Er werden " << vaccinationAmount << " inwoners gevaccineerd in " << fname << "." << std::endl;
+}
+
+
+void VaccinationCenter::print(std::ofstream &stream) const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    stream << this->fname << ": " << this->fvaccinated << " gevaccineerd, nog ";
+    stream << (this->fpopulation - this->fvaccinated) << " inwoners niet gevaccineerd\n";
+}
+
+
 
 
 

@@ -13,31 +13,19 @@
 #include <fstream>
 #include "DesignByContract.h"
 
+/**
+ * \brief Class implemented for a VaccinationCenter
+ */
 class VaccinationCenter {
 
 private:
-    std::string fname;         ///< Name of the VaccinationCenter
-    std::string faddress;      ///< Address of the VaccinationCenter
-    int fpopulation;           ///< Amount of people the VaccinationCenter is responsible for
-    int fcapacity;             ///< Amount of vaccins that can be stored
-    int fvaccins = 0;          ///< Amount of vaccins currently in the VaccinationCenter
-    int fvaccinated = 0;       ///< Amount of people already vaccinated
+    std::string fname; ///< Name of the VaccinationCenter
+    std::string faddress; ///< Address of the VaccinationCenter
+    int fpopulation; ///< Amount of people the VaccinationCenter is responsible for
+    int fcapacity; ///< Amount of vaccins that can be stored
+    int fvaccins; ///< Amount of vaccins currently in the VaccinationCenter
+    int fvaccinated; ///< Amount of people already vaccinated
     VaccinationCenter *_initCheck;
-
-    /**
-    * \brief Check whether the VaccinationCenter object is properly initialised
-     *
-    * @return true when object is properly initialised, false when not
-    */
-    bool properlyInitialized() const;
-
-    int getPopulation() const;
-
-    int getCapacity() const;
-
-    int getVaccins() const;
-
-    int getVaccinated() const;
 
 public:
     /**
@@ -61,59 +49,104 @@ public:
      * @post
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
-    VaccinationCenter(const std::string &name, const std::string &address, int population, int capacity);
+    VaccinationCenter(const std::string &fname, const std::string &faddress, int fpopulation, int fcapacity);
 
+    /**
+    * \brief Check whether the VaccinationCenter object is properly initialised
+    *
+    * @return true when object is properly initialised, false when not
+    */
+    bool properlyInitialized() const;
+
+    /**
+     * \brief Get name of the VaccinationCenter
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Name of VaccinationCenter as string
+     */
     const std::string &getName() const;
 
+    /**
+     * \brief Get address of the VaccinationCenter
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Address of VaccinationCenter as string
+     */
     const std::string &getAddress() const;
 
     /**
-     * \brief gives de amount of free space store vaccins
+     * \brief Get amount of people the VaccinationCenter is responsible for
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Constructor must end in properlyInitialized state")
-     * @post
-     * amaunt of vaccin place
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Population as int
      */
-    int getFreeStockSpace() const;
+    int getPopulation() const;
 
     /**
-     * \brief function to simulate vaccin delivery's
-     *
-     * @param vaccinAmount the amount of the vaccin delivery
-     *
-     * @return bool if delivery was succesfull
+     * \brief Get capacity of the VaccinationCenter
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Constructor must end in properlyInitialized state")
-     * REQUIRE(vaccinAmount < getFreeStockSpace(), "too much vaccines in one delivery")
-     * @post
-     * ENSURE(fvaccins += vaccinAmount, "Wrong delivery calculation")
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Capacity of VaccinationCenter as int
      */
-    bool deliveryVaccines(int vaccinAmount);
+    int getCapacity() const;
 
     /**
-     * \brief Simulates 1 vaccination day
+     * \brief Get amount of vaccins of the VaccinationCenter
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Constructor must end in properlyInitialized state")
-     * @post
-     * ENSURE(populationVaccinated = min(vaccins, capacity, population not vaccinated), "Wrong calculation by day simmulation")
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Amount of vaccins of the VaccinationCenter as int
      */
-    void runVaccination();
+    int getVaccins() const;
 
     /**
-     * \brief print's the information of the VaccinationCenter
-     *
-     * @param stream Ofstream to print
+     * \brief Get amount of people vaccinated of the VaccinationCenter
      *
      * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Amount of people vaccinated as int
+     */
+    int getVaccinated() const;
+
+    /**
+     * \brief Add amount of vaccins to Center
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
      * @post
-     * //todo
+     * ENSURE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity of Center")
+     *
      */
-    void print(std::ofstream &stream);
+    void addVaccins(int amount);
+
+    // TODO precondities
+    int calculateVaccinationAmount();
+
+    void vaccinateCenter();
+
+    /**
+     * \brief Print out data of VaccinationCenter
+     *
+     * @param stream Output stream
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @post
+     * TODO kweet eig ni of er een postconditie is
+     */
+    void print(std::ofstream &stream) const;
 };
-
 
 #endif //TTT_VACCINATIONCENTER_H
