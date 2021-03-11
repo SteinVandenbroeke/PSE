@@ -13,10 +13,10 @@ VaccinationCenter::VaccinationCenter() {
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
 }
 
-VaccinationCenter::VaccinationCenter(const std::string &fname, const std::string &faddress, int fpopulation
-                                     ,int fcapacity) :
+VaccinationCenter::VaccinationCenter(const std::string &name, const std::string &address, int population
+                                     ,int capacity) :
 
-    fname(fname), faddress(faddress), fpopulation(fpopulation),fcapacity(fcapacity){
+    fname(name), faddress(address), fpopulation(population),fcapacity(capacity){
     _initCheck = this;
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
 }
@@ -27,12 +27,10 @@ bool VaccinationCenter::properlyInitialized() const {
 }
 
 const std::string &VaccinationCenter::getName() const {
-
     return this->fname;
 }
 
 const std::string &VaccinationCenter::getAddress() const {
-
     return this->faddress;
 }
 
@@ -42,7 +40,6 @@ int VaccinationCenter::getPopulation() const {
 }
 
 int VaccinationCenter::getCapacity() const {
-
     return this->fcapacity;
 }
 
@@ -52,15 +49,31 @@ int VaccinationCenter::getVaccins() const {
 }
 
 int VaccinationCenter::getVaccinated() const {
-
     return this->fvaccinated;
 }
 
 
 void VaccinationCenter::print(std::ofstream &stream) {
 
-    stream << this->fname << ": " << this->fvaccinated << " gevaccineerd, nog ";
-    stream << (this->fpopulation - this->fvaccinated) << " inwoners niet gevaccineerd\n";
+    stream << getName() << ": " << getVaccinated() << " gevaccineerd, nog ";
+    stream << (getPopulation() - getVaccinated()) << " inwoners niet gevaccineerd\n";
+}
+
+void VaccinationCenter::runVaccination(){
+    int unvaccinatedPop = getPopulation() - getVaccinated();
+    fvaccinated  += std::min(getVaccins(),getCapacity(), unvaccinatedPop);
+}
+
+int VaccinationCenter::getFreeStockSpace() const {
+    return 2*getCapacity() - fvaccins;
+}
+
+bool VaccinationCenter::deliveryVaccines(int vaccinAmount) {
+    if(vaccinAmount > getFreeStockSpace()){
+        return false;
+    }
+    fvaccins += vaccinAmount;
+    return true;
 }
 
 
