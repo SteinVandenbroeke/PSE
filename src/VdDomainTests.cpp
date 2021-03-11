@@ -58,13 +58,6 @@ TEST_F(VaccinDistributorDomainTests, iterator) {
     EXPECT_EQ(1, simulation.getIter());
 }
 
-
-TEST_F(VaccinDistributorDomainTests, getCentra) {
-
-    Simulation simulation = Simulation();
-
-}
-
 // Test constructor of Hub object
 TEST_F(VaccinDistributorDomainTests, constructorHub) {
 

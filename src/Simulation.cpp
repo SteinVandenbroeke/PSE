@@ -40,7 +40,7 @@ void Simulation::importXmlFile(const char *path) {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(FileExists(path), "The file that needs to be read must exist");
-    REQUIRE(!FileIsEmpty(path), "THe file that needs to be read must not be empty");
+    REQUIRE(!FileIsEmpty(path), "The file that needs to be read must not be empty");
 
     try{
         XMLReader reader(path);
@@ -111,6 +111,7 @@ bool Simulation::checkCentra() const {
 bool Simulation::checkConnections() const {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    REQUIRE(fhub != NULL, "Hub must exist");
 
     // Check whether every VaccinationCenter is connected to the Hub
     if (fhub->getCentra().size() != this->fcentra.size()) {
@@ -141,6 +142,7 @@ bool Simulation::checkSimulation() const {
 void Simulation::exportFile(const char *path) const {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 
     ofstream exportFile;
     exportFile.open(path);
@@ -185,7 +187,6 @@ void Simulation::simulateTransport(std::ostream &stream) {
         fhub->transportVaccin(centerName, stream);
     }
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-    stream << "REMAINING: " << fhub->getVaccin() << std::endl;
 }
 
 void Simulation::simulateVaccination(std::ostream &stream) {
@@ -198,7 +199,6 @@ void Simulation::simulateVaccination(std::ostream &stream) {
 
         // Vaccinate in center
         it->second->vaccinateCenter(stream);
-        stream << "HOLDING: " << it->second->getVaccins() << std::endl;
     }
 
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");

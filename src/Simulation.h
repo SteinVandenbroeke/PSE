@@ -120,6 +120,7 @@ public:
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(fhub != NULL, "Hub must exist")
      *
      * @return True if the connections between VaccinationCenter and Hub are valid
      */
@@ -135,7 +136,7 @@ public:
      *
      * @return True if Simulation is consistent
      */
-    bool checkSimulation() const;
+    bool checkSimulation() const; // TODO
 
     /**
      * \brief Export all the information of the Simulation to a .txt file
@@ -144,13 +145,14 @@ public:
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
      *
      * @post
      * ENSURE(FileExists(), "File that has been written to must exist")
      * ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty")
      *
      */
-    void exportFile(const char* path) const;
+    void exportFile(const char* path) const; // TODO
 
     /**
      * \brief Simulate transport of vaccins between Hub and centra
@@ -162,7 +164,7 @@ public:
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      */
-    void simulateTransport(std::ostream &stream);
+    void simulateTransport(std::ostream &stream); // TODO
 
     /**
     * \brief Simulate vaccination in centra
@@ -174,7 +176,7 @@ public:
     * @post
     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
     */
-    void simulateVaccination(std::ostream &stream);
+    void simulateVaccination(std::ostream &stream); // TODO
 
     /**
     * \brief simulation from current day to given date
@@ -191,7 +193,7 @@ public:
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
     */
-    void automaticSimulation(int day, int month, int year, std::ostream &stream);
+    void automaticSimulation(int day, int month, int year, std::ostream &stream); // TODO
 
     /**
      * \brief Increase iterator value
