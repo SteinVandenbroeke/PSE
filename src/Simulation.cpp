@@ -211,6 +211,7 @@ void Simulation::increaseIterator() {
 }
 
 void Simulation::automaticSimulation(int day, int month, int year, std::ostream &stream) {
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     //day, month, year --> time_t
     struct tm * timeinfo;
     time_t rawtime;
@@ -225,17 +226,14 @@ void Simulation::automaticSimulation(int day, int month, int year, std::ostream 
     while(current_date <= endDate){
         simulateTransport(stream);
         simulateVaccination(stream);
-
-        exportFile("test.txt");
         increaseIterator();
 
-        //time_t --> string
-        std::tm * ptm = std::localtime(&current_date);
+        //time_t --> strings
+        std::tm * tm = std::localtime(&current_date);
         char dateString[32];
-        std::strftime(dateString, 32, "%d-%m-%Y", ptm);
+        std::strftime(dateString, 32, "%d-%m-%Y", tm);
 
         exportFile(dateString);//make export file
-
         current_date += 86400;// 1 dag toevoegen 24*60*60
     }
 }

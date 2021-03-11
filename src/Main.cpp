@@ -8,10 +8,10 @@ int main() {
         s.importXmlFile("simulatiecentra.xml");
 
         ofstream exportFile;
-        exportFile.open("test1");
+        exportFile.open("all information");
 
         s.automaticSimulation(15,03,2021, exportFile);
-
+/*
         while (true) {
             s.simulateTransport(std::cout);
             s.simulateVaccination(std::cout);
@@ -19,7 +19,7 @@ int main() {
             s.exportFile("test.txt");
             s.increaseIterator();
             sleep(4);
-        }
+        }*/
     }
     catch (Exception ex) {
         cerr << ex.value() << endl;

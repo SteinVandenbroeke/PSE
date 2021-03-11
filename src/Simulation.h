@@ -141,7 +141,7 @@ public:
      */
     bool checkSimulation() const;
 
-    /*
+    /**
      * \brief Export all the information of the Simulation to a .txt file
      *
      * @param path The path to the file that will be written to
@@ -156,7 +156,7 @@ public:
      */
     void exportFile(const char* path) const;
 
-    /*
+    /**
      * \brief Simulate transport of vaccins between Hub and centra
      *
      * @pre
@@ -168,7 +168,7 @@ public:
      */
     void simulateTransport(std::ostream &stream);
 
-    /*
+    /**
     * \brief Simulate vaccination in centra
     *
     * @pre
@@ -180,7 +180,19 @@ public:
     */
     void simulateVaccination(std::ostream &stream);
 
-    //TODO
+    /**
+    * \brief simulation from current day to given date
+    *
+    * @param day: day of end date
+    * @param month: month of end date
+    * @param year: year of end date
+    * @param stream output stream for logging data
+    *
+    * @pre
+    * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+    *
+    * @post
+    */
     void automaticSimulation(int day, int month, int year, std::ostream &stream);
 
     /**
