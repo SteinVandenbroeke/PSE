@@ -82,17 +82,8 @@ int VaccinationCenter::calculateVaccinationAmount() {
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
     int notVaccinated = fpopulation - fvaccinated;
-
-    if (fvaccins <= fcapacity && fvaccins <= notVaccinated) {
-        return fvaccins;
-    }
-    else if (fcapacity <= fvaccins && fcapacity <= notVaccinated) {
-        return fcapacity;
-    }
-    else if (notVaccinated <= fvaccins && notVaccinated <= fcapacity) {
-        return notVaccinated;
-    }
-    return 0;
+    int smallest = std::min(fvaccins, fcapacity);
+    return std::min(smallest, notVaccinated);
 }
 
 void VaccinationCenter::vaccinateCenter() {
