@@ -159,7 +159,7 @@ void Simulation::exportFile(const char *path) const {
     ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty");
 }
 
-void Simulation::simulateTransport() {
+void Simulation::simulateTransport(std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
@@ -171,7 +171,7 @@ void Simulation::simulateTransport() {
 
     // Interval between deliveries is over
     if (iter % fhub->getFinterval() == 0 && iter != 0) {
-        std::cout << "Delivery!" << std::endl;
+        stream << "Delivery!" << std::endl;
         fhub->updateVaccins();
     }
 
@@ -182,13 +182,13 @@ void Simulation::simulateTransport() {
         std::string centerName = fhub->getFcentra().find(it->first)->first;
 
         // Transport vaccins from hub to center
-        fhub->transportVaccin(centerName);
+        fhub->transportVaccin(centerName, stream);
     }
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-    std::cout << "REMAINING: " <<fhub->getFvaccin() << std::endl;
+    stream << "REMAINING: " <<fhub->getFvaccin() << std::endl;
 }
 
-void Simulation::simulateVaccination() {
+void Simulation::simulateVaccination(std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
@@ -197,8 +197,8 @@ void Simulation::simulateVaccination() {
     for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
 
         // Vaccinate in center
-        it->second->vaccinateCenter();
-        std::cout << "HOLDING: " << it->second->getVaccins() << std::endl;
+        it->second->vaccinateCenter(stream);
+        stream << "HOLDING: " << it->second->getVaccins() << std::endl;
     }
 
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
@@ -208,4 +208,34 @@ void Simulation::increaseIterator() {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     iter ++;
+}
+
+void Simulation::automaticSimulation(int day, int month, int year, std::ostream &stream) {
+    //day, month, year --> time_t
+    struct tm * timeinfo;
+    time_t rawtime;
+    time(&rawtime);
+    timeinfo = localtime ( &rawtime );
+    timeinfo->tm_year = year - 1900;
+    timeinfo->tm_mon = month - 1;
+    timeinfo->tm_mday = day;
+    time_t endDate = mktime(timeinfo);
+
+    time_t current_date = time(0);
+    while(current_date <= endDate){
+        simulateTransport(stream);
+        simulateVaccination(stream);
+
+        exportFile("test.txt");
+        increaseIterator();
+
+        //time_t --> string
+        std::tm * ptm = std::localtime(&current_date);
+        char dateString[32];
+        std::strftime(dateString, 32, "%d-%m-%Y", ptm);
+
+        exportFile(dateString);//make export file
+
+        current_date += 86400;// 1 dag toevoegen 24*60*60
+    }
 }

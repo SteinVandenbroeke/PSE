@@ -164,7 +164,7 @@ public:
      * ENSURE(vaccinsHub != fvaccin, "Amount of vaccins in Hub must be updated")
      * ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated")
      */
-    void transportVaccin(const std::string &centerName);
+    void transportVaccin(const std::string &centerName, std::ostream &stream);
 
     /**
      * \brief Print out data of Hub

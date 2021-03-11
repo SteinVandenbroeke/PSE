@@ -111,7 +111,7 @@ int Hub::calculateTransport(const VaccinationCenter* center) const {
 }
 
 
-void Hub::transportVaccin(const std::string &centerName) {
+void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     VaccinationCenter* center = fcentra[centerName];
@@ -134,8 +134,8 @@ void Hub::transportVaccin(const std::string &centerName) {
     center->addVaccins(vaccinsTransport);
 
     // Display information of transport
-    std::cout << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins) getransporteerd naar ";
-    std::cout << center->getName() << "." << std::endl;
+    stream << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins) getransporteerd naar ";
+    stream << center->getName() << "." << std::endl;
 
     ENSURE(vaccinsHub != fvaccin, "Amount of vaccins in Hub must be updated");
     ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated");

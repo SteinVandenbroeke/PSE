@@ -7,10 +7,14 @@ int main() {
     try{
         s.importXmlFile("simulatiecentra.xml");
 
-        while (true) {
+        ofstream exportFile;
+        exportFile.open("test1");
 
-            s.simulateTransport();
-            s.simulateVaccination();
+        s.automaticSimulation(15,03,2021, exportFile);
+
+        while (true) {
+            s.simulateTransport(std::cout);
+            s.simulateVaccination(std::cout);
 
             s.exportFile("test.txt");
             s.increaseIterator();

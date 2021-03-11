@@ -133,7 +133,7 @@ public:
     // TODO precondities
     int calculateVaccinationAmount();
 
-    void vaccinateCenter();
+    void vaccinateCenter(std::ostream &stream);
 
     /**
      * \brief Print out data of VaccinationCenter

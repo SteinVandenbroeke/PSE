@@ -86,7 +86,7 @@ int VaccinationCenter::calculateVaccinationAmount() {
     return std::min(smallest, notVaccinated);
 }
 
-void VaccinationCenter::vaccinateCenter() {
+void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     REQUIRE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
@@ -96,7 +96,7 @@ void VaccinationCenter::vaccinateCenter() {
     fvaccins -= vaccinationAmount;
     fvaccinated += vaccinationAmount;
 
-    std::cout << "Er werden " << vaccinationAmount << " inwoners gevaccineerd in " << fname << "." << std::endl;
+    stream << "Er werden " << vaccinationAmount << " inwoners gevaccineerd in " << fname << "." << std::endl;
 }
 
 

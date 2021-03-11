@@ -12,6 +12,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <ctime>
 #include "XMLReader.h"
 #include "DesignByContract.h"
 #include "Utils.h"
@@ -28,6 +29,7 @@ private:
     Hub* fhub; ///< Pointer to Hub object
     int iter; ///< Iterator that holds the amount of iterations in the Simulation
     Simulation *_initCheck;
+
 
 public:
     /**
@@ -164,10 +166,22 @@ public:
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      */
-    void simulateTransport();
+    void simulateTransport(std::ostream &stream);
 
-    // TODO
-    void simulateVaccination();
+    /*
+    * \brief Simulate vaccination in centra
+    *
+    * @pre
+    * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+    * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+    *
+    * @post
+    * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+    */
+    void simulateVaccination(std::ostream &stream);
+
+    //TODO
+    void automaticSimulation(int day, int month, int year, std::ostream &stream);
 
     /**
      * \brief Increase iterator value
