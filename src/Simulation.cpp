@@ -211,7 +211,10 @@ void Simulation::increaseIterator() {
 }
 
 void Simulation::automaticSimulation(int day, int month, int year, std::ostream &stream) {
+
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
+
     for(std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end();it++){
         REQUIRE(it->second->getVaccins() == 0 && it->second->getVaccinated() == 0, "Vaccins or vaccinated is not 0 by start of simulation");
     }
@@ -235,8 +238,8 @@ void Simulation::automaticSimulation(int day, int month, int year, std::ostream 
         std::tm * tm = std::localtime(&current_date);
         char dateString[32];
         std::strftime(dateString, 32, "%d-%m-%Y", tm);
-
-        exportFile(dateString);//make export file
-        current_date += 86400;// 1 dag toevoegen 24*60*60
+        exportFile(dateString); //make export file
+        current_date += 86400; // 1 dag toevoegen 24*60*60
     }
+    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 }

@@ -186,6 +186,10 @@ public:
     *
     * @pre
     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @post
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
     */
     void automaticSimulation(int day, int month, int year, std::ostream &stream);
 
