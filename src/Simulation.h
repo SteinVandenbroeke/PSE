@@ -87,8 +87,6 @@ public:
      * REQUIRE(FileExists(path), "The file that needs to be read must exist")
      * REQUIRE(!FileIsEmpty(path), "The file that needs to be read must not be empty")
      *
-     *  TODO de simulatie moet consistent zijn
-     *
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      * ENSURE(fhub->getFvaccin() == fhub->getFdelivery(), "Hub must have equal amount of vaccins as delivery on day zero")
