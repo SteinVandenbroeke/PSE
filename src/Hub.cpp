@@ -64,19 +64,6 @@ void Hub::addCenter(const std::string &name, VaccinationCenter *center) {
     ENSURE( fcentra.find(name) != fcentra.end(),"VaccinationCenter must exist in map");
 }
 
-void Hub::updateCenter(const std::string &name, VaccinationCenter *center) {
-
-    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-    REQUIRE(center->properlyInitialized(), "VaccinationCenter must be properly initialized");
-    REQUIRE(fcentra.find(name) != fcentra.end() ,"VaccinationCenter must exist in map");
-
-    if(this->fcentra[name]){
-        delete this->fcentra[name];
-        this->fcentra[name] = center;
-    }
-    ENSURE( fcentra.find(name) != fcentra.end(),"VaccinationCenter must exist in map");
-}
-
 void Hub::updateVaccins() {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");

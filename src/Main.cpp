@@ -7,10 +7,7 @@ int main() {
     try{
         s.importXmlFile("simulatiecentra.xml");
 
-        ofstream exportFile;
-        exportFile.open("all information");
-
-        s.automaticSimulation(15,03,2021, exportFile);
+        s.automaticSimulation(15,03,2021, std::cout);
 /*
         while (true) {
             s.simulateTransport(std::cout);

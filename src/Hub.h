@@ -20,7 +20,7 @@ class Hub {
 private:
     int fdelivery; ///< Amount of vaccins delivered to Hub on the start and each interval
     int finterval; ///< Time between deliveries
-    int ftransport; ///<  Amount of vaccins delivered to other VaccinationCenters
+    int ftransport; ///< Amount of vaccins delivered to other VaccinationCenters
     int fvaccin; ///< Amount of vaccins currently in the hub
     std::map<std::string, VaccinationCenter*> fcentra; ///< Map with the connected VaccinationCenters
     Hub *_initCheck;
@@ -114,22 +114,6 @@ public:
     void addCenter(const std::string &name, VaccinationCenter* center);
 
     /**
-     * \brief Update VaccinationCenter in map
-     *
-     * @param name Name of the VaccinationCenter
-     * @param center Pointer to VaccinationCenter object
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
-     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
-     * REQUIRE(fcentra.find(name) != fcentra.end() ,"VaccinationCenter must exist in map");
-     *
-     * @post
-     * REQUIRE(fcentra.find(name) != fcentra.end(), "VaccinationCenter must exist in map");
-     */
-    void updateCenter(const std::string &name, VaccinationCenter* center);
-
-    /**
      * \brief Update the amount of vaccins in Hub
      *
      * @pre
@@ -174,9 +158,6 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
-     *
-     * @post
-     * TODO kweet eig ni of er een postconditie is
      */
     void print(std::ofstream& stream) const;
 };

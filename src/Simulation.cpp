@@ -212,6 +212,9 @@ void Simulation::increaseIterator() {
 
 void Simulation::automaticSimulation(int day, int month, int year, std::ostream &stream) {
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    for(std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end();it++){
+        REQUIRE(it->second->getVaccins() == 0 && it->second->getVaccinated() == 0, "Vaccins or vaccinated is not 0 by start of simulation");
+    }
     //day, month, year --> time_t
     struct tm * timeinfo;
     time_t rawtime;

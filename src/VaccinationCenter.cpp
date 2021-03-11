@@ -78,7 +78,6 @@ void VaccinationCenter::addVaccins(int amount) {
 }
 
 int VaccinationCenter::calculateVaccinationAmount() {
-
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
     int notVaccinated = fpopulation - fvaccinated;
