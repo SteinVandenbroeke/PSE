@@ -1,0 +1,10 @@
+Er werden 2 ladingen (14000 vaccins) getransporteerd naar Flanders Expo.
+Er werden 10000 inwoners gevaccineerd in Flanders Expo.
+Er werden 1 ladingen (7000 vaccins) getransporteerd naar Flanders Expo.
+Er werden 10000 inwoners gevaccineerd in Flanders Expo.
+Er werden 1 ladingen (7000 vaccins) getransporteerd naar Flanders Expo.
+Er werden 0 inwoners gevaccineerd in Flanders Expo.
+Hub (2000 vaccins)
+ -> Flanders Expo (8000 vaccins)
+
+Flanders Expo: 20000 gevaccineerd, nog 0 inwoners niet gevaccineerd

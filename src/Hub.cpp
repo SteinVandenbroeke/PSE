@@ -101,6 +101,7 @@ int Hub::calculateTransport(const VaccinationCenter* center) const {
 void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    REQUIRE(fcentra.find(centerName) != fcentra.end(), "Given centerName must exist");
     VaccinationCenter* center = fcentra[centerName];
     REQUIRE(center->getName() == centerName, "Name of found center and given center name must be equal");
 

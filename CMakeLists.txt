@@ -61,7 +61,7 @@ set(DEBUG_SOURCE_FILES
         src/Simulation.h
         src/DesignByContract.h
         src/Utils.cpp
-        src/Utils.h)
+        src/Utils.h src/VdUtilsTests.cpp)
 
 # Create RELEASE target
 add_executable(ttt ${RELEASE_SOURCE_FILES})

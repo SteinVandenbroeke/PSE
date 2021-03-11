@@ -143,6 +143,7 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
      * REQUIRE(center->getName() == centerName, "Name of found center and given center name must be equal")
+     * REQUIRE(fcentra.find(centerName) != fcentra.end(), "Given centerName must exist")
      *
      * @post
      * ENSURE(vaccinsHub != fvaccin, "Amount of vaccins in Hub must be updated")
