@@ -123,7 +123,7 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
 
     // Display information of transport
     stream << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins) getransporteerd naar ";
-    stream << center->getName() << "." << std::endl;
+    stream << center->getName() << ".\n";
 
     ENSURE(vaccinsHub != fvaccin, "Amount of vaccins in Hub must be updated");
     ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated");

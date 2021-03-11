@@ -171,7 +171,7 @@ void Simulation::simulateTransport(std::ostream &stream) {
 
     // Interval between deliveries is over
     if (iter % fhub->getInterval() == 0 && iter != 0) {
-        stream << "Delivery!" << std::endl;
+        stream << "Delivery! \n";
         fhub->updateVaccins();
     }
 
@@ -185,7 +185,7 @@ void Simulation::simulateTransport(std::ostream &stream) {
         fhub->transportVaccin(centerName, stream);
     }
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-    stream << "REMAINING: " << fhub->getVaccin() << std::endl;
+    stream << "REMAINING: " << fhub->getVaccin() << "\n";
 }
 
 void Simulation::simulateVaccination(std::ostream &stream) {
@@ -198,7 +198,7 @@ void Simulation::simulateVaccination(std::ostream &stream) {
 
         // Vaccinate in center
         it->second->vaccinateCenter(stream);
-        stream << "HOLDING: " << it->second->getVaccins() << std::endl;
+        stream << "HOLDING: " << it->second->getVaccins() << "\n";
     }
 
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
@@ -237,7 +237,7 @@ void Simulation::automaticSimulation(int day, int month, int year, std::ostream 
         //time_t --> strings
         std::tm * tm = std::localtime(&current_date);
         char dateString[32];
-        std::strftime(dateString, 32, "%d-%m-%Y", tm);
+        std::strftime(dateString, 32, "%d-%m-%Y.txt", tm);
         exportFile(dateString); //make export file
         current_date += 86400; // 1 dag toevoegen 24*60*60
     }

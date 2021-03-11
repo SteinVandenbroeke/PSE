@@ -95,7 +95,7 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
     fvaccins -= vaccinationAmount;
     fvaccinated += vaccinationAmount;
 
-    stream << "Er werden " << vaccinationAmount << " inwoners gevaccineerd in " << fname << "." << std::endl;
+    stream << "Er werden " << vaccinationAmount << " inwoners gevaccineerd in " << fname << ".\n";
 }
 
 
