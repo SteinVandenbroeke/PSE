@@ -88,8 +88,6 @@ public:
      * REQUIRE(!FileIsEmpty(path), "The file that needs to be read must not be empty")
      *
      *  TODO de simulatie moet consistent zijn
-     *  TODO exceptions/uitzonderingen returnen
-     *  TOOD weten of dat .xml file met tags enzo correct is
      *
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
@@ -190,8 +188,6 @@ public:
     *
     * @pre
     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
-    *
-    * @post
     */
     void automaticSimulation(int day, int month, int year, std::ostream &stream);
 

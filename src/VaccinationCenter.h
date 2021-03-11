@@ -142,9 +142,6 @@ public:
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
-     *
-     * @post
-     * TODO kweet eig ni of er een postconditie is
      */
     void print(std::ofstream &stream) const;
 };
