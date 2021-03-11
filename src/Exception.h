@@ -48,7 +48,7 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "Exception object must be properly initialized")
      */
-    std::string value() const throw ();
+    std::string value() const  throw() ;
 };
 
 #endif //TTT_EXCEPTION_H

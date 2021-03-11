@@ -8,7 +8,6 @@
 #include "Simulation.h"
 
 Simulation::Simulation() {
-
     _initCheck = this;
     fhub = NULL;
     iter = 0;
@@ -43,54 +42,58 @@ void Simulation::importXmlFile(const char *path) {
     REQUIRE(FileExists(path), "The file that needs to be read must exist");
     REQUIRE(!FileIsEmpty(path), "THe file that needs to be read must not be empty");
 
-    XMLReader reader(path);
+    try{
+        XMLReader reader(path);
+        // Insert all vaccination centers into 'centra'
+        TiXmlElement* xmlCentrum = reader.getElement("VACCINATIECENTRUM");
+        while(xmlCentrum != NULL){
+            try{
+                std::string name = reader.getElementValue(*xmlCentrum,"naam");
+                std::string address = reader.getElementValue(*xmlCentrum,"adres");
+                int population = atoi(reader.getElementValue(*xmlCentrum,"inwoners"));
+                int capacity = atoi(reader.getElementValue(*xmlCentrum,"capaciteit"));
 
-    // Insert all vaccination centers into 'centra'
-    TiXmlElement* xmlCentrum = reader.getElement("VACCINATIECENTRUM");
-    while(xmlCentrum != NULL){
+                VaccinationCenter* center = new VaccinationCenter(name, address, population, capacity);
+
+                this->fcentra[name] = center;
+            }
+            catch (Exception ex) {
+                cerr << ex.value() << endl;
+            }
+            xmlCentrum = xmlCentrum->NextSiblingElement("VACCINATIECENTRUM");
+        }
+
+        // Load hub in
         try{
-            std::string name = reader.getElementValue(*xmlCentrum,"naam");
-            std::string address = reader.getElementValue(*xmlCentrum,"adres");
-            int population = atoi(reader.getElementValue(*xmlCentrum,"inwoners"));
-            int capacity = atoi(reader.getElementValue(*xmlCentrum,"capaciteit"));
+            TiXmlElement* xmlHub = reader.getElement("HUB");
+            int delivery = atoi(reader.getElementValue(*xmlHub, "levering"));
+            int interval = atoi(reader.getElementValue(*xmlHub,"interval"));
+            int transport = atoi(reader.getElementValue(*xmlHub,"transport"));
 
-            VaccinationCenter* center = new VaccinationCenter(name, address, population, capacity);
+            // Create new hub
+            fhub = new Hub(delivery, interval, transport);
 
-            this->fcentra[name] = center;
+            TiXmlElement* xmlCentra = xmlHub->FirstChildElement("CENTRA")->FirstChildElement("centrum");
+            while(xmlCentra != NULL){
+                std::string name = xmlCentra->GetText();
+                fhub->addCenter(name, this->fcentra[name]);
+                xmlCentra = xmlCentra->NextSiblingElement("centrum");
+            }
         }
         catch (Exception ex) {
             cerr << ex.value() << endl;
         }
-        xmlCentrum = xmlCentrum->NextSiblingElement("VACCINATIECENTRUM");
-    }
 
-    // Load hub in
-    try{
-        TiXmlElement* xmlHub = reader.getElement("HUB");
-        int delivery = atoi(reader.getElementValue(*xmlHub, "levering"));
-        int interval = atoi(reader.getElementValue(*xmlHub,"interval"));
-        int transport = atoi(reader.getElementValue(*xmlHub,"transport"));
+        if(this->fhub == NULL) throw Exception("Hub cannot be made, crucial information is missing");
 
-        // Create new hub
-        fhub = new Hub(delivery, interval, transport);
 
-        TiXmlElement* xmlCentra = xmlHub->FirstChildElement("CENTRA")->FirstChildElement("centrum");
-        while(xmlCentra != NULL){
-            std::string name = xmlCentra->GetText();
-            fhub->addCenter(name, this->fcentra[name]);
-            xmlCentra = xmlCentra->NextSiblingElement("centrum");
-        }
+        ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+        ENSURE(fhub->getFvaccin() == fhub->getFdelivery()
+        , "Hub must have equal amount of vaccins as delivery on day zero");
     }
     catch (Exception ex) {
-        cerr << ex.value() << endl;
+        throw ex;
     }
-
-    if(this->fhub == NULL) throw Exception("Hub cannot be made, crucial information is missing");
-
-
-    ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-    ENSURE(fhub->getFvaccin() == fhub->getFdelivery()
-    , "Hub must have equal amount of vaccins as delivery on day zero");
 }
 
 bool Simulation::checkHub() const {

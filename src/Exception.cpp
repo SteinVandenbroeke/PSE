@@ -20,7 +20,5 @@ bool Exception::properlyInitialized() const {
 }
 
 std::string Exception::value() const throw() {
-
-    REQUIRE(properlyInitialized(), "Exception object must be properly initialized");
     return errorValue;
 }
