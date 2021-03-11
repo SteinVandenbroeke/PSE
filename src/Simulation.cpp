@@ -45,6 +45,24 @@ void Simulation::importXmlFile(const char *path) {
 
     XMLReader reader(path);
 
+    // Insert all vaccination centers into 'centra'
+    TiXmlElement* xmlCentrum = reader.getElement("VACCINATIECENTRUM");
+    while(xmlCentrum != NULL){
+        try{
+            std::string name = reader.getElementValue(*xmlCentrum,"naam");
+            std::string address = reader.getElementValue(*xmlCentrum,"adres");
+            int population = atoi(reader.getElementValue(*xmlCentrum,"inwoners"));
+            int capacity = atoi(reader.getElementValue(*xmlCentrum,"capaciteit"));
+
+            VaccinationCenter* center = new VaccinationCenter(name, address, population, capacity);
+
+            this->fcentra[name] = center;
+        }
+        catch (Exception ex) {
+            cerr << ex.value() << endl;
+        }
+        xmlCentrum = xmlCentrum->NextSiblingElement("VACCINATIECENTRUM");
+    }
 
     // Load hub in
     try{
@@ -57,18 +75,11 @@ void Simulation::importXmlFile(const char *path) {
         fhub = new Hub(delivery, interval, transport);
 
         TiXmlElement* xmlCentra = xmlHub->FirstChildElement("CENTRA")->FirstChildElement("centrum");
-        // TODO ksnap ni zo goe waarom ge dit er bij doet als ge da iets verder toch terug vervangt
-//        while(xmlCentra != NULL){
-//            try {
-//                std::string name = xmlCentra->GetText();
-////                fhub->addCenter(name, new VaccinationCenter());
-//            }
-//            // TODO
-//            catch (Exception ex) {
-//                cerr << ex.value() << endl;
-//            }
-//            xmlCentra = xmlCentra->NextSiblingElement("centrum");
-//        }
+        while(xmlCentra != NULL){
+            std::string name = xmlCentra->GetText();
+            fhub->addCenter(name, this->fcentra[name]);
+            xmlCentra = xmlCentra->NextSiblingElement("centrum");
+        }
     }
     catch (Exception ex) {
         cerr << ex.value() << endl;
@@ -76,31 +87,7 @@ void Simulation::importXmlFile(const char *path) {
 
     if(this->fhub == NULL) throw Exception("Hub cannot be made, crucial information is missing");
 
-    // Insert all vaccination centers into 'centra'
-    TiXmlElement* xmlCentrum = reader.getElement("VACCINATIECENTRUM");
-    while(xmlCentrum != NULL){
-        try{
-            std::string name = reader.getElementValue(*xmlCentrum,"naam");
-            std::string address = reader.getElementValue(*xmlCentrum,"adres");
-            int population = atoi(reader.getElementValue(*xmlCentrum,"inwoners"));
-            int capacity = atoi(reader.getElementValue(*xmlCentrum,"capaciteit"));
 
-
-            VaccinationCenter* center = new VaccinationCenter(name, address, population, capacity);
-
-            this->fcentra[name] = center;
-
-//            this->fcentra.push_back(center);
-
-            this->fhub->addCenter(center->getName(), center);
-            // TODO
-//            this->fhub->updateCenter(name, center);
-        }
-        catch (Exception ex) {
-            cerr << ex.value() << endl;
-        }
-        xmlCentrum = xmlCentrum->NextSiblingElement("VACCINATIECENTRUM");
-    }
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
     ENSURE(fhub->getFvaccin() == fhub->getFdelivery()
     , "Hub must have equal amount of vaccins as delivery on day zero");
