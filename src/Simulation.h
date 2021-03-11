@@ -89,7 +89,7 @@ public:
      *
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
-     * ENSURE(fhub->getFvaccin() == fhub->getFdelivery(), "Hub must have equal amount of vaccins as delivery on day zero")
+     * ENSURE(fhub->getFvaccin() == fhub->getdelivery(), "Hub must have equal amount of vaccins as delivery on day zero")
      * @Exceptions
      */
     void importXmlFile(const char* path);

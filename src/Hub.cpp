@@ -22,31 +22,31 @@ bool Hub::properlyInitialized() const {
     return Hub::_initCheck == this;
 }
 
-int Hub::getFdelivery() const {
+int Hub::getDelivery() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return fdelivery;
 }
 
-int Hub::getFinterval() const {
+int Hub::getInterval() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return finterval;
 }
 
-int Hub::getFtransport() const {
+int Hub::getTransport() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return ftransport;
 }
 
-int Hub::getFvaccin() const {
+int Hub::getVaccin() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return fvaccin;
 }
 
-const std::map<std::string, VaccinationCenter *> &Hub::getFcentra() const {
+const std::map<std::string, VaccinationCenter *> &Hub::getCentra() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return fcentra;

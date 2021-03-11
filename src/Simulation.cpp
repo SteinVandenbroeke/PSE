@@ -88,7 +88,7 @@ void Simulation::importXmlFile(const char *path) {
 
 
         ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-        ENSURE(fhub->getFvaccin() == fhub->getFdelivery()
+        ENSURE(fhub->getVaccin() == fhub->getDelivery()
         , "Hub must have equal amount of vaccins as delivery on day zero");
     }
     catch (Exception ex) {
@@ -113,7 +113,7 @@ bool Simulation::checkConnections() const {
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
 
     // Check whether every VaccinationCenter is connected to the Hub
-    if (fhub->getFcentra().size() != this->fcentra.size()) {
+    if (fhub->getCentra().size() != this->fcentra.size()) {
         return false;
     }
 
@@ -121,7 +121,7 @@ bool Simulation::checkConnections() const {
     for (std::map<std::string, VaccinationCenter*>::const_iterator it = fcentra.begin(); it != fcentra.end(); it++) {
 
         // Search in hub for element with key "name"
-        if (fhub->getFcentra().find(it->first) == fhub->getFcentra().end()) {
+        if (fhub->getCentra().find(it->first) == fhub->getCentra().end()) {
             return false;
         }
     }
@@ -165,12 +165,12 @@ void Simulation::simulateTransport(std::ostream &stream) {
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 
     if (iter == 0) {
-        REQUIRE(fhub->getFdelivery() == fhub->getFvaccin()
+        REQUIRE(fhub->getDelivery() == fhub->getVaccin()
         , "Hub must have equal amount of vaccins as delivery on day zero");
     }
 
     // Interval between deliveries is over
-    if (iter % fhub->getFinterval() == 0 && iter != 0) {
+    if (iter % fhub->getInterval() == 0 && iter != 0) {
         stream << "Delivery!" << std::endl;
         fhub->updateVaccins();
     }
@@ -179,13 +179,13 @@ void Simulation::simulateTransport(std::ostream &stream) {
     for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
 
         //get name of first center connected to hub
-        std::string centerName = fhub->getFcentra().find(it->first)->first;
+        std::string centerName = fhub->getCentra().find(it->first)->first;
 
         // Transport vaccins from hub to center
         fhub->transportVaccin(centerName, stream);
     }
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-    stream << "REMAINING: " <<fhub->getFvaccin() << std::endl;
+    stream << "REMAINING: " << fhub->getVaccin() << std::endl;
 }
 
 void Simulation::simulateVaccination(std::ostream &stream) {

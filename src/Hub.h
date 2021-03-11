@@ -55,7 +55,7 @@ public:
      *
      * @return Amount of vaccins
      */
-    int getFdelivery() const;
+    int getDelivery() const;
 
     /**
      * \brief Get interval between deliveries
@@ -65,7 +65,7 @@ public:
      *
      * @return Interval between deliveries as int
      */
-    int getFinterval() const;
+    int getInterval() const;
 
     /**
      * \brief Get amount of vaccins delivered to VaccinationCenters
@@ -75,7 +75,7 @@ public:
      *
      * @return Amount of vaccins delivered to VaccinationCenters as int
      */
-    int getFtransport() const;
+    int getTransport() const;
 
     /**
      * \brief Get amount of vaccins currently in Hub
@@ -85,7 +85,7 @@ public:
      *
      * @return Amount of vaccins as int
      */
-    int getFvaccin() const;
+    int getVaccin() const;
 
     /**
      * \brief Get map with connected VaccinationCenters to Hub
@@ -95,7 +95,7 @@ public:
      *
      * @return Map with connected VaccinationCenters to Hub
      */
-    const std::map<std::string, VaccinationCenter *> &getFcentra() const;
+    const std::map<std::string, VaccinationCenter *> &getCentra() const;
 
     /**
      * \brief Add VaccinationCenter to map with connections of Hub

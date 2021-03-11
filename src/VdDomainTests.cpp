@@ -70,14 +70,60 @@ TEST_F(VaccinDistributorDomainTests, constructorHub) {
 
     EXPECT_TRUE(hub.properlyInitialized());
     EXPECT_FALSE(!hub.properlyInitialized());
-    EXPECT_EQ(400000, hub.getFdelivery());
-    EXPECT_EQ(6, hub.getFinterval());
-    EXPECT_EQ(40000, hub.getFtransport());
-    EXPECT_EQ(400000, hub.getFvaccin());
-    EXPECT_TRUE(hub.getFcentra().empty());
+    EXPECT_EQ(400000, hub.getDelivery());
+    EXPECT_EQ(6, hub.getInterval());
+    EXPECT_EQ(40000, hub.getTransport());
+    EXPECT_EQ(400000, hub.getVaccin());
+    EXPECT_TRUE(hub.getCentra().empty());
 }
 
+// Test addCenter()
+TEST_F(VaccinDistributorDomainTests, addCenter) {
 
+    Hub hub = Hub(10000, 6, 2500);
+
+    EXPECT_TRUE(hub.properlyInitialized());
+    EXPECT_EQ(10000, hub.getDelivery());
+    EXPECT_EQ(10000, hub.getDelivery());
+    EXPECT_EQ(6, hub.getInterval());
+    EXPECT_EQ(2500, hub.getTransport());
+    EXPECT_EQ(10000, hub.getVaccin());
+    EXPECT_TRUE(hub.getCentra().empty());
+
+    VaccinationCenter *center = new VaccinationCenter("Flanders Expo", "Maaltekouter 1, 9051 Gent",
+                                                  75000, 5500);
+    EXPECT_TRUE(center->properlyInitialized());
+    EXPECT_EQ("Flanders Expo", center->getName());
+    EXPECT_EQ("Maaltekouter 1, 9051 Gent", center->getAddress());
+    EXPECT_EQ(75000, center->getPopulation());
+    EXPECT_EQ(5500, center->getCapacity());
+    EXPECT_EQ(0, center->getVaccins());
+    EXPECT_EQ(0, center->getVaccinated());
+
+    hub.addCenter("Flanders Expo", center);
+    EXPECT_FALSE(hub.getCentra().empty());
+    EXPECT_TRUE(hub.getCentra().find("Flanders Expo")->first == center->getName());
+    EXPECT_TRUE(hub.getCentra().find("Flanders Expo")->second == center);
+
+    delete center;
+}
+
+// test calculateTransport()
+TEST_F(VaccinDistributorDomainTests, calculateTransport) {
+
+    Hub hub = Hub(10000, 6, 2500);
+    EXPECT_TRUE(hub.properlyInitialized());
+
+    VaccinationCenter *center = new VaccinationCenter("Flanders Expo", "Maaltekouter 1, 9051 Gent",
+                                                      75000, 5500);
+    EXPECT_TRUE(center->properlyInitialized());
+    hub.addCenter("Flanders Expo", center);
+
+    EXPECT_EQ(7500, hub.calculateTransport(center));
+
+
+    delete center;
+}
 
 // Test default constructor of VaccinationCenter object
 TEST_F(VaccinDistributorDomainTests, defaultConstructorCenter) {
