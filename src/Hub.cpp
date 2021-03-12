@@ -77,6 +77,10 @@ int Hub::calculateTransport(const VaccinationCenter* center) const {
     int cargo = 0;
     int vaccinsTransport = 0;
 
+    if (ftransport == 0) {
+        return vaccinsTransport;
+    }
+
     while ((((ftransport * cargo) + center->getVaccins()) <= (2 * center->getCapacity())) &&
            (ftransport * cargo) <= fvaccin) {
 

@@ -9,7 +9,7 @@
 #include <fstream>
 #include "Simulation.h"
 
-class VaccinSimulateTests : public::testing::Test {
+class VaccinSimulationTests : public::testing::Test {
 
 protected:
     // You should make the members protected s.t. they can be
@@ -19,6 +19,13 @@ protected:
     // should define it if you need to initialize the variables.
     // Otherwise, this can be skipped.
     virtual void SetUp() {
+        ASSERT_TRUE(DirectoryExists("tests"));
+        ASSERT_TRUE(DirectoryExists("tests/domainTests"));
+        ASSERT_TRUE(DirectoryExists("tests/domainTests/expectedOutput"));
+        ASSERT_TRUE(DirectoryExists("tests/domainTests/generatedOutput"));
+        ASSERT_TRUE(DirectoryExists("tests/inputTests"));
+        ASSERT_TRUE(DirectoryExists("tests/outputTests/expectedOutput"));
+        ASSERT_TRUE(DirectoryExists("tests/outputTests/generatedOutput"));
     }
 
     // virtual void TearDown() will be called after each test is run.
@@ -31,12 +38,14 @@ protected:
     Simulation s;
 };
 
-TEST_F(VaccinSimulateTests, noHappyDays) {
+// Test simulation with an "empty" Simulation object
+TEST_F(VaccinSimulationTests, emptySimulation) {
 
+    ASSERT_TRUE(FileExists("tests/inputTests/emptySimulation.xml"));
     std::ofstream ostream;
 
     EXPECT_TRUE(s.properlyInitialized());
-    EXPECT_DEATH(s.importXmlFile("tests/inputTests/noHappyDays.xml"),
+    EXPECT_DEATH(s.importXmlFile("tests/inputTests/emptySimulation.xml"),
                  "The file that needs to be read must not be empty");
     EXPECT_DEATH(s.importXmlFile("nonexistent.xml"), "The file that needs to be read must exist");
     EXPECT_DEATH(s.checkConnections(), "Hub must exist");
@@ -46,13 +55,109 @@ TEST_F(VaccinSimulateTests, noHappyDays) {
     EXPECT_DEATH(s.exportFile("tests/inputTests/file1.txt"),
                  "The simulation must be valid/consistent");
     EXPECT_TRUE(s.getFcentra().empty());
-    EXPECT_DEATH(s.automaticSimulation(1,1,2012,ostream),
+    EXPECT_DEATH(s.automaticSimulation(5, ostream),
                  "The simulation must be valid/consistent");
     EXPECT_DEATH(s.simulateVaccination(ostream), "The simulation must be valid/consistent");
     EXPECT_DEATH(s.simulateTransport(ostream), "The simulation must be valid/consistent");
 }
 
-TEST_F(VaccinSimulateTests, HappyDays) {
+// Test automatic simulation with no equal vaccins as delivery on day zero
+TEST_F(VaccinSimulationTests, noHappyDays) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/noHappyDays.xml"));
+
+    std::string testName = "noHappyDays";
+    std::ofstream ostream;
+    std::string fileName = "tests/outputTests/generatedOutput/generated" + testName + ".txt";
+    std::string fileNameCompare = "tests/outputTests/expectedOutput/expected" + testName + ".txt";
+    ostream.open(fileName.c_str());
+
+    s.importXmlFile("tests/inputTests/noHappyDays.xml");
+    EXPECT_TRUE(s.properlyInitialized());
+    EXPECT_TRUE(s.checkSimulation());
+    s.simulateTransport(ostream);
+    ostream << std::endl;
+    s.simulateVaccination(ostream);
+    EXPECT_TRUE(s.checkSimulation());
+
+    EXPECT_DEATH(s.automaticSimulation(5, ostream),
+                 "Hub must have equal amount of vaccins as delivery on day zero");
+
+    s.exportFile("tests/outputTests/generatedOutput/generated" + testName + "_" + ".txt");
+    ostream.close();
+
+    EXPECT_TRUE(FileExists(fileName));
+    EXPECT_TRUE(FileExists("tests/outputTests/generatedOutput/generated" + testName + "_" + ".txt"));
+    EXPECT_TRUE(FileExists(fileNameCompare));
+    EXPECT_FALSE(FileIsEmpty(fileName));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+    EXPECT_TRUE(FileCompare("tests/outputTests/expectedOutput/expected" + testName + "_" + ".txt",
+                            "tests/outputTests/generatedOutput/generated" + testName + "_" + ".txt"));
+}
+
+// TODO no tags enzo
+TEST_F(VaccinSimulationTests, noCentra) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/noCentra.xml"));
+
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/noCentra.xml"), Exception);
+    EXPECT_FALSE(s.checkSimulation());
+}
+
+TEST_F(VaccinSimulationTests, wrongFile) {
+
+    EXPECT_DEATH(s.importXmlFile("tests/inputTests/noCentra.txt"),
+                 "The file that needs to be read must exist");
+    EXPECT_FALSE(s.checkSimulation());
+}
+
+TEST_F(VaccinSimulationTests, emptyFile) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/emptyFile.xml"));
+
+    EXPECT_DEATH(s.importXmlFile("tests/inputTests/emptyFile.xml"),
+                 "The file that needs to be read must not be empty");
+    EXPECT_FALSE(s.checkSimulation());
+}
+
+TEST_F(VaccinSimulationTests, intenseInterval) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/intenseInterval.xml"));
+
+    std::string testName = "intenseInterval";
+    std::ofstream ostream;
+    std::string fileName = "tests/outputTests/generatedOutput/generated" + testName + ".txt";
+    std::string fileNameCompare = "tests/outputTests/expectedOutput/expected" + testName + ".txt";
+    ostream.open(fileName.c_str());
+
+    s.importXmlFile("tests/inputTests/intenseInterval.xml");
+    EXPECT_TRUE(s.properlyInitialized());
+    EXPECT_TRUE(s.checkSimulation());
+
+    EXPECT_EQ(4, s.getFcentra().size());
+    EXPECT_TRUE(NULL != s.getFhub());
+    EXPECT_EQ(93000, s.getFhub()->getVaccin());
+    EXPECT_EQ("Park Spoor Oost", s.getFcentra().find("Park Spoor Oost")->first);
+    EXPECT_EQ("AED Studios", s.getFcentra().find("AED Studios")->first);
+    EXPECT_EQ("De Zoerla", s.getFcentra().find("De Zoerla")->first);
+    EXPECT_EQ("Flanders Expo", s.getFcentra().find("Flanders Expo")->first);
+    s.automaticSimulation(18, ostream);
+    std::string exportFileName = "tests/outputTests/generatedOutput/generatedintenseInterval_.txt";
+    s.exportFile(exportFileName);
+
+    ostream.close();
+    EXPECT_TRUE(FileExists(exportFileName));
+    EXPECT_TRUE(FileExists(fileName));
+    EXPECT_TRUE(FileExists(fileNameCompare));
+    EXPECT_FALSE(FileIsEmpty(fileName));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+    EXPECT_TRUE(FileCompare(exportFileName,
+                            "tests/outputTests/expectedOutput/expectedintenseInterval_.txt"));
+}
+
+TEST_F(VaccinSimulationTests, happyDays) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/happyDays.xml"));
 
     std::string testName = "happyDays";
     std::ofstream ostream;
@@ -63,21 +168,46 @@ TEST_F(VaccinSimulateTests, HappyDays) {
     s.importXmlFile("tests/inputTests/happyDays.xml");
     EXPECT_TRUE(s.properlyInitialized());
     EXPECT_TRUE(s.checkSimulation());
-    s.simulateTransport(ostream);
-    ostream << std::endl;
-    s.simulateVaccination(ostream);
-    ostream << std::endl;
 
+    EXPECT_EQ(4, s.getFcentra().size());
+    EXPECT_TRUE(NULL != s.getFhub());
+    EXPECT_EQ(93000, s.getFhub()->getVaccin());
+    EXPECT_EQ("Park Spoor Oost", s.getFcentra().find("Park Spoor Oost")->first);
+    EXPECT_EQ("AED Studios", s.getFcentra().find("AED Studios")->first);
+    EXPECT_EQ("De Zoerla", s.getFcentra().find("De Zoerla")->first);
+    EXPECT_EQ("Flanders Expo", s.getFcentra().find("Flanders Expo")->first);
 
-
-
+    s.automaticSimulation(18, ostream);
+    std::string exportFileName = "tests/outputTests/generatedOutput/generatedhappyDays_.txt";
+    s.exportFile(exportFileName);
 
     ostream.close();
-
+    EXPECT_TRUE(FileExists(exportFileName));
     EXPECT_TRUE(FileExists(fileName));
     EXPECT_TRUE(FileExists(fileNameCompare));
     EXPECT_FALSE(FileIsEmpty(fileName));
     EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
-
+    EXPECT_TRUE(FileCompare(exportFileName,
+                            "tests/outputTests/expectedOutput/expectedhappyDays_.txt"));
 }
+
+TEST_F(VaccinSimulationTests, alreadyVaccinated) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/alreadyVaccinated.xml"));
+
+    std::ofstream ostream;
+    s.importXmlFile("tests/inputTests/alreadyVaccinated.xml");
+    EXPECT_TRUE(s.properlyInitialized());
+    EXPECT_TRUE(s.checkSimulation());
+    s.simulateTransport(ostream);
+    s.simulateVaccination(ostream);
+    while (s.getFhub()->getVaccin() != 0) {
+        s.simulateVaccination(ostream);
+        s.simulateTransport(ostream);
+    }
+    s.getFhub()->updateVaccins();
+    EXPECT_DEATH(s.automaticSimulation(6, ostream),
+                 "Amount of vaccins or amount of vaccinated in a center must be 0 at begin of simulation");
+}
+
 

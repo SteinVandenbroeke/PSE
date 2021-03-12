@@ -58,7 +58,7 @@ void Simulation::importXmlFile(const char *path) {
                 this->fcentra[name] = center;
             }
             catch (Exception ex) {
-                cerr << ex.value() << endl;
+                cerr << ex.value() << std::endl;
             }
             xmlCentrum = xmlCentrum->NextSiblingElement("VACCINATIECENTRUM");
         }
@@ -81,11 +81,10 @@ void Simulation::importXmlFile(const char *path) {
             }
         }
         catch (Exception ex) {
-            cerr << ex.value() << endl;
+            cerr << ex.value() << std::endl;
         }
 
         if(this->fhub == NULL) throw Exception("Hub cannot be made, crucial information is missing");
-
 
         ENSURE(checkSimulation(), "The simulation must be valid/consistent");
         ENSURE(fhub->getVaccin() == fhub->getDelivery()
@@ -139,7 +138,7 @@ bool Simulation::checkSimulation() const {
     return false;
 }
 
-void Simulation::exportFile(const char *path) const {
+void Simulation::exportFile(const std::string & path) const {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
@@ -166,17 +165,6 @@ void Simulation::simulateTransport(std::ostream &stream) {
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 
-    if (iter == 0) {
-        REQUIRE(fhub->getDelivery() == fhub->getVaccin()
-        , "Hub must have equal amount of vaccins as delivery on day zero");
-    }
-
-    // Interval between deliveries is over
-    if (iter % fhub->getInterval() == 0 && iter != 0) {
-        stream << "Delivery! \n";
-        fhub->updateVaccins();
-    }
-
     // Traverse VaccinationCentra
     for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
 
@@ -187,7 +175,6 @@ void Simulation::simulateTransport(std::ostream &stream) {
         fhub->transportVaccin(centerName, stream);
     }
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-    stream << "REMAINING: " << fhub->getVaccin() << "\n";
 }
 
 void Simulation::simulateVaccination(std::ostream &stream) {
@@ -200,7 +187,6 @@ void Simulation::simulateVaccination(std::ostream &stream) {
 
         // Vaccinate in center
         it->second->vaccinateCenter(stream);
-        stream << "HOLDING: " << it->second->getVaccins() << "\n";
     }
 
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
@@ -212,36 +198,57 @@ void Simulation::increaseIterator() {
     iter ++;
 }
 
-void Simulation::automaticSimulation(int day, int month, int year, std::ostream &stream) {
+void Simulation::automaticSimulation(const int days, std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 
-    for(std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end();it++){
-        REQUIRE(it->second->getVaccins() == 0 && it->second->getVaccinated() == 0, "Vaccins or vaccinated is not 0 by start of simulation");
+    if (iter == 0) {
+        REQUIRE(fhub->getDelivery() == fhub->getVaccin()
+        , "Hub must have equal amount of vaccins as delivery on day zero");
     }
-    //day, month, year --> time_t
-    struct tm * timeinfo;
-    time_t rawtime;
-    time(&rawtime);
-    timeinfo = localtime ( &rawtime );
-    timeinfo->tm_year = year - 1900;
-    timeinfo->tm_mon = month - 1;
-    timeinfo->tm_mday = day;
-    time_t endDate = mktime(timeinfo);
 
-    time_t current_date = time(0);
-    while(current_date <= endDate){
+    for(std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end();it++){
+        REQUIRE(it->second->getVaccins() == 0 && it->second->getVaccinated() == 0,
+                "Amount of vaccins or amount of vaccinated in a center must be 0 at begin of simulation");
+    }
+
+    while (iter < days) {
+
+        // Interval between deliveries is over
+        if (iter % fhub->getInterval() == 0 && iter != 0) {
+            fhub->updateVaccins();
+        }
+
         simulateTransport(stream);
         simulateVaccination(stream);
         increaseIterator();
-
-        //time_t --> strings
-        std::tm * tm = std::localtime(&current_date);
-        char dateString[32];
-        std::strftime(dateString, 32, "%d-%m-%Y.txt", tm);
-        exportFile(dateString); //make export file
-        current_date += 86400; // 1 dag toevoegen 24*60*60
     }
+
+//    //day, month, year --> time_t
+//    struct tm * timeinfo;
+//    time_t rawtime;
+//    time(&rawtime);
+//    timeinfo = localtime ( &rawtime );
+//    timeinfo->tm_year = year - 1900;
+//    timeinfo->tm_mon = month - 1;
+//    timeinfo->tm_mday = day;
+//    time_t endDate = mktime(timeinfo);
+//
+//    time_t current_date = time(0);
+//    while(current_date <= endDate){
+//        simulateTransport(stream);
+//        simulateVaccination(stream);
+//        increaseIterator();
+//
+//        //time_t --> strings
+//        std::tm * tm = std::localtime(&current_date);
+//        char dateString[32];
+//        std::strftime(dateString, 32, "%d-%m-%Y.txt", tm);
+//        exportFile(dateString); //make export file
+//        current_date += 86400; // 1 dag toevoegen 24*60*60
+//    }
+
+
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 }

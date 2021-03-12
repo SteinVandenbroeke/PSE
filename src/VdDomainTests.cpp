@@ -22,6 +22,11 @@ protected:
     // should define it if you need to initialize the variables.
     // Otherwise, this can be skipped.
     virtual void SetUp() {
+
+        ASSERT_TRUE(DirectoryExists("tests"));
+        ASSERT_TRUE(DirectoryExists("tests/domainTests"));
+        ASSERT_TRUE(DirectoryExists("tests/domainTests/expectedOutput"));
+        ASSERT_TRUE(DirectoryExists("tests/domainTests/generatedOutput"));
     }
 
     // virtual void TearDown() will be called after each test is run.

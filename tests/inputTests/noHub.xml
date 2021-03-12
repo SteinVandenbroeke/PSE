@@ -1,14 +1,3 @@
-<HUB>
-    <levering>93000</levering>
-    <interval>6</interval>
-    <transport>2000</transport>
-    <CENTRA>
-        <centrum>Park Spoor Oost</centrum>
-        <centrum>AED Studios</centrum>
-        <centrum>De Zoerla</centrum>
-        <centrum>Flanders Expo</centrum>
-    </CENTRA>
-</HUB>
 <VACCINATIECENTRUM>
 <naam>Park Spoor Oost</naam>
 <adres>Noordersingel 40, Antwerpen</adres>
@@ -22,7 +11,7 @@
 <capaciteit>2000</capaciteit>
 </VACCINATIECENTRUM>
 <VACCINATIECENTRUM>
-<naam>De Zoerla</naam>
+<naam>De Zoerla</naam>     pavlo
 <adres>Gevaertlaan 1, Westerlo</adres>
 <inwoners>49451</inwoners>
 <capaciteit>1000</capaciteit>

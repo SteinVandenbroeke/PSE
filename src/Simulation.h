@@ -90,7 +90,7 @@ public:
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      * ENSURE(fhub->getFvaccin() == fhub->getdelivery(), "Hub must have equal amount of vaccins as delivery on day zero")
-     * @Exceptions
+     *
      */
     void importXmlFile(const char* path);
 
@@ -152,7 +152,7 @@ public:
      * ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty")
      *
      */
-    void exportFile(const char* path) const; // TODO
+    void exportFile(const std::string & path) const; // TODO
 
     /**
      * \brief Simulate transport of vaccins between Hub and centra
@@ -188,18 +188,23 @@ public:
     *
     * @pre
     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
-     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+     * REQUIRE(fhub->getDelivery() == fhub->getVaccin()
+        , "Hub must have equal amount of vaccins as delivery on day zero");
+     * REQUIRE(it->second->getVaccins() == 0 && it->second->getVaccinated() == 0,
+                "Amount of vaccins or amount of vaccinated in a center must be 0 at begin of the simulation");
      *
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
     */
-    void automaticSimulation(int day, int month, int year, std::ostream &stream); // TODO
+    void automaticSimulation(int days, std::ostream &stream);
 
     /**
      * \brief Increase iterator value
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
      */
     void increaseIterator();
 };

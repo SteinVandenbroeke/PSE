@@ -1,7 +1,7 @@
 <HUB>
     <levering>93000</levering>
-    <interval>6</interval>
-    <transport>2000</transport>
+    <interval>1</interval>
+    <transport>4000</transport>
     <CENTRA>
         <centrum>Park Spoor Oost</centrum>
         <centrum>AED Studios</centrum>
