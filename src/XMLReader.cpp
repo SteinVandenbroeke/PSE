@@ -4,13 +4,8 @@
 
 #include "XMLReader.h"
 
-TiXmlElement* XMLReader::getElement(TiXmlElement& elmt, const char *name) {
-    TiXmlElement* node = elmt.NextSiblingElement(name);
-    if(node == NULL) throw Exception("Element not found: " + string(name));
-    return node;
-}
-
 const char* XMLReader::getElementValue(TiXmlElement& elmt, const char *name) {
+    REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
     TiXmlNode* node = elmt.FirstChild(name);
     if(node == NULL) throw Exception("Element not found: " + string(name));
     if(node->FirstChild() == NULL) throw Exception("Element is empty: " + string(name));
@@ -21,6 +16,7 @@ const char* XMLReader::getElementValue(TiXmlElement& elmt, const char *name) {
 }
 
 XMLReader::XMLReader(const char* filePad) {
+    _initCheck = this;
     doc = new TiXmlDocument();
     if(!doc->LoadFile(filePad)) {
         throw Exception(doc->ErrorDesc());
@@ -28,6 +24,7 @@ XMLReader::XMLReader(const char* filePad) {
 }
 
 TiXmlElement *XMLReader::getElement(const char *name) {
+    REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
     TiXmlElement* node = doc->FirstChildElement(name);
     if(node == NULL) throw Exception("Element not found: " + string(name));
     return node;
@@ -36,4 +33,8 @@ TiXmlElement *XMLReader::getElement(const char *name) {
 XMLReader::~XMLReader() {
     doc->Clear();
     delete doc;
+}
+
+bool XMLReader::properlyInitialized() const {
+    return XMLReader::_initCheck == this;
 }
