@@ -139,6 +139,16 @@ public:
      */
     int calculateVaccinationAmount();
 
+    /**
+     * \brief Vacinate center, update fvaccins and fvaccins
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
+     *
+     * @param stream Output stream
+     *
+     */
     void vaccinateCenter(std::ostream &stream);
 
     /**
