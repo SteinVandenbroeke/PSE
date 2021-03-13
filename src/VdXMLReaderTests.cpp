@@ -20,12 +20,7 @@ protected:
     // Otherwise, this can be skipped.
     virtual void SetUp() {
         ASSERT_TRUE(DirectoryExists("tests"));
-        ASSERT_TRUE(DirectoryExists("tests/domainTests"));
-        ASSERT_TRUE(DirectoryExists("tests/domainTests/expectedOutput"));
-        ASSERT_TRUE(DirectoryExists("tests/domainTests/generatedOutput"));
         ASSERT_TRUE(DirectoryExists("tests/inputTests"));
-        ASSERT_TRUE(DirectoryExists("tests/outputTests/expectedOutput"));
-        ASSERT_TRUE(DirectoryExists("tests/outputTests/generatedOutput"));
     }
 
     // virtual void TearDown() will be called after each test is run.
