@@ -40,7 +40,12 @@ public:
      */
     Simulation();
 
-    //TODO
+    /**
+     * \brief Deconstructor for a Simulation object
+     *
+     * @post
+     * ENSURE(!properlyInitialized(), "Constructor must end in properlyInitialized state")
+     */
     ~Simulation();
 
     /**
