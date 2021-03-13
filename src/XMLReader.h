@@ -11,7 +11,7 @@
 using namespace std;
 
 class XMLReader {
-    TiXmlDocument* doc;
+    TiXmlDocument* doc = NULL;
 public:
     XMLReader(const char* filePad);
     ~XMLReader();

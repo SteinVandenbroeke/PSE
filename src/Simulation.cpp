@@ -13,6 +13,17 @@ Simulation::Simulation() {
     iter = 0;
 }
 
+Simulation::~Simulation() {
+    if(this->fhub != NULL){
+        delete fhub;
+    }
+    for(map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++){
+        if(it->second != NULL){
+            delete it->second;
+        }
+    }
+}
+
 bool Simulation::properlyInitialized() const {
 
     return Simulation::_initCheck == this;
@@ -36,7 +47,7 @@ Hub *Simulation::getFhub() const {
     return fhub;
 }
 
-void Simulation::importXmlFile(const char *path) {
+void Simulation::importXmlFile(const char *path, std::ostream &errorStream) {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(FileExists(path), "The file that needs to be read must exist");
@@ -50,19 +61,20 @@ void Simulation::importXmlFile(const char *path) {
             try{
                 std::string name = reader.getElementValue(*xmlCentrum,"naam");
                 std::string address = reader.getElementValue(*xmlCentrum,"adres");
-                int population = atoi(reader.getElementValue(*xmlCentrum,"inwoners"));
-                int capacity = atoi(reader.getElementValue(*xmlCentrum,"capaciteit"));
+                const char* inwonersString = reader.getElementValue(*xmlCentrum,"inwoners");
+                const char* capacityString = reader.getElementValue(*xmlCentrum,"capaciteit");
+                int population = atoi(inwonersString);
+                int capacity = atoi(capacityString);
 
                 VaccinationCenter* center = new VaccinationCenter(name, address, population, capacity);
 
                 this->fcentra[name] = center;
             }
             catch (Exception ex) {
-                cerr << ex.value() << std::endl;
+                errorStream << ex.value() << std::endl;
             }
             xmlCentrum = xmlCentrum->NextSiblingElement("VACCINATIECENTRUM");
         }
-
         // Load hub in
         try{
             TiXmlElement* xmlHub = reader.getElement("HUB");
@@ -75,8 +87,19 @@ void Simulation::importXmlFile(const char *path) {
 
             TiXmlElement* xmlCentra = xmlHub->FirstChildElement("CENTRA")->FirstChildElement("centrum");
             while(xmlCentra != NULL){
-                std::string name = xmlCentra->GetText();
-                fhub->addCenter(name, this->fcentra[name]);
+                std::string name;
+                if(xmlCentra->GetText() != NULL){
+                    name = xmlCentra->GetText();
+                    if(this->fcentra.find(name) != this->fcentra.end()){
+                        fhub->addCenter(name, this->fcentra[name]);
+                    }
+                    else{
+                        errorStream << "Hub contains an non existing or wrong vactination centrum: '" << name << "'" << std::endl;
+                    }
+                }
+                else{
+                    errorStream << "Empty centra name!" << endl;
+                }
                 xmlCentra = xmlCentra->NextSiblingElement("centrum");
             }
         }
@@ -144,7 +167,7 @@ void Simulation::exportFile(const std::string & path) const {
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 
     ofstream exportFile;
-    exportFile.open(path);
+    exportFile.open(path.c_str());
 
     // Write hub data
     fhub->print(exportFile);

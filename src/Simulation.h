@@ -26,7 +26,7 @@ class Simulation {
 
 private:
     std::map<std::string, VaccinationCenter*> fcentra; ///< vector with pointers to VaccinationCenter
-    Hub* fhub; ///< Pointer to Hub object
+    Hub* fhub = NULL; ///< Pointer to Hub object
     int iter; ///< Iterator that holds the amount of iterations in the Simulation
     Simulation *_initCheck;
 
@@ -39,6 +39,9 @@ public:
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
     Simulation();
+
+    //TODO
+    ~Simulation();
 
     /**
      * \brief Check whether the Simulation object is properly initialised
@@ -92,7 +95,7 @@ public:
      * ENSURE(fhub->getFvaccin() == fhub->getdelivery(), "Hub must have equal amount of vaccins as delivery on day zero")
      *
      */
-    void importXmlFile(const char* path);
+    void importXmlFile(const char* path, std::ostream &errorStream = std::cerr);
 
     /**
      * \brief Check whether there is a Hub in the Simulation
@@ -152,7 +155,7 @@ public:
      * ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty")
      *
      */
-    void exportFile(const std::string & path) const; // TODO
+    void exportFile(const std::string & path) const; // TODO (inorde denk @pablo)
 
     /**
      * \brief Simulate transport of vaccins between Hub and centra

@@ -95,7 +95,57 @@ TEST_F(VaccinSimulationTests, noHappyDays) {
                             "tests/outputTests/generatedOutput/generated" + testName + "_" + ".txt"));
 }
 
-// TODO no tags enzo
+TEST_F(VaccinSimulationTests, wrongClosingXml) {
+    ASSERT_TRUE(FileExists("tests/inputTests/wrongClosingTagXml.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/wrongLayoutXml.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/containsWrongTagsXml.xml"));
+
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongClosingTagXml.xml"), Exception);
+    EXPECT_FALSE(s.checkSimulation());
+
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongLayoutXml.xml"), Exception);
+    EXPECT_FALSE(s.checkSimulation());
+
+    EXPECT_NO_THROW(s.importXmlFile("tests/inputTests/containsWrongTagsXml.xml"));
+    EXPECT_TRUE(s.checkSimulation());
+}
+
+TEST_F(VaccinSimulationTests, wrongCentraInformation) {
+    ASSERT_TRUE(FileExists("tests/inputTests/wrongCentra.xml"));
+
+    ostringstream errorStream;
+    s.importXmlFile("tests/inputTests/wrongCentra.xml", errorStream);
+    EXPECT_EQ("Element not found: inwoners\nHub contains an non existing or wrong vactination centrum: 'Park Spoor Oost'\n"
+              , errorStream.str());
+    EXPECT_TRUE(s.checkSimulation());
+}
+
+TEST_F(VaccinSimulationTests, wrongHubInformation) {
+    ASSERT_TRUE(FileExists("tests/inputTests/wrongHub.xml"));
+
+    ostringstream errorStream;
+
+    s.importXmlFile("tests/inputTests/wrongHub.xml", errorStream);
+    EXPECT_EQ("Empty centra name!\n"
+    , errorStream.str());
+    EXPECT_TRUE(s.checkSimulation());
+}
+
+TEST_F(VaccinSimulationTests, brokenHubInformation) {
+    ASSERT_TRUE(FileExists("tests/inputTests/brokenHub.xml"));
+
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/brokenHub.xml"),Exception);
+    EXPECT_FALSE(s.checkSimulation());
+}
+
+TEST_F(VaccinSimulationTests, noHub) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/noHub.xml"));
+
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/noHub.xml"), Exception);
+    EXPECT_FALSE(s.checkSimulation());
+}
+
 TEST_F(VaccinSimulationTests, noCentra) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/noCentra.xml"));

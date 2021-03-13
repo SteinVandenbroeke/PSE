@@ -25,7 +25,6 @@ XMLReader::XMLReader(const char* filePad) {
     if(!doc->LoadFile(filePad)) {
         throw Exception(doc->ErrorDesc());
     }
-    if(doc->FirstChildElement() == NULL || doc->FirstChildElement()->FirstChildElement() == NULL) throw Exception("Wrong xml format");
 }
 
 TiXmlElement *XMLReader::getElement(const char *name) {
