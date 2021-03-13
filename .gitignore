@@ -7,6 +7,10 @@ gtest/lib
 gtest/include
 gtest/include/gtest
 gtest/include/gtest/internal
+tests/domainTests/expectedOutput
+tests/domainTests/generatedOutput
+tests/outputTests/expectedOutput
+tests/outputTests/generatedOutput
 .idea/
 [Oo]bj/
 [Bb]in/
