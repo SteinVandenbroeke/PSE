@@ -2,7 +2,7 @@
  * @file Exception.h
  * @brief This header file contains the declarations and the members of the Exception class
  * @author Stein Vandenbroeke
- * @date 04/03/2012
+ * @date 04/03/2021
  */
 
 #ifndef TTT_EXCEPTION_H
@@ -18,7 +18,7 @@ class Exception {
 
 private:
     std::string errorValue; ///< Value of exception as string
-    int errorCode; ///< Code of exception as int
+    __unused int errorCode; ///< Code of exception as int
     Exception *_initCheck;
 
 public:

@@ -2,7 +2,7 @@
  * @file VaccinationCenter.cpp
  * @brief This file contains the definitions of the members of the VaccinationCenter class
  * @author Stein Vandenbroeke
- * @date 04/03/2012
+ * @date 04/03/2021
  */
 
 #include "VaccinationCenter.h"
@@ -78,6 +78,7 @@ void VaccinationCenter::addVaccins(int amount) {
 }
 
 int VaccinationCenter::calculateVaccinationAmount() {
+
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
     int notVaccinated = fpopulation - fvaccinated;
@@ -105,9 +106,3 @@ void VaccinationCenter::print(std::ofstream &stream) const {
     stream << this->fname << ": " << this->fvaccinated << " gevaccineerd, nog ";
     stream << (this->fpopulation - this->fvaccinated) << " inwoners niet gevaccineerd\n";
 }
-
-
-
-
-
-

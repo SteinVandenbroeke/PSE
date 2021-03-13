@@ -2,7 +2,7 @@
  * @file Hub.h
  * @brief This header file contains the declarations and the members of the Hub class
  * @author Stein Vandenbroeke
- * @date 04/03/2012
+ * @date 04/03/2021
  */
 
 #ifndef TTT_HUB_H
@@ -129,8 +129,8 @@ public:
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
      *
      * @post
-     * ENSURE(vaccinsTransport <= fvaccin, "Amount of vaccinsTransport is to high");
-     * ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is to high");
+     * ENSURE(vaccinsTransport <= fvaccin, "Amount of vaccinsTransport is too high");
+     * ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high");
      *
      * @return Amount of cargo that will be transported as int
      */

@@ -2,7 +2,7 @@
  * @file Hub.cpp
  * @brief This file contains the definitions of the members of the Hub class
  * @author Stein Vandenbroeke
- * @date 04/03/2012
+ * @date 04/03/2021
  */
 
 #include "Hub.h"
@@ -98,8 +98,9 @@ int Hub::calculateTransport(const VaccinationCenter* center) const {
         vaccinsTransport = cargo * ftransport;
         cargo ++;
     }
-    ENSURE(vaccinsTransport <= fvaccin, "Amount of vaccinsTransport is to high");
-    ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is to high");
+
+    ENSURE(vaccinsTransport <= fvaccin, "Amount of vaccinsTransport is too high");
+    ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high");
     return vaccinsTransport;
 }
 

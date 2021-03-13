@@ -2,7 +2,7 @@
  * @file VdUtilsTests.cpp
  * @brief This file is used to run tests for Utils class - overgenomen van Serge Demeyer
  * @author Pablo Deputter
- * @date 11/03/2012
+ * @date 11/03/2021
  */
 
 #include <fstream>
@@ -30,7 +30,7 @@ protected:
     // Declares the variables your tests want to use.
 };
 
-// Tests the compare files over
+// Tests the FileCompare() method
 TEST_F(UtilsTests, FileCompare) {
     ASSERT_TRUE(DirectoryExists("tests/inputTests"));
 
@@ -45,7 +45,7 @@ TEST_F(UtilsTests, FileCompare) {
     EXPECT_TRUE(FileIsEmpty("tests/inputTests/file1.txt"));
     EXPECT_TRUE(FileIsEmpty("tests/inputTests/file2.txt"));
 
-
+//    doesnt work on mac
 //    //compare 2 empty files
 //    // *** Beware: the following does not work with older versions of libstdc++
 //    // *** It doesn't work with gcc version 4.0.1 (Apple Inc. build 5465)
@@ -91,6 +91,3 @@ TEST_F(UtilsTests, FileCompare) {
     EXPECT_FALSE(
             FileCompare("tests/inputTests/nonexisting.txt", "tests/inputTests/file1.txt"));
 }
-
-
-

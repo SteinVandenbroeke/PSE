@@ -2,22 +2,24 @@
  * @file Simulation.cpp
  * @brief This file contains the definitions of the members of the Simulation class
  * @author Stein Vandenbroeke
- * @date 04/03/2012
+ * @date 04/03/2021
  */
 
 #include "Simulation.h"
 
 Simulation::Simulation() {
+
     _initCheck = this;
     fhub = NULL;
     iter = 0;
 }
 
 Simulation::~Simulation() {
+
     if(this->fhub != NULL){
         delete fhub;
     }
-    for(map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++){
+    for(std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++){
         if(it->second != NULL){
             delete it->second;
         }
@@ -98,13 +100,13 @@ void Simulation::importXmlFile(const char *path, std::ostream &errorStream) {
                     }
                 }
                 else{
-                    errorStream << "Empty centra name!" << endl;
+                    errorStream << "Empty centra name!" << std::endl;
                 }
                 xmlCentra = xmlCentra->NextSiblingElement("centrum");
             }
         }
         catch (Exception ex) {
-            cerr << ex.value() << std::endl;
+            std::cerr << ex.value() << std::endl;
         }
 
         if(this->fhub == NULL) throw Exception("Hub cannot be made, crucial information is missing");
@@ -166,7 +168,7 @@ void Simulation::exportFile(const std::string & path) const {
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 
-    ofstream exportFile;
+    std::ofstream exportFile;
     exportFile.open(path.c_str());
 
     // Write hub data

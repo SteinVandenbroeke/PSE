@@ -57,15 +57,15 @@ TEST_F(XMLReaderTest, xmlRead) {
     TiXmlElement* elm = r.getElement("HUB");
 
     EXPECT_NO_THROW(r.getElementValue(*elm, "levering"));
-    string levering = r.getElementValue(*elm, "levering");
-    EXPECT_EQ(levering, "93000");
+    std::string delivery = r.getElementValue(*elm, "levering");
+    EXPECT_EQ(delivery, "93000");
 
     EXPECT_NO_THROW(r.getElement("VACCINATIECENTRUM"));
     elm = r.getElement("VACCINATIECENTRUM");
 
     EXPECT_NO_THROW(r.getElementValue(*elm, "naam"));
-    string naam = r.getElementValue(*elm, "naam");
-    EXPECT_EQ(naam, "Park Spoor Oost");
+    std::string name = r.getElementValue(*elm, "naam");
+    EXPECT_EQ(name, "Park Spoor Oost");
 
     EXPECT_THROW(r.getElementValue(*elm, "NOTEXISTS"), Exception);
 

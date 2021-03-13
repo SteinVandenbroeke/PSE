@@ -1,19 +1,25 @@
-//
-// Created by stein on 25/02/2021.
-//
+/**
+ * @file XMLReader.
+ * @brief This header file contains the declarations and members of the XMLReader class
+ * @author Stein Vandenbroeke
+ * @date 25/02/2021
+ */
 
 #ifndef TTT_XMLREADER_H
 #define TTT_XMLREADER_H
+
 #include <string>
 #include "xml/tinyxml.h"
 #include "Exception.h"
 
-using namespace std;
-
+/**
+ * \brief Class implemented for a XMLReader object, used to read data from .xml files
+ */
 class XMLReader {
-    TiXmlDocument* doc = NULL;
+
+    TiXmlDocument* doc; // Pointer to TiXmlDocument
     XMLReader *_initCheck;
-    bool properlyInitialized() const;
+
 public:
     /**
      * \brief initialize XMLReader, en create a TiXmlDocument for filepad
@@ -25,7 +31,22 @@ public:
      *
      */
     XMLReader(const char* filePad);
+
+    /**
+     * \brief Destroy XMLReader object
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     */
     ~XMLReader();
+
+    /**
+    * \brief Check whether the XMLReader object is properly initialised
+    *
+    * @return true when object is properly initialised, false when not
+    */
+    bool properlyInitialized() const;
 
     /**
      * \brief gives TiXmlElement whith tag 'name'
@@ -51,6 +72,5 @@ public:
      */
     const char* getElementValue(TiXmlElement& elmt, const char *name);
 };
-
 
 #endif //TTT_XMLREADER_H

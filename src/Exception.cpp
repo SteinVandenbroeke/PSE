@@ -2,7 +2,7 @@
  * @file Exception.cpp
  * @brief This file contains the definitions of the members of the Exception class
  * @author Stein Vandenbroeke
- * @date 04/03/2012
+ * @date 04/03/2021
  */
 
 #include "Exception.h"

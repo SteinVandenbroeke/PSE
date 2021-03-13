@@ -2,7 +2,7 @@
  * @file VdSimulateTests.cpp
  * @brief This file is used to all the tests of the Simulate class - input, output - based off Serge Demeyer tests
  * @author Pablo Deputter
- * @date 11/03/2012
+ * @date 11/03/2021
  */
 
 #include "gtest/gtest.h"
@@ -95,10 +95,13 @@ TEST_F(VaccinSimulationTests, noHappyDays) {
                             "tests/outputTests/generatedOutput/generated" + testName + "_" + ".txt"));
 }
 
+// Tests .xml file with closing tags errors
 TEST_F(VaccinSimulationTests, wrongClosingXml) {
+
     ASSERT_TRUE(FileExists("tests/inputTests/wrongClosingTagXml.xml"));
     ASSERT_TRUE(FileExists("tests/inputTests/wrongLayoutXml.xml"));
     ASSERT_TRUE(FileExists("tests/inputTests/containsWrongTagsXml.xml"));
+    testing::internal::CaptureStderr();
 
     EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongClosingTagXml.xml"), Exception);
     EXPECT_FALSE(s.checkSimulation());
@@ -106,24 +109,31 @@ TEST_F(VaccinSimulationTests, wrongClosingXml) {
     EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongLayoutXml.xml"), Exception);
     EXPECT_FALSE(s.checkSimulation());
 
+    std::string err = testing::internal::GetCapturedStderr();
+    EXPECT_EQ("Element not found: HUB\n", err);
+
     EXPECT_NO_THROW(s.importXmlFile("tests/inputTests/containsWrongTagsXml.xml"));
     EXPECT_TRUE(s.checkSimulation());
 }
 
+// Tests .xml file with wrong Center information
 TEST_F(VaccinSimulationTests, wrongCentraInformation) {
+
     ASSERT_TRUE(FileExists("tests/inputTests/wrongCentra.xml"));
 
-    ostringstream errorStream;
+    std::ostringstream errorStream;
     s.importXmlFile("tests/inputTests/wrongCentra.xml", errorStream);
     EXPECT_EQ("Element not found: inwoners\nHub contains an non existing or wrong vactination centrum: 'Park Spoor Oost'\n"
               , errorStream.str());
     EXPECT_TRUE(s.checkSimulation());
 }
 
+// Test .xml file with wrong Hub information
 TEST_F(VaccinSimulationTests, wrongHubInformation) {
+
     ASSERT_TRUE(FileExists("tests/inputTests/wrongHub.xml"));
 
-    ostringstream errorStream;
+    std::ostringstream errorStream;
 
     s.importXmlFile("tests/inputTests/wrongHub.xml", errorStream);
     EXPECT_EQ("Empty centra name!\n"
@@ -131,21 +141,29 @@ TEST_F(VaccinSimulationTests, wrongHubInformation) {
     EXPECT_TRUE(s.checkSimulation());
 }
 
+// Tests .xml file with lacking Hub information
 TEST_F(VaccinSimulationTests, brokenHubInformation) {
-    ASSERT_TRUE(FileExists("tests/inputTests/brokenHub.xml"));
 
+    ASSERT_TRUE(FileExists("tests/inputTests/brokenHub.xml"));
+    testing::internal::CaptureStderr();
     EXPECT_THROW(s.importXmlFile("tests/inputTests/brokenHub.xml"),Exception);
+    std::string err = testing::internal::GetCapturedStderr();
+    EXPECT_EQ("Element not found: transport\n", err);
     EXPECT_FALSE(s.checkSimulation());
 }
 
+// Tests .xml file with no Hub
 TEST_F(VaccinSimulationTests, noHub) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/noHub.xml"));
-
+    testing::internal::CaptureStderr();
     EXPECT_THROW(s.importXmlFile("tests/inputTests/noHub.xml"), Exception);
+    std::string err = testing::internal::GetCapturedStderr();
+    EXPECT_EQ("Element not found: HUB\n", err);
     EXPECT_FALSE(s.checkSimulation());
 }
 
+// Tests .xml with no VaccinationCentra
 TEST_F(VaccinSimulationTests, noCentra) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/noCentra.xml"));
@@ -154,6 +172,7 @@ TEST_F(VaccinSimulationTests, noCentra) {
     EXPECT_FALSE(s.checkSimulation());
 }
 
+// Tests simulation with .txt file instead of .xml file
 TEST_F(VaccinSimulationTests, wrongFile) {
 
     EXPECT_DEATH(s.importXmlFile("tests/inputTests/noCentra.txt"),
@@ -161,6 +180,7 @@ TEST_F(VaccinSimulationTests, wrongFile) {
     EXPECT_FALSE(s.checkSimulation());
 }
 
+// Tests simulation with empty .xml file
 TEST_F(VaccinSimulationTests, emptyFile) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/emptyFile.xml"));
@@ -170,6 +190,7 @@ TEST_F(VaccinSimulationTests, emptyFile) {
     EXPECT_FALSE(s.checkSimulation());
 }
 
+// Tests scenario with a short interval between deliveries to Hub
 TEST_F(VaccinSimulationTests, intenseInterval) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/intenseInterval.xml"));
@@ -205,6 +226,7 @@ TEST_F(VaccinSimulationTests, intenseInterval) {
                             "tests/outputTests/expectedOutput/expectedintenseInterval_.txt"));
 }
 
+// Happy day scenario for Simulation
 TEST_F(VaccinSimulationTests, happyDays) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/happyDays.xml"));
@@ -241,6 +263,7 @@ TEST_F(VaccinSimulationTests, happyDays) {
                             "tests/outputTests/expectedOutput/expectedhappyDays_.txt"));
 }
 
+// Test simulation where center has already vaccinated/has not 0 vaccins in stock
 TEST_F(VaccinSimulationTests, alreadyVaccinated) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/alreadyVaccinated.xml"));
@@ -259,5 +282,3 @@ TEST_F(VaccinSimulationTests, alreadyVaccinated) {
     EXPECT_DEATH(s.automaticSimulation(6, ostream),
                  "Amount of vaccins or amount of vaccinated in a center must be 0 at begin of simulation");
 }
-
-

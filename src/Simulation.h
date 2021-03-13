@@ -2,7 +2,7 @@
  * @file Simulation.h
  * @brief This header file contains the declarations and the members of the Simulation class
  * @author Stein Vandenbroeke
- * @date 04/03/2012
+ * @date 04/03/2021
  */
 
 #ifndef TTT_SIMULATION_H
@@ -26,10 +26,9 @@ class Simulation {
 
 private:
     std::map<std::string, VaccinationCenter*> fcentra; ///< vector with pointers to VaccinationCenter
-    Hub* fhub = NULL; ///< Pointer to Hub object
+    Hub* fhub; ///< Pointer to Hub object
     int iter; ///< Iterator that holds the amount of iterations in the Simulation
     Simulation *_initCheck;
-
 
 public:
     /**
@@ -144,7 +143,7 @@ public:
      *
      * @return True if Simulation is consistent
      */
-    bool checkSimulation() const; // TODO, wat?
+    bool checkSimulation() const;
 
     /**
      * \brief Export all the information of the Simulation to a .txt file
@@ -160,7 +159,7 @@ public:
      * ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty")
      *
      */
-    void exportFile(const std::string & path) const; // TODO (inorde denk @pablo)
+    void exportFile(const std::string & path) const;
 
     /**
      * \brief Simulate transport of vaccins between Hub and centra
@@ -172,7 +171,7 @@ public:
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      */
-    void simulateTransport(std::ostream &stream); // TODO, wat?
+    void simulateTransport(std::ostream &stream);
 
     /**
     * \brief Simulate vaccination in centra
@@ -184,15 +183,16 @@ public:
     * @post
     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
     */
-    void simulateVaccination(std::ostream &stream); // TODO, wat?
+    void simulateVaccination(std::ostream &stream);
 
     /**
     * \brief simulation from current day to given date
     *
-    * @param day: day of end date
-    * @param month: month of end date
-    * @param year: year of end date
+    * @param day day of end date
+    * @param month month of end date
+    * @param year year of end date
     * @param stream output stream for logging data
+     * @param days amount of days needed to be simulated
     *
     * @pre
     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")

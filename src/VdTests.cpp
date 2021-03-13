@@ -2,7 +2,7 @@
  * @file VdTests.cpp
  * @brief This file is used to all the tests of the system - based off the tesing of TicTacToe by Serge Demeyer
  * @author Pablo Deputter
- * @date 11/03/2012
+ * @date 11/03/2021
  */
 
 #include "gtest/gtest.h"

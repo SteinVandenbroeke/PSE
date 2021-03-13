@@ -2,7 +2,7 @@
  * @file VaccinationCenter.h
  * @brief This header file contains the declarations and the members of the VaccinationCenter class
  * @author Stein Vandenbroeke
- * @date 04/03/2012
+ * @date 04/03/2021
  */
 
 #ifndef TTT_VACCINATIONCENTER_H
@@ -39,17 +39,15 @@ public:
     /**
      * \brief Non-default constructor for a VaccinationCenter object
      *
-     * @param fname Name of the VaccinationCenter
-     * @param faddress Address of the VaccinationCenter
-     * @param fpopulation Amount of people the Vaccination is responsible for
-     * @param fcapacity Amount of Vaccins that can be stored
-     *
-     * @pre
+     * @param name Name of the VaccinationCenter
+     * @param address Address of the VaccinationCenter
+     * @param population Amount of people the Vaccination is responsible for
+     * @param capacity Amount of Vaccins that can be stored
      *
      * @post
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
-    VaccinationCenter(const std::string &fname, const std::string &faddress, int fpopulation, int fcapacity);
+    VaccinationCenter(const std::string &name, const std::string &address, int population, int capacity);
 
     /**
     * \brief Check whether the VaccinationCenter object is properly initialised
