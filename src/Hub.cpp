@@ -98,6 +98,8 @@ int Hub::calculateTransport(const VaccinationCenter* center) const {
         vaccinsTransport = cargo * ftransport;
         cargo ++;
     }
+    ENSURE(vaccinsTransport <= fvaccin, "Amount of vaccinsTransport is to high");
+    ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is to high");
     return vaccinsTransport;
 }
 

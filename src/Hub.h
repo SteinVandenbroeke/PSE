@@ -129,7 +129,8 @@ public:
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
      *
      * @post
-     * TODO
+     * ENSURE(vaccinsTransport <= fvaccin, "Amount of vaccinsTransport is to high");
+     * ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is to high");
      *
      * @return Amount of cargo that will be transported as int
      */

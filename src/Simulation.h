@@ -144,7 +144,7 @@ public:
      *
      * @return True if Simulation is consistent
      */
-    bool checkSimulation() const; // TODO
+    bool checkSimulation() const; // TODO, wat?
 
     /**
      * \brief Export all the information of the Simulation to a .txt file
@@ -172,7 +172,7 @@ public:
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      */
-    void simulateTransport(std::ostream &stream); // TODO
+    void simulateTransport(std::ostream &stream); // TODO, wat?
 
     /**
     * \brief Simulate vaccination in centra
@@ -184,7 +184,7 @@ public:
     * @post
     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
     */
-    void simulateVaccination(std::ostream &stream); // TODO
+    void simulateVaccination(std::ostream &stream); // TODO, wat?
 
     /**
     * \brief simulation from current day to given date
