@@ -130,7 +130,13 @@ public:
      */
     void addVaccins(int amount);
 
-    // TODO precondities
+    /**
+     * \brief Amount of peaple that can be vaccineded/day
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     */
     int calculateVaccinationAmount();
 
     void vaccinateCenter(std::ostream &stream);

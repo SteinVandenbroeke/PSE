@@ -10,7 +10,7 @@
 #include "gtest/gtest.h"
 #include "Simulation.h"
 
-// TODO expect death
+// TODO expect death (wat?)
 
 class VaccinDistributorDomainTests : public::testing::Test {
 
@@ -256,7 +256,7 @@ TEST_F(VaccinDistributorDomainTests, hubMultipleCenter) {
     EXPECT_TRUE(center3->properlyInitialized());
     hub.addCenter(center3->getName(), center3);
 
-    // TODO
+    // TODO wat?
 
     hub.print(ostream);
     delete center1;
