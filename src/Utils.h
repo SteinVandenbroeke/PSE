@@ -13,6 +13,8 @@
 #define TTT_UTILS_H
 
 #include <iostream>
+#include "Exception.h"
+#include <cstdlib>
 
 bool DirectoryExists(const std::string dirname);
 
@@ -23,6 +25,8 @@ bool FileIsEmpty(const std::string filename);
 bool FileCompare(const std::string leftFileName, const std::string rightFileName);
 
 std::string ToString(int i);
+
+int ToInt(std::string&);
 
 // Closing of the ``header guard''.
 

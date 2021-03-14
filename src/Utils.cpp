@@ -83,3 +83,12 @@ string ToString( int x ) {
     delete[] buf;
     return str;
 }
+
+int ToInt(std::string& s) {
+    for(unsigned long int i = 0; i < s.length(); i++){
+        if(!isdigit(s[i])){
+            throw Exception("Can't convert string to int");
+        }
+    }
+    return atoi(s.c_str());
+}

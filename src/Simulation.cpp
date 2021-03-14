@@ -63,10 +63,10 @@ void Simulation::importXmlFile(const char *path, std::ostream &errorStream) {
             try{
                 std::string name = reader.getElementValue(*xmlCentrum,"naam");
                 std::string address = reader.getElementValue(*xmlCentrum,"adres");
-                const char* inwonersString = reader.getElementValue(*xmlCentrum,"inwoners");
-                const char* capacityString = reader.getElementValue(*xmlCentrum,"capaciteit");
-                int population = atoi(inwonersString);
-                int capacity = atoi(capacityString);
+                std::string inwonersString = reader.getElementValue(*xmlCentrum,"inwoners");
+                std::string capacityString = reader.getElementValue(*xmlCentrum,"capaciteit");
+                int population = ToInt(inwonersString);
+                int capacity = ToInt(capacityString);
 
                 VaccinationCenter* center = new VaccinationCenter(name, address, population, capacity);
 
