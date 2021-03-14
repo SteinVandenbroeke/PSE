@@ -86,7 +86,7 @@ string ToString( int x ) {
 
 int ToInt(std::string& s) {
     for(unsigned long int i = 0; i < s.length(); i++){
-        if(!isdigit(s[i])){
+        if(!isdigit(s[i]) && (s[i] != '-' && i == 0 )){
             throw Exception("Can't convert string to int");
         }
     }
