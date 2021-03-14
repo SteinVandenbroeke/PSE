@@ -28,13 +28,6 @@ private:
     VaccinationCenter *_initCheck;
 
 public:
-    /**
-     * \brief Default constructor for a VaccinationCenter object
-     *
-     * @post
-     * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
-     */
-    VaccinationCenter();
 
     /**
      * \brief Non-default constructor for a VaccinationCenter object
@@ -43,6 +36,12 @@ public:
      * @param address Address of the VaccinationCenter
      * @param population Amount of people the Vaccination is responsible for
      * @param capacity Amount of Vaccins that can be stored
+     *
+     * @pre
+     * REQUIRE(fname.length() > 0, "Name can't be empty");
+     * REQUIRE(fname.length() > 0, "Adres can't be empty");
+     * REQUIRE(fpopulation >= 0, "Negative population'");
+     * REQUIRE(fcapacity >= 0, "Negative capacity");
      *
      * @post
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")

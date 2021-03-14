@@ -18,7 +18,6 @@ class Exception {
 
 private:
     std::string errorValue; ///< Value of exception as string
-    __unused int errorCode; ///< Code of exception as int
     Exception *_initCheck;
 
 public:
@@ -26,12 +25,11 @@ public:
      * \brief Constructor for a Exception object
      *
      * @param error Message of error
-     * @param errorCode Code that is given with error, standard 0
      *
      * @post
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
-    explicit Exception(const std::string &error, int errorCode = 0);
+    explicit Exception(const std::string &error);
 
     /**
      * \brief Check whether the Exception object is properly initialised

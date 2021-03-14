@@ -265,20 +265,6 @@ TEST_F(VaccinDistributorDomainTests, hubMultipleCenter) {
     EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
 }
 
-// Test default constructor of VaccinationCenter object
-TEST_F(VaccinDistributorDomainTests, defaultConstructorCenter) {
-
-    VaccinationCenter center = VaccinationCenter();
-
-    EXPECT_TRUE(center.properlyInitialized());
-    EXPECT_EQ("", center.getName());
-    EXPECT_EQ("", center.getAddress());
-    EXPECT_EQ(0, center.getPopulation());
-    EXPECT_EQ(0, center.getCapacity());
-    EXPECT_EQ(0, center.getVaccins());
-    EXPECT_EQ(0, center.getVaccinated());
-}
-
 // Test non-default constructor of VaccinationCenter object and addVaccin()
 TEST_F(VaccinDistributorDomainTests, ConstructorCenter) {
 

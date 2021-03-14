@@ -7,8 +7,8 @@
 
 #include "Exception.h"
 
-Exception::Exception(const std::string &error, int errorCode) :
-    errorValue(error), errorCode(errorCode) {
+Exception::Exception(const std::string &error) :
+    errorValue(error) {
 
     _initCheck = this;
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");

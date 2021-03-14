@@ -7,21 +7,13 @@
 
 #include "VaccinationCenter.h"
 
-VaccinationCenter::VaccinationCenter() {
-
-    _initCheck = this;
-    fname = "";
-    faddress = "";
-    fpopulation = 0;
-    fcapacity = 0;
-    fvaccins = 0;
-    fvaccinated = 0;
-    ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
-}
-
 VaccinationCenter::VaccinationCenter(const std::string &fname, const std::string &faddress, int fpopulation
                                      ,int fcapacity) :
     fname(fname), faddress(faddress), fpopulation(fpopulation),fcapacity(fcapacity){
+    REQUIRE(fname.length() > 0, "Name can't be empty");
+    REQUIRE(fname.length() > 0, "Adres can't be empty");
+    REQUIRE(fpopulation >= 0, "Negative population'");
+    REQUIRE(fcapacity >= 0, "Negative capacity");
 
     _initCheck = this;
     fvaccins = 0;
