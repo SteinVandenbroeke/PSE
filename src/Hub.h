@@ -34,6 +34,9 @@ public:
      * @param ftransport Amount of vaccins in each transport to a VaccinationCenter
      *
      * @pre
+     * REQUIRE(delivery >= 0, "Delivery can't be negative");
+     * REQUIRE(interval >= 0, "Interval can't be negative");
+     * REQUIRE(transport >= 0, "Transport can't be negative");
      *
      * @post
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
