@@ -80,9 +80,12 @@ void Simulation::importXmlFile(const char *path, std::ostream &errorStream) {
         // Load hub in
         try{
             TiXmlElement* xmlHub = reader.getElement("HUB");
-            int delivery = atoi(reader.getElementValue(*xmlHub, "levering"));
-            int interval = atoi(reader.getElementValue(*xmlHub,"interval"));
-            int transport = atoi(reader.getElementValue(*xmlHub,"transport"));
+            std::string deliveryString = reader.getElementValue(*xmlHub, "levering");
+            std::string intervalString = reader.getElementValue(*xmlHub, "interval");
+            std::string transportString = reader.getElementValue(*xmlHub, "transport");
+            int delivery = ToInt(deliveryString);
+            int interval = ToInt(intervalString);
+            int transport = ToInt(transportString);
 
             // Create new hub
             fhub = new Hub(delivery, interval, transport);
@@ -96,7 +99,7 @@ void Simulation::importXmlFile(const char *path, std::ostream &errorStream) {
                         fhub->addCenter(name, this->fcentra[name]);
                     }
                     else{
-                        errorStream << "Hub contains an non existing or wrong vactination centrum: '" << name << "'" << std::endl;
+                        errorStream << "Hub contains an non existing or wrong vaccination center: '" << name << "'" << std::endl;
                     }
                 }
                 else{

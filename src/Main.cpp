@@ -14,7 +14,7 @@ int main() {
     try{
         s.importXmlFile("simulatiecentra.xml");
 
-        s.automaticSimulation(1, std::cout);
+        s.automaticSimulation(4, std::cout);
         s.exportFile("test.txt");
 
     }
