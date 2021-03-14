@@ -10,9 +10,9 @@
 Hub::Hub(int delivery, int interval, int transport) :
         fdelivery(delivery), finterval(interval),
         ftransport(transport) {
-    REQUIRE(delivery > 0, "Delivery can't be negative");
-    REQUIRE(interval > 0, "Interval can't be negative");
-    REQUIRE(transport > 0, "Transport can't be negative");
+    REQUIRE(delivery > 0, "Delivery can't be negative or 0");
+    REQUIRE(interval > 0, "Interval can't be negative or 0");
+    REQUIRE(transport > 0, "Transport can't be negative or 0");
 
     // Initial delivery of vaccins
     fvaccin = fdelivery;
