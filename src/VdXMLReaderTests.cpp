@@ -35,8 +35,39 @@ protected:
 TEST_F(XMLReaderTest, emptyXml) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/emptySimulation.xml"));
-    std::ofstream ostream;
     EXPECT_THROW(XMLReader r("tests/inputTests/emptySimulation.xml"), Exception);
+}
+
+// Test simulation acceptedTags not all tags allowed
+TEST_F(XMLReaderTest, emptyAllowedTagTest) {
+    ASSERT_TRUE(FileExists("tests/inputTests/happyDays.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/knownTagsNotComplete.xml"));
+
+    std::ostringstream errorStream;
+    XMLReader r("tests/inputTests/happyDays.xml");
+    r.acceptedTags(errorStream, "tests/inputTests/knownTagsNotComplete.xml");
+    EXPECT_EQ("Error unknown tag: 'naam'\nError unknown tag: 'naam'\nError unknown tag: 'naam'\nError unknown tag: 'naam'\n"
+              ,errorStream.str());
+}
+
+// Test simulation acceptedTags file missing
+TEST_F(XMLReaderTest, noAllowedTagTest) {
+    ASSERT_TRUE(FileExists("tests/inputTests/basicXml.xml"));
+    ASSERT_TRUE(!FileExists("tests/inputTests/nofileonthisPath"));
+
+    std::ostringstream errorStream;
+    XMLReader r("tests/inputTests/basicXml.xml");
+    r.acceptedTags(errorStream, "tests/inputTests/nofileonthisPath.xml");
+    EXPECT_EQ("cannot find file with accepted tags\nerror in find file with accepted tags: Failed to open file\nError unknown tag: 'Node1'\nError unknown tag: 'Node2'\nError unknown tag: 'Node3'\n"
+    ,errorStream.str());
+}
+
+// Test simulation with wrong pad
+TEST_F(XMLReaderTest, noFileOnPath) {
+
+    ASSERT_TRUE(!FileExists("tests/inputTests/nofileonthisPath"));
+    std::ofstream ostream;
+    EXPECT_THROW(XMLReader r("tests/inputTests/nofileonthisPath"), Exception);
 }
 
 // Test simulation with an "broken" XML file
@@ -47,8 +78,42 @@ TEST_F(XMLReaderTest, brokenXml) {
     EXPECT_THROW(XMLReader r("tests/inputTests/wrongClosingTagXml.xml"), Exception);
 }
 
+
+// getElementValue happyday test
+TEST_F(XMLReaderTest, getElementValueHappyday) {
+    ASSERT_TRUE(FileExists("tests/inputTests/basicXml.xml"));
+    XMLReader r("tests/inputTests/basicXml.xml");
+    TiXmlElement* node = r.getElement("Node1");
+    std::string expected = r.getElementValue(*node,"Node2");
+    EXPECT_EQ("Test", expected);
+}
+
+// getElementValue none existing name
+TEST_F(XMLReaderTest, getElementValueNonExstingName) {
+    ASSERT_TRUE(FileExists("tests/inputTests/basicXml.xml"));
+    XMLReader r("tests/inputTests/basicXml.xml");
+    TiXmlElement* node = r.getElement("Node1");
+    EXPECT_THROW(r.getElementValue(*node,"Node5"), Exception);
+}
+
+// getElement happyday test
+TEST_F(XMLReaderTest, getElementHappyday) {
+    ASSERT_TRUE(FileExists("tests/inputTests/basicXml.xml"));
+    XMLReader r("tests/inputTests/basicXml.xml");
+    EXPECT_NO_THROW(r.getElement("Node1"));
+    EXPECT_NO_THROW(r.getElement("Node3"));
+    EXPECT_THROW(r.getElement("Node2"), Exception);
+}
+
+// getElement none existing name
+TEST_F(XMLReaderTest, getElementNullNode) {
+    ASSERT_TRUE(FileExists("tests/inputTests/basicXml.xml"));
+    XMLReader r("tests/inputTests/basicXml.xml");
+    EXPECT_THROW(r.getElement("Node5"), Exception);
+}
+
 // Test simulation with an "working" XML file
-TEST_F(XMLReaderTest, xmlRead) {
+TEST_F(XMLReaderTest, happyday) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/intenseInterval.xml"));
     XMLReader r("tests/inputTests/intenseInterval.xml");

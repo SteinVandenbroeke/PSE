@@ -49,14 +49,16 @@ Hub *Simulation::getFhub() const {
     return fhub;
 }
 
-void Simulation::importXmlFile(const char *path, std::ostream &errorStream) {
+void Simulation::importXmlFile(const char *path, const char *knownTagsPad, std::ostream &errorStream) {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(FileExists(path), "The file that needs to be read must exist");
     REQUIRE(!FileIsEmpty(path), "The file that needs to be read must not be empty");
 
+    std::list<std::pair<std::string, int> > knownTags; //even = naam van tag, oneven = diepte van tag --> list[0] = naam en list[0 + 1] = diepte
     try{
         XMLReader reader(path);
+        //reader.acceptedTags(errorStream, knownTagsPad);
         // Insert all vaccination centers into 'centra'
         TiXmlElement* xmlCentrum = reader.getElement("VACCINATIECENTRUM");
         while(xmlCentrum != NULL){
@@ -78,6 +80,7 @@ void Simulation::importXmlFile(const char *path, std::ostream &errorStream) {
             xmlCentrum = xmlCentrum->NextSiblingElement("VACCINATIECENTRUM");
         }
         // Load hub in
+        fhub = NULL;
         try{
             TiXmlElement* xmlHub = reader.getElement("HUB");
             std::string deliveryString = reader.getElementValue(*xmlHub, "levering");
@@ -112,7 +115,9 @@ void Simulation::importXmlFile(const char *path, std::ostream &errorStream) {
             std::cerr << ex.value() << std::endl;
         }
 
-        if(this->fhub == NULL) throw Exception("Hub cannot be made, crucial information is missing");
+        if(this->fhub == NULL) {
+            throw Exception("Hub cannot be made, crucial information is missing");
+        }
 
         ENSURE(checkSimulation(), "The simulation must be valid/consistent");
         ENSURE(fhub->getVaccin() == fhub->getDelivery()

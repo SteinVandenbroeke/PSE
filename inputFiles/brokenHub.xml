@@ -1,19 +1,17 @@
 <HUB>
     <levering>93000</levering>
     <interval>6</interval>
-    <transport>2000</transport>
     <CENTRA>
         <centrum>Park Spoor Oost</centrum>
         <centrum>AED Studios</centrum>
         <centrum>De Zoerla</centrum>
         <centrum>Flanders Expo</centrum>
     </CENTRA>
-    <bruh></bruh>
 </HUB>
 <VACCINATIECENTRUM>
 <naam>Park Spoor Oost</naam>
 <adres>Noordersingel 40, Antwerpen</adres>
-<inwoners>10000</inwoners>
+<inwoners>76935</inwoners>
 <capaciteit>7500</capaciteit>
 </VACCINATIECENTRUM>
 <VACCINATIECENTRUM>

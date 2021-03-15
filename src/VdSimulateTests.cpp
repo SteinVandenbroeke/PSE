@@ -101,18 +101,19 @@ TEST_F(VaccinSimulationTests, wrongClosingXml) {
     ASSERT_TRUE(FileExists("tests/inputTests/wrongClosingTagXml.xml"));
     ASSERT_TRUE(FileExists("tests/inputTests/wrongLayoutXml.xml"));
     ASSERT_TRUE(FileExists("tests/inputTests/containsWrongTagsXml.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
     testing::internal::CaptureStderr();
 
-    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongClosingTagXml.xml"), Exception);
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongClosingTagXml.xml", "tests/inputTests/knownTags.xml"), Exception);
     EXPECT_FALSE(s.checkSimulation());
 
-    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongLayoutXml.xml"), Exception);
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongLayoutXml.xml", "tests/inputTests/knownTags.xml"), Exception);
     EXPECT_FALSE(s.checkSimulation());
 
     std::string err = testing::internal::GetCapturedStderr();
     EXPECT_EQ("Element not found: HUB\n", err);
 
-    EXPECT_NO_THROW(s.importXmlFile("tests/inputTests/containsWrongTagsXml.xml"));
+    EXPECT_NO_THROW(s.importXmlFile("tests/inputTests/containsWrongTagsXml.xml", "tests/inputTests/knownTags.xml"));
     EXPECT_TRUE(s.checkSimulation());
 }
 
@@ -120,11 +121,12 @@ TEST_F(VaccinSimulationTests, wrongClosingXml) {
 TEST_F(VaccinSimulationTests, wrongCentraInformation) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/wrongCentra.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
 
     std::ostringstream errorStream;
-    s.importXmlFile("tests/inputTests/wrongCentra.xml", errorStream);
+    s.importXmlFile("tests/inputTests/wrongCentra.xml", "tests/inputTests/knownTags.xml", errorStream);
     EXPECT_EQ("Element not found: inwoners\nHub contains an non existing or wrong vaccination center: 'Park Spoor Oost'\n"
-              , errorStream.str());
+    , errorStream.str());
     EXPECT_TRUE(s.checkSimulation());
 }
 
@@ -132,10 +134,11 @@ TEST_F(VaccinSimulationTests, wrongCentraInformation) {
 TEST_F(VaccinSimulationTests, wrongHubInformation) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/wrongHub.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
 
     std::ostringstream errorStream;
 
-    s.importXmlFile("tests/inputTests/wrongHub.xml", errorStream);
+    s.importXmlFile("tests/inputTests/wrongHub.xml", "tests/inputTests/knownTags.xml", errorStream);
     EXPECT_EQ("Empty centra name!\n"
     , errorStream.str());
     EXPECT_TRUE(s.checkSimulation());
@@ -143,10 +146,10 @@ TEST_F(VaccinSimulationTests, wrongHubInformation) {
 
 // Tests .xml file with lacking Hub information
 TEST_F(VaccinSimulationTests, brokenHubInformation) {
-
     ASSERT_TRUE(FileExists("tests/inputTests/brokenHub.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
     testing::internal::CaptureStderr();
-    EXPECT_THROW(s.importXmlFile("tests/inputTests/brokenHub.xml"),Exception);
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/brokenHub.xml", "tests/inputTests/knownTags.xml"),Exception);
     std::string err = testing::internal::GetCapturedStderr();
     EXPECT_EQ("Element not found: transport\n", err);
     EXPECT_FALSE(s.checkSimulation());
@@ -154,8 +157,8 @@ TEST_F(VaccinSimulationTests, brokenHubInformation) {
 
 // Tests .xml file with no Hub
 TEST_F(VaccinSimulationTests, noHub) {
-
     ASSERT_TRUE(FileExists("tests/inputTests/noHub.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
     testing::internal::CaptureStderr();
     EXPECT_THROW(s.importXmlFile("tests/inputTests/noHub.xml"), Exception);
     std::string err = testing::internal::GetCapturedStderr();
@@ -513,7 +516,7 @@ TEST_F(VaccinSimulationTests, emptyDeliveryTag) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/emptyDeliveryTag.xml"));
     std::ofstream ostream;
-    EXPECT_THROW(s.importXmlFile("tests/inputTests/emptyDeliveryTag.xml", ostream), Exception);
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/emptyDeliveryTag.xml", "tests/inputTests/knownTags.xml", ostream), Exception);
     EXPECT_FALSE(s.checkSimulation());
 }
 
