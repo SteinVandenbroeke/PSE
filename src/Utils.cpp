@@ -12,8 +12,6 @@
 #include <cstdio>
 #include <string>
 
-using namespace std;
-
 #include "Utils.h"
 
 /**
@@ -27,7 +25,7 @@ bool DirectoryExists(const std::string dirname) {
 bool FileExists(const std::string filename) {
     struct stat st;
     if (stat(filename.c_str(), &st) != 0) return false;
-    ifstream f(filename.c_str());
+    std::ifstream f(filename.c_str());
     if (f.good()) {
         f.close();
         return true;
@@ -44,7 +42,7 @@ bool FileIsEmpty(const std::string filename) {
 }
 
 bool FileCompare(const std::string leftFileName, const std::string rightFileName) {
-    ifstream leftFile, rightFile;
+    std::ifstream leftFile, rightFile;
     char leftRead, rightRead;
     bool result;
 
@@ -75,11 +73,11 @@ bool FileCompare(const std::string leftFileName, const std::string rightFileName
     return result;
 }
 
-string ToString( int x ) {
+std::string ToString( int x ) {
     int length = snprintf( NULL, 0, "%d", x );
     char* buf = new char[length + 1];
     snprintf( buf, length + 1, "%d", x );
-    string str( buf );
+    std::string str( buf );
     delete[] buf;
     return str;
 }
