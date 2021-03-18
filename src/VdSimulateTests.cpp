@@ -104,10 +104,10 @@ TEST_F(VaccinSimulationTests, wrongClosingXml) {
     ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
     testing::internal::CaptureStderr();
 
-    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongClosingTagXml.xml", "tests/inputTests/knownTags.xml"), Exception);
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongClosingTagXml.xml", ""), Exception);
     EXPECT_FALSE(s.checkSimulation());
 
-    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongLayoutXml.xml", "tests/inputTests/knownTags.xml"), Exception);
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongLayoutXml.xml", ""), Exception);
     EXPECT_FALSE(s.checkSimulation());
 
     std::string err = testing::internal::GetCapturedStderr();

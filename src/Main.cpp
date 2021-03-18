@@ -12,7 +12,7 @@
 int main() {
     Simulation s;
     try{
-        s.importXmlFile("brokenHub.xml", "knownTags.xml");
+        s.importXmlFile("simulatiecentra.xml", "knownTags.xml");
 
         s.automaticSimulation(4, std::cout);
         s.exportFile("test.txt");

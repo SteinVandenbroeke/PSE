@@ -58,7 +58,9 @@ void Simulation::importXmlFile(const char *path, const char *knownTagsPad, std::
     std::list<std::pair<std::string, int> > knownTags; //even = naam van tag, oneven = diepte van tag --> list[0] = naam en list[0 + 1] = diepte
     try{
         XMLReader reader(path);
-        //reader.acceptedTags(errorStream, knownTagsPad);
+        std::string knowTagsPadString = knownTagsPad;
+        if(knowTagsPadString != "")
+            reader.acceptedTags(errorStream, knownTagsPad);
         // Insert all vaccination centers into 'centra'
         TiXmlElement* xmlCentrum = reader.getElement("VACCINATIECENTRUM");
         while(xmlCentrum != NULL){
@@ -255,6 +257,7 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream) {
 
         simulateTransport(stream);
         simulateVaccination(stream);
+        exportFile("Day-" + ToString(iter));
         increaseIterator();
     }
 

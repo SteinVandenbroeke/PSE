@@ -99,7 +99,7 @@ public:
      * ENSURE(fhub->getFvaccin() == fhub->getdelivery(), "Hub must have equal amount of vaccins as delivery on day zero")
      *
      */
-    void importXmlFile(const char* path,const char *knownTagsPad="knownTags.xml", std::ostream &errorStream = std::cerr);
+    void importXmlFile(const char* path,const char *knownTagsPad="", std::ostream &errorStream = std::cerr);
 
     /**
      * \brief Check whether there is a Hub in the Simulation
