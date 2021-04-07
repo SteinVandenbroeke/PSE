@@ -113,7 +113,10 @@ TEST_F(VaccinSimulationTests, wrongClosingXml) {
     std::string err = testing::internal::GetCapturedStderr();
     EXPECT_EQ("Element not found: HUB\n", err);
 
+    testing::internal::CaptureStderr();
     EXPECT_NO_THROW(s.importXmlFile("tests/inputTests/containsWrongTagsXml.xml", "tests/inputTests/knownTags.xml"));
+    std::string err2 = testing::internal::GetCapturedStderr();
+    EXPECT_EQ("Error unknown tag: 'HAHAHHAFOUT'\nError unknown tag: 'GG'\n", err2);
     EXPECT_TRUE(s.checkSimulation());
 }
 
@@ -497,20 +500,6 @@ TEST_F(VaccinSimulationTests, notConnectedCenter) {
     EXPECT_FALSE(s.checkSimulation());
 }
 
-// TODO
-//// Test simulaton with empty tag
-//TEST_F(VaccinSimulationTests, emptyTag) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/emptyTag.xml"));
-//
-//    std::ofstream ostream;
-//    testing::internal::CaptureStderr();
-//    s.importXmlFile("tests/inputTests/emptyTag.xml");
-//    std::string err = testing::internal::GetCapturedStderr();
-//    std::cout << err;
-//    EXPECT_FALSE(s.checkSimulation());
-//}
-
 // Test simulation with empty delivery tag, zelfde voor al de rest
 TEST_F(VaccinSimulationTests, emptyDeliveryTag) {
 
@@ -519,17 +508,6 @@ TEST_F(VaccinSimulationTests, emptyDeliveryTag) {
     EXPECT_THROW(s.importXmlFile("tests/inputTests/emptyDeliveryTag.xml", "tests/inputTests/knownTags.xml", ostream), Exception);
     EXPECT_FALSE(s.checkSimulation());
 }
-
-//// TODO
-//// Test simulation with empty vaccination tag
-//TEST_F(VaccinSimulationTests, emptyVaccinationTag) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/emptyVaccinationTag.xml"));
-//
-//    std::ofstream ostream;
-//    EXPECT_THROW(s.importXmlFile("tests/inputTests/emptyVaccinationTag.xml", ostream), Exception);
-//    EXPECT_FALSE(s.checkSimulation());
-//}
 
 // Test simulation with an integer as name of a center
 TEST_F(VaccinSimulationTests, intNameCenter) {
