@@ -35,7 +35,7 @@ set(RELEASE_SOURCE_FILES
         src/Simulation.h
         src/DesignByContract.h
         src/Utils.cpp
-        src/Utils.h)
+        src/Utils.h src/Vaccin.cpp src/Vaccin.h)
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES
@@ -64,13 +64,13 @@ set(DEBUG_SOURCE_FILES
         src/Utils.h
         src/VdUtilsTests.cpp
         src/VdSimulateTests.cpp
-        src/VdXMLReaderTests.cpp)
+        src/VdXMLReaderTests.cpp src/Vaccin.cpp src/Vaccin.h)
 
 # Create RELEASE target
-add_executable(VaccinDistributor ${RELEASE_SOURCE_FILES})
+add_executable(VaccinDistributor ${RELEASE_SOURCE_FILES} src/Vaccin.cpp src/Vaccin.h)
 
 # Create DEBUG target
-add_executable(VaccinDistributor_debug ${DEBUG_SOURCE_FILES})
+add_executable(VaccinDistributor_debug ${DEBUG_SOURCE_FILES} src/Vaccin.cpp src/Vaccin.h)
 
 # Link library
 target_link_libraries(VaccinDistributor_debug gtest)
