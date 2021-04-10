@@ -9,8 +9,10 @@
 #define TTT_HUB_H
 
 #include <map>
+#include <vector>
 #include "DesignByContract.h"
 #include "VaccinationCenter.h"
+#include "Vaccin.h"
 
 /**
  * \brief Class implemented for a Hub
@@ -18,10 +20,9 @@
 class Hub {
 
 private:
-    int fdelivery; ///< Amount of vaccins delivered to Hub on the start and each interval
-    int finterval; ///< Time between deliveries
-    int ftransport; ///< Amount of vaccins delivered to other VaccinationCenters
-    int fvaccin; ///< Amount of vaccins currently in the hub
+
+    std::vector<Vaccin*> fvaccins;
+
     std::map<std::string, VaccinationCenter*> fcentra; ///< Map with the connected VaccinationCenters
     Hub *_initCheck;
 
@@ -41,7 +42,7 @@ public:
      * @post
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
-    Hub(int delivery, int interval, int transport);
+    Hub();
 
     /**
      * \brief Check whether the Hub object is properly initialised
@@ -81,7 +82,7 @@ public:
     int getTransport() const;
 
     /**
-     * \brief Get amount of vaccins currently in Hub
+     * \brief Get's total amount of vaccins currently in Hub
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
@@ -89,6 +90,18 @@ public:
      * @return Amount of vaccins as int
      */
     int getVaccin() const;
+
+    /**
+     * \brief Insert's vaccin into hub
+     *
+     * @param vacin: the vacin to insert
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     *
+     * @return Amount of vaccins as int
+     */
+    void insertVaccin(Vaccin* Vaccin);
 
     /**
      * \brief Get map with connected VaccinationCenters to Hub
