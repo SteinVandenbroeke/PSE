@@ -25,8 +25,9 @@
 class Simulation {
 
 private:
-    std::map<std::string, VaccinationCenter*> fcentra; ///< vector with pointers to VaccinationCenter
-    Hub* fhub; ///< Pointer to Hub object
+//    std::map<std::string, VaccinationCenter*> fcentra; ///< vector with pointers to VaccinationCenter
+    std::vector<Hub*> fhub; ///< Vector containing pointers to Hub object
+//    Hub* fhub; ///< Pointer to Hub object
     int iter; ///< Iterator that holds the amount of iterations in the Simulation
     Simulation *_initCheck;
 
@@ -41,6 +42,9 @@ public:
 
     /**
      * \brief Deconstructor for a Simulation object
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      *
      * @post
      * ENSURE(!properlyInitialized(), "Constructor must end in properlyInitialized state")
@@ -75,14 +79,14 @@ public:
     const std::map<std::string, VaccinationCenter*> &getFcentra() const;
 
     /**
-     * \brief Get Hub in Simulation
+     * \brief Get Hubs in simulation
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      *
-     * @return Pointer to Hub object
+     * @return Vector containing pointers to Hub object
      */
-    Hub *getFhub() const;
+    const std::vector<Hub *> &getHub() const;
 
     /**
      * \brief Imports a vaccin distribution simulation from a .xml file

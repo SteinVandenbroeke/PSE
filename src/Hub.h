@@ -20,9 +20,7 @@
 class Hub {
 
 private:
-
-    std::vector<Vaccin*> fvaccins;
-
+    std::map<std::string, Vaccin*> fvaccins; ///< Map with pointers to Vaccins of hub
     std::map<std::string, VaccinationCenter*> fcentra; ///< Map with the connected VaccinationCenters
     Hub *_initCheck;
 
@@ -82,26 +80,48 @@ public:
     int getTransport() const;
 
     /**
-     * \brief Get's total amount of vaccins currently in Hub
+     * \brief Get total amount of Vaccins stored in Hub
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
      *
      * @return Amount of vaccins as int
      */
-    int getVaccin() const;
+    int getAmountVaccin() const;
 
     /**
-     * \brief Insert's vaccin into hub
-     *
-     * @param vacin: the vacin to insert
+     * \brief Get vaccins of Hub object
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
      *
-     * @return Amount of vaccins as int
+     * @return Map with name of Vaccin as key and pointer to Vaccin object as value
      */
-    void insertVaccin(Vaccin* Vaccin);
+    const std::map<std::string, Vaccin *> &getVaccins() const;
+
+    /**
+     * \brief Get vaccins of Hub object
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     *
+     * @return Map with name of Vaccin as key and pointer to Vaccin object as value
+     */
+    std::map<std::string, Vaccin *> &getVaccins();
+
+    /**
+     * \brief Add vaccin to Hub object
+     *
+     * @param Vaccin Pointer to Vaccin object to add
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     * REQUIRE(getVaccins().find(vaccin->getType()) == getVaccins().end(), "Vaccin can't yet exist in Hub")
+     *
+     * @post
+     * ENSURE(getVaccins().find(vaccin->getType()) != getVaccins().end(), "Vaccin must be added to Hub")
+     */
+    void addVaccin(Vaccin* Vaccin);
 
     /**
      * \brief Get map with connected VaccinationCenters to Hub
@@ -112,6 +132,16 @@ public:
      * @return Map with connected VaccinationCenters to Hub
      */
     const std::map<std::string, VaccinationCenter *> &getCentra() const;
+
+    /**
+     * \brief Get map with connected VaccinationCenters to Hub
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     *
+     * @return Map with connected VaccinationCenters to Hub
+     */
+    std::map<std::string, VaccinationCenter *> &getCentra();
 
     /**
      * \brief Add VaccinationCenter to map with connections of Hub

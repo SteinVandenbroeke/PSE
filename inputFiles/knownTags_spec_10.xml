@@ -1,0 +1,14 @@
+<HUB>
+    <levering></levering>
+    <interval></interval>
+    <transport></transport>
+    <CENTRA>
+        <centrum></centrum>
+    </CENTRA>
+</HUB>
+<VACCINATIECENTRUM>
+    <naam></naam>
+    <adres></adres>
+    <inwoners></inwoners>
+    <capaciteit></capaciteit>
+</VACCINATIECENTRUM>

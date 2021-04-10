@@ -3,7 +3,7 @@ project(VaccinDistributor)
 
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
-set(CMAKE_CXX_FLAGS "-Wall -Werror")
+#set(CMAKE_CXX_FLAGS "-Wall -Werror")
 set(CMAKE_EXE_LINKER_FLAGS -pthread)
 
 # Set include dir
@@ -29,6 +29,8 @@ set(RELEASE_SOURCE_FILES
         src/Exception.h
         src/VaccinationCenter.cpp
         src/VaccinationCenter.h
+        src/Vaccin.cpp
+        src/Vaccin.h
         src/Hub.cpp
         src/Hub.h
         src/Simulation.cpp
@@ -55,6 +57,8 @@ set(DEBUG_SOURCE_FILES
         src/Exception.h
         src/VaccinationCenter.cpp
         src/VaccinationCenter.h
+        src/Vaccin.cpp
+        src/Vaccin.h
         src/Hub.cpp
         src/Hub.h
         src/Simulation.cpp

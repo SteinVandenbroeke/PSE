@@ -1,43 +1,52 @@
-//
-// Created by stein on 7/04/2021.
-//
+/**
+ * @file Vaccin.h
+ * @brief This header file contains the declarations and the members of the Vaccin class
+ * @author Stein Vandenbroeke
+ * @date 09/04/2021
+ */
 
 #ifndef VACCINDISTRIBUTOR_VACCIN_H
 #define VACCINDISTRIBUTOR_VACCIN_H
+
 #include "DesignByContract.h"
 #include <string>
-
+#include <fstream>
 
 class Vaccin {
 
 private:
-    std::string ftype;
+    std::string ftype; ///< Type of the vaccin
     int fdelivery; ///< Amount of vaccins delivered to Hub on the start and each interval
     int finterval; ///< Time between deliveries
     int ftransport; ///< Amount of vaccins from this type delivered to other VaccinationCenters
     int fvaccin; ///< Amount of vaccins from this type currently in the hub
-
+    int frenewal; ///< Amount of time between the first shot and second shot to aquire max. immunity, 0 = std
+    int ftemperature; ///< Temperature where the vaccin should be stored
     Vaccin *_initCheck;
-public:
 
+public:
     /**
-     * \brief Non-default constructor for a Hub object
+     * \brief Non-default constructor for Vaccin type object
      *
-     * @param ftype name of vaccin
-     * @param fdelivery Amount of vaccins that can de delivered to Hub
-     * @param finterval Time between deliveries to Hub
-     * @param ftransport Amount of vaccins in each transport to a VaccinationCenter
+     * @param type name / type of vaccin
+     * @param delivery Amount of vaccins that can de delivered to Hub
+     * @param interval Time between deliveries to Hub
+     * @param transport Amount of vaccins in each transport to a VaccinationCenter
+     * @param renewal Amount of time between vaccin shots
+     * @param temp Temperature where the vaccin should be stored
      *
      * @pre
      * REQUIRE(type != "", "type can't be empty");
      * REQUIRE(delivery >= 0, "Delivery can't be negative");
      * REQUIRE(interval >= 0, "Interval can't be negative");
      * REQUIRE(transport >= 0, "Transport can't be negative");
+     * REQUIRE(renewal >= 0, "Renewal can't be negative");
      *
      * @post
      * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
      */
-    Vaccin(std::string& type, int delivery, int interval, int transport);
+    Vaccin(std::string& type, const int delivery, const int interval, const int transport, const int renewal,
+           const int temp);
 
     /**
      * \brief Check whether the Hub object is properly initialised
@@ -47,10 +56,20 @@ public:
     bool properlyInitialized() const;
 
     /**
+     * \brief Get type
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
+     * @return Type as string
+     */
+    const std::string &getType() const;
+
+    /**
      * \brief Get amount of vaccins
      *
      * @pre
-     * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @return Amount of vaccins
      */
@@ -60,7 +79,7 @@ public:
      * \brief Get interval between deliveries
      *
      * @pre
-     * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @return Interval between deliveries as int
      */
@@ -70,7 +89,7 @@ public:
      * \brief Get amount of vaccins delivered to VaccinationCenters
      *
      * @pre
-     * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @return Amount of vaccins delivered to VaccinationCenters as int
      */
@@ -80,7 +99,7 @@ public:
      * \brief Get amount of vaccins currently of this type
      *
      * @pre
-     * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @return Amount of vaccins as int
      */
@@ -90,7 +109,9 @@ public:
      * \brief Update the amount of vaccins
      *
      * @pre
-     * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
+     * @post
      *
      */
     void updateVaccins();
@@ -99,14 +120,23 @@ public:
      * \brief subtracts transportAmount from fvaccin
      *
      * @pre
-     * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @post
      *
      */
-    void updateVaccinsTransport(int transportAmount)
+    void updateVaccinsTransport(const int transportAmount);
+
+    /**
+     * \brief Print out data of Vaccin
+     *
+     * @param stream Output stream
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     */
+    void print(std::ofstream& stream) const;
 
 };
-
 
 #endif //VACCINDISTRIBUTOR_VACCIN_H
