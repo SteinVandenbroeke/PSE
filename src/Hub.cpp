@@ -93,39 +93,39 @@ void Hub::updateVaccins() {
     }
 }
 
-int Hub::calculateTransport(const VaccinationCenter* center) const {
-
-    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-    //TODO
-    int cargo = 0;
-    int vaccinsTransport = 0;
-
-    if (ftransport == 0) {
-        return vaccinsTransport;
-    }
-
-    while ((((ftransport * cargo) + center->getVaccins()) <= (2 * center->getCapacity())) &&
-           (ftransport * cargo) <= fvaccin) {
-
-        if ((ftransport * cargo) + center->getVaccins() > center->getCapacity()) {
-
-            if (((ftransport * cargo) + center->getVaccins()) - center->getCapacity() < ftransport) {
-                vaccinsTransport = cargo * ftransport;
-                cargo ++;
-                break;
-            }
-            else {
-                break;
-            }
-        }
-        vaccinsTransport = cargo * ftransport;
-        cargo ++;
-    }
-
-    ENSURE(vaccinsTransport <= fvaccin, "Amount of vaccinsTransport is too high");
-    ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high");
-    return vaccinsTransport;
-}
+//int Hub::calculateTransport(const VaccinationCenter* center) const {
+//
+//    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+//    //TODO
+//    int cargo = 0;
+//    int vaccinsTransport = 0;
+//
+//    if (ftransport == 0) {
+//        return vaccinsTransport;
+//    }
+//
+//    while ((((ftransport * cargo) + center->getVaccins()) <= (2 * center->getCapacity())) &&
+//           (ftransport * cargo) <= fvaccin) {
+//
+//        if ((ftransport * cargo) + center->getVaccins() > center->getCapacity()) {
+//
+//            if (((ftransport * cargo) + center->getVaccins()) - center->getCapacity() < ftransport) {
+//                vaccinsTransport = cargo * ftransport;
+//                cargo ++;
+//                break;
+//            }
+//            else {
+//                break;
+//            }
+//        }
+//        vaccinsTransport = cargo * ftransport;
+//        cargo ++;
+//    }
+//
+//    ENSURE(vaccinsTransport <= fvaccin, "Amount of vaccinsTransport is too high");
+//    ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high");
+//    return vaccinsTransport;
+//}
 
 
 //void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {

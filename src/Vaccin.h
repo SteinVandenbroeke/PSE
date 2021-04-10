@@ -59,7 +59,7 @@ public:
      * \brief Get type
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @return Type as string
      */
@@ -69,7 +69,7 @@ public:
      * \brief Get amount of vaccins
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @return Amount of vaccins
      */
@@ -79,7 +79,7 @@ public:
      * \brief Get interval between deliveries
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @return Interval between deliveries as int
      */
@@ -89,7 +89,7 @@ public:
      * \brief Get amount of vaccins delivered to VaccinationCenters
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @return Amount of vaccins delivered to VaccinationCenters as int
      */
@@ -99,7 +99,7 @@ public:
      * \brief Get amount of vaccins currently of this type
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @return Amount of vaccins as int
      */
@@ -109,7 +109,7 @@ public:
      * \brief Update the amount of vaccins
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @post
      *
@@ -120,7 +120,7 @@ public:
      * \brief subtracts transportAmount from fvaccin
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @post
      *
