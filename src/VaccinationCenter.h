@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include "DesignByContract.h"
+#include "Utils.h"
 
 /**
  * \brief Class implemented for a VaccinationCenter
@@ -157,6 +158,16 @@ public:
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      */
     void print(std::ofstream &stream) const;
+
+    /**
+     *\brief Prints out data of VaccinationCenter the fancy way with a progressbar
+     *
+     * @param stream Output stream
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     */
+    void printGraphical(std::ostream &stream) const;
 };
 
 #endif //TTT_VACCINATIONCENTER_H

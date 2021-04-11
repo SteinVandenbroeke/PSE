@@ -28,6 +28,10 @@ std::string ToString(int i);
 
 int ToInt(std::string&);
 
+int ToPercent(const int x, const int max);
+
+std::string ProgressBar(const int x, const int barWidth);
+
 // Closing of the ``header guard''.
 
 #endif //TTT_UTILS_H

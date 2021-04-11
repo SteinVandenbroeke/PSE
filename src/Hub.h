@@ -208,6 +208,17 @@ public:
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      */
     void print(std::ofstream& stream) const;
+
+    /**
+     *\brief Print out data of each vaccinationCenter with progressBar
+     *
+     * @param stream Output stream
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     */
+    void printGraphical(std::ostream& stream) const;
 };
 
 #endif //TTT_HUB_H

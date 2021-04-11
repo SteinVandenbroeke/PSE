@@ -8,7 +8,6 @@
 #include "Simulation.h"
 
 Simulation::Simulation() {
-
     fhub.clear();
     _initCheck = this;
     iter = 0;
@@ -145,145 +144,28 @@ int Simulation::getIter() const {
 //}
 
 void Simulation::importXmlFile(const char *path, const char *knownTagsPad, std::ostream &errorStream) {
-
-    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
-    REQUIRE(FileExists(path), "The file that needs to be read must exist");
-    REQUIRE(!FileIsEmpty(path), "The file that needs to be read must not be empty");
-
-    std::list<std::pair<std::string, int> > knownTags; //even = naam van tag, oneven = diepte van tag --> list[0] = naam en list[0 + 1] = diepte
-//    try{
-        XMLReader reader(path);
-//        std::string knowTagsPadString = knownTagsPad;
-//        if(knowTagsPadString != "")
-//            reader.acceptedTags(errorStream, knownTagsPad);
-
-        TiXmlElement* xmlHub = reader.getElement("HUB");
-
-
-        while(xmlHub != NULL) {
-
-            Hub* newHub = new Hub();
-
-            TiXmlElement* xmlVaccin = xmlHub->FirstChildElement();
-            TiXmlElement* xmlCenter = xmlHub->NextSiblingElement("CENTRA");
-
-            while (xmlVaccin != NULL) {
-
-                    std::string type = reader.getElementValue(*xmlVaccin, "type");
-                    std::string delivery = reader.getElementValue(*xmlVaccin, "levering");
-                    std::string interval = reader.getElementValue(*xmlVaccin, "interval");
-                    std::string transport = reader.getElementValue(*xmlVaccin, "transport");
-                    std::string renewal = "NONE";
-                    std::string temp = "NONE";
-                    if (xmlVaccin->FirstChildElement("hernieuwing")) {
-                        renewal = reader.getElementValue(*xmlVaccin, "hernieuwing");
-                    }
-                    if (xmlVaccin->FirstChildElement("temperatuur")) {
-                        temp = reader.getElementValue(*xmlVaccin, "temperatuur");
-                    }
-
-                    int intDelivery = ToInt(delivery);
-                    int intInterval = ToInt(interval);
-                    int intTransport = ToInt(transport);
-                    int intRenewal = 0;
-                    int intTemp = 35; // TODO
-                    if (renewal != "NONE") {
-                        intRenewal = ToInt(renewal);
-                    }
-                    if (temp != "NONE") {
-                        intTemp = ToInt(temp);
-                    }
-
-                    Vaccin* newVaccin = new Vaccin(type, intDelivery, intInterval, intTransport,
-                                                       intRenewal, intTemp);
-                    newHub->addVaccin(newVaccin);
-
-                    std::cout << type << " " << delivery << " " << interval << " " << transport << " " << renewal << " " << temp << std::endl;
-                    std::cout << "######" << std::endl;
-                    xmlVaccin = xmlVaccin->NextSiblingElement("VACCIN");
-            }
-
-            this->fhub.push_back(newHub);
-
-            xmlHub = xmlHub->NextSiblingElement("HUB");
+    XMLReader xmlReader = XMLReader(path);
+    this->fcentra = xmlReader.readVaccinationCenters(errorStream);
+    this->fhub = xmlReader.readHubs(this->fcentra, errorStream);
+    for(std::map<std::string, VaccinationCenter*>::iterator it = this->fcentra.begin(); it != this->fcentra.end(); it++){
+        std::cout << "Centra: " << it->first << std::endl;
+    }
+    std::cout << std::endl;
+    int teller = 0;
+    for(std::vector<Hub*>::iterator it = this->fhub.begin(); it != this->fhub.end(); it++){
+        std::cout << "Hub: " << teller << std::endl;
+        (*it)->printGraphical(std::cout);
+        std::map<std::string, VaccinationCenter*> test = (*it)->getCentra();
+        for(std::map<std::string, VaccinationCenter*>::iterator it1 = test.begin(); it1 != test.end(); it1++){
+            std::cout << "\t " << it1->first << std::endl;
         }
-
-
-//        xmlCentrum = xmlCentrum->NextSiblingElement("VACCINATIECENTRUM");
-
-//        reader.getElementValue(*xmlHub, "type");
-//
-//        reader.getElement("VACCIN");
-
-
-//
-//        // Insert all vaccination centers into 'centra'
-//        TiXmlElement* xmlCentrum = reader.getElement("VACCINATIECENTRUM");
-//        while(xmlCentrum != NULL){
-//            try{
-//                std::string name = reader.getElementValue(*xmlCentrum,"naam");
-//                std::string address = reader.getElementValue(*xmlCentrum,"adres");
-//                std::string inwonersString = reader.getElementValue(*xmlCentrum,"inwoners");
-//                std::string capacityString = reader.getElementValue(*xmlCentrum,"capaciteit");
-//                int population = ToInt(inwonersString);
-//                int capacity = ToInt(capacityString);
-//
-//                VaccinationCenter* center = new VaccinationCenter(name, address, population, capacity);
-//
-//                this->fcentra[name] = center;
-//            }
-//            catch (Exception ex) {
-//                errorStream << ex.value() << std::endl;
-//            }
-//            xmlCentrum = xmlCentrum->NextSiblingElement("VACCINATIECENTRUM");
-//        }
-//        // Load hub in
-//        fhub = NULL;
-//        try{
-//            TiXmlElement* xmlHub = reader.getElement("HUB");
-//            std::string deliveryString = reader.getElementValue(*xmlHub, "levering");
-//            std::string intervalString = reader.getElementValue(*xmlHub, "interval");
-//            std::string transportString = reader.getElementValue(*xmlHub, "transport");
-////            int delivery = ToInt(deliveryString);
-////            int interval = ToInt(intervalString);
-////            int transport = ToInt(transportString);
-//
-//            // Create new hub
-//            fhub = new Hub();
-//
-//            TiXmlElement* xmlCentra = xmlHub->FirstChildElement("CENTRA")->FirstChildElement("centrum");
-//            while(xmlCentra != NULL){
-//                std::string name;
-//                if(xmlCentra->GetText() != NULL){
-//                    name = xmlCentra->GetText();
-//                    if(this->fcentra.find(name) != this->fcentra.end()){
-//                        fhub->addCenter(name, this->fcentra[name]);
-//                    }
-//                    else{
-//                        errorStream << "Hub contains an non existing or wrong vaccination center: '" << name << "'" << std::endl;
-//                    }
-//                }
-//                else{
-//                    errorStream << "Empty centra name!" << std::endl;
-//                }
-//                xmlCentra = xmlCentra->NextSiblingElement("centrum");
-//            }
-//        }
-//        catch (Exception ex) {
-//            std::cerr << ex.value() << std::endl;
-//        }
-//
-//        if(this->fhub == NULL) {
-//            throw Exception("Hub cannot be made, crucial information is missing");
-//        }
-
-//        ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-//        ENSURE(fhub->getVaccin() == fhub->getDelivery()
-//        , "Hub must have equal amount of vaccins as delivery on day zero");
-//    }
-//    catch (Exception ex) {
-//        throw ex;
-//    }
+        std::cout << std::endl << "\t --------" << std::endl;
+        std::map<std::string, Vaccin *> vaccins = (*it)->getVaccins();
+        for( std::map<std::string, Vaccin *>::iterator it2 = vaccins.begin(); it2 != vaccins.end(); it2++){
+            std::cout << "\t " << it2->first << std::endl;
+        }
+        teller++;
+    }
 }
 
 const std::vector<Hub *> &Simulation::getHub() const {

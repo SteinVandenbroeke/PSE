@@ -25,7 +25,7 @@
 class Simulation {
 
 private:
-//    std::map<std::string, VaccinationCenter*> fcentra; ///< vector with pointers to VaccinationCenter
+    std::map<std::string, VaccinationCenter*> fcentra; ///< vector with pointers to VaccinationCenter
     std::vector<Hub*> fhub; ///< Vector containing pointers to Hub object
 //    Hub* fhub; ///< Pointer to Hub object
     int iter; ///< Iterator that holds the amount of iterations in the Simulation

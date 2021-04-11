@@ -92,9 +92,22 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 }
 
 
+
 void VaccinationCenter::print(std::ofstream &stream) const {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     stream << this->fname << ": " << this->fvaccinated << " gevaccineerd, nog ";
     stream << (this->fpopulation - this->fvaccinated) << " inwoners niet gevaccineerd\n";
+}
+
+void VaccinationCenter::printGraphical(std::ostream &stream) const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
+    int perVaccin = ToPercent(fvaccins, fcapacity);
+    int perVaccinated = ToPercent(fvaccinated, fpopulation);
+
+    stream << this->fname << ":" << "\n";
+    stream << "\t" << "- " << "vaccins       " << ProgressBar(perVaccin, 20)   << " "<< perVaccin << "%" <<"\n";
+    stream << "\t" << "- " << "geavaccineerd " << ProgressBar(perVaccinated, 20) << " " <<  perVaccinated << "%" << "\n";
 }

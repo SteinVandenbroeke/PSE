@@ -12,7 +12,7 @@
 int main() {
     Simulation s;
     try{
-        s.importXmlFile("simulate_spec_20.xml", "knownTags_spec_20.xml");
+        s.importXmlFile("simulatiecentra.xml", "knownTags_spec_20.xml" ,std::cerr);
 
 //        s.automaticSimulation(4, std::cout);
 //        s.exportFile("test.txt");

@@ -15,6 +15,8 @@
 #include <iostream>
 #include <algorithm>
 #include "Utils.h"
+#include "Simulation.h"
+#include "Hub.h"
 
 /**
  * \brief Class implemented for a XMLReader object, used to read data from .xml files
@@ -24,7 +26,6 @@ class XMLReader {
     TiXmlDocument* doc; // Pointer to TiXmlDocument
     XMLReader *_initCheck;
     std::list<std::pair<std::string, int> >* allowedTags;
-
     /**
      * \brief check's if the node with name 'name' is in the allowedTags list
      *
@@ -75,7 +76,7 @@ public:
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      *
      */
-    XMLReader(const char* filePad);
+    XMLReader(const char *filePad) ;
 
     /**
      * \brief Destroy XMLReader object
@@ -129,6 +130,16 @@ public:
      * @return true: all tags are allowed, false: not all the tags are allowed
      */
     bool acceptedTags(std::ostream &errorStream, const char *knownTagsDocument);
+
+    /*
+     *
+     */
+    std::vector<Hub*> readHubs(std::map<std::string, VaccinationCenter *> &vaccinationCentras,  std::ostream &errorStream);
+
+    /*
+     *
+     */
+    std::map<std::string, VaccinationCenter*> readVaccinationCenters( std::ostream &errorStream);
 };
 
 #endif //TTT_XMLREADER_H

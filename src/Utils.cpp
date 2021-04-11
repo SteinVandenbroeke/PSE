@@ -90,3 +90,24 @@ int ToInt(std::string& s) {
     }
     return atoi(s.c_str());
 }
+
+int ToPercent(const int x, const int max) {
+    return (x / max) * 100;
+}
+
+std::string ProgressBar(const int x, const int barWidth) {
+    std::string progressBar = "[";
+
+    double progress = static_cast<double>(x) / 100;
+    int progressAmount = static_cast<int>(progress * barWidth);
+
+    for (int i = 0; i != barWidth; i++) {
+        if (i < progressAmount) {
+            progressBar.append("=");
+            continue;
+        }
+        progressBar.append(" ");
+    }
+    progressBar.append("]");
+    return progressBar;
+}
