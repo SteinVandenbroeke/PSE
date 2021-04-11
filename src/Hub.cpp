@@ -93,71 +93,80 @@ void Hub::updateVaccins() {
     }
 }
 
-//int Hub::calculateTransport(const VaccinationCenter* center) const {
-//
-//    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-//    //TODO
-//    int cargo = 0;
-//    int vaccinsTransport = 0;
-//
-//    if (ftransport == 0) {
-//        return vaccinsTransport;
-//    }
-//
-//    while ((((ftransport * cargo) + center->getVaccins()) <= (2 * center->getCapacity())) &&
-//           (ftransport * cargo) <= fvaccin) {
-//
-//        if ((ftransport * cargo) + center->getVaccins() > center->getCapacity()) {
-//
-//            if (((ftransport * cargo) + center->getVaccins()) - center->getCapacity() < ftransport) {
-//                vaccinsTransport = cargo * ftransport;
-//                cargo ++;
-//                break;
-//            }
-//            else {
-//                break;
-//            }
-//        }
-//        vaccinsTransport = cargo * ftransport;
-//        cargo ++;
-//    }
-//
-//    ENSURE(vaccinsTransport <= fvaccin, "Amount of vaccinsTransport is too high");
-//    ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high");
-//    return vaccinsTransport;
-//}
+int Hub::calculateTransport(const VaccinationCenter* center, const Vaccin * vaccin) const {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+
+    int cargo = 0;
+    int vaccinsTransport = 0;
+
+    if (vaccin->getTransport() == 0) {
+        return vaccinsTransport;
+    }
+
+    while ((((vaccin->getTransport() * cargo) + center->getVaccins()) <= (2 * center->getCapacity())) &&
+           (vaccin->getTransport() * cargo) <= vaccin->getVaccin()) {
+
+        if ((vaccin->getTransport() * cargo) + center->getVaccins() > center->getCapacity()) {
+
+            if (((vaccin->getTransport() * cargo) + center->getVaccins()) - center->getCapacity() < vaccin->getTransport()) {
+                vaccinsTransport = cargo * vaccin->getTransport();
+                cargo ++;
+                break;
+            }
+            else {
+                break;
+            }
+        }
+        vaccinsTransport = cargo * vaccin->getTransport();
+        cargo ++;
+    }
+
+    ENSURE(vaccinsTransport <= vaccin->getVaccin(), "Amount of vaccinsTransport is too high");
+    ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high");
+    return vaccinsTransport;
+}
 
 
-//void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
-//
-//    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-//    REQUIRE(fcentra.find(centerName) != fcentra.end(), "Given centerName must exist");
-//    VaccinationCenter* center = fcentra[centerName];
-//    REQUIRE(center->getName() == centerName, "Name of found center and given center name must be equal");
-//
-//    int vaccinsHub = getAmountVaccin();
-//    int vaccinsCenter = center->getVaccins();
-//
-//    // Calculate cargo
-//    int vaccinsTransport = calculateTransport(center);
-//    int cargo = vaccinsTransport / getTransport();
-//
-//    // Display nothing
-//    if (cargo == 0) {
-//        return;
-//    }
-//
-//    // Update amount of vaccins in Hub and Center
-////    fvaccin -= vaccinsTransport;
+void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    REQUIRE(this->getCentra().find(centerName) != this->getCentra().end(), "Given centerName must exist");
+    VaccinationCenter* center = fcentra[centerName];
+    REQUIRE(center->getName() == centerName, "Name of found center and given center name must be equal");
+
+    int vaccinsHub = getAmountVaccin();
+    int vaccinsCenter = center->getVaccins();
+
+    // Calculate cargo
+    int vaccinsTransport = 0;
+
+    for (std::map<std::string, Vaccin*>::const_iterator it = this->fvaccins.begin(); it != this->fvaccins.end(); it++) {
+
+        vaccinsTransport += it->second->calculateTransport(center);
+        center->addVaccins(vaccinsTransport);
+        break;
+    }
+    int cargo = vaccinsTransport / getTransport();
+
+    // Display nothing
+    if (cargo == 0) {
+        return;
+    }
+
+    // Update amount of vaccins in Hub and Center
+//    fvaccin -= vaccinsTransport;
 //    center->addVaccins(vaccinsTransport);
-//
-//    // Display information of transport
-//    stream << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins) getransporteerd naar ";
-//    stream << center->getName() << ".\n";
-//
-//    ENSURE(vaccinsHub != getAmountVaccin(), "Amount of vaccins in Hub must be updated");
-//    ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated");
-//}
+
+    // Display information of transport
+    stream << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins) getransporteerd naar ";
+    stream << center->getName() << ".\n";
+
+    std::cout << "lol" << std::endl;
+
+    ENSURE(vaccinsHub != this->getAmountVaccin(), "Amount of vaccins in Hub must be updated");
+    ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated");
+}
 
 
 void Hub::addVaccin(Vaccin* vaccin) {

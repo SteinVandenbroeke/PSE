@@ -75,6 +75,40 @@ const std::string &Vaccin::getType() const {
     return ftype;
 }
 
+int Vaccin::calculateTransport(const VaccinationCenter *center) const {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+
+    int cargo = 0;
+    int vaccinsTransport = 0;
+
+    if (this->ftransport == 0) {
+        return vaccinsTransport;
+    }
+
+    while ((((this->ftransport * cargo) + center->getVaccins()) <= (2 * center->getCapacity())) &&
+           (this->ftransport * cargo) <= this->getVaccin()) {
+
+        if ((this->ftransport * cargo) + center->getVaccins() > center->getCapacity()) {
+
+            if (((this->ftransport * cargo) + center->getVaccins()) - center->getCapacity() < this->ftransport) {
+                vaccinsTransport = cargo * this->ftransport;
+                cargo ++;
+                break;
+            }
+            else {
+                break;
+            }
+        }
+        vaccinsTransport = cargo * this->ftransport;
+        cargo ++;
+    }
+
+    ENSURE(vaccinsTransport <= this->fvaccin, "Amount of vaccins to transport is too high");
+    ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccins to transport is too high");
+    return vaccinsTransport;
+}
+
 void Vaccin::print(std::ofstream &stream) const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");

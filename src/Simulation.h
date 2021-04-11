@@ -27,7 +27,6 @@ class Simulation {
 private:
     std::map<std::string, VaccinationCenter*> fcentra; ///< vector with pointers to VaccinationCenter
     std::vector<Hub*> fhub; ///< Vector containing pointers to Hub object
-//    Hub* fhub; ///< Pointer to Hub object
     int iter; ///< Iterator that holds the amount of iterations in the Simulation
     Simulation *_initCheck;
 
@@ -100,10 +99,19 @@ public:
      *
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
-     * ENSURE(fhub->getFvaccin() == fhub->getdelivery(), "Hub must have equal amount of vaccins as delivery on day zero")
-     *
+     * ENSURE(checkVaccins(),"Hub must have equal amount of vaccins as delivery on day zero")
      */
     void importXmlFile(const char* path,const char *knownTagsPad="", std::ostream &errorStream = std::cerr);
+
+    /**
+     * \brief Check if all Hubs have an equal amount of vaccins to their respective amount of deliveries of each Vaccin
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * return True if the above statement is correct
+     */
+    bool checkVaccins() const;
 
     /**
      * \brief Check whether there is a Hub in the Simulation
@@ -210,6 +218,9 @@ public:
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
     */
     void automaticSimulation(int days, std::ostream &stream);
+
+    // Als er meer dan 1 vaccin is in de verschillende hubs
+    void simulateType(int days, std::ostream &stream);
 
     /**
      * \brief Increase iterator value

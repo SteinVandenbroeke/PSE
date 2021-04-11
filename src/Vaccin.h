@@ -11,6 +11,7 @@
 #include "DesignByContract.h"
 #include <string>
 #include <fstream>
+#include "VaccinationCenter.h"
 
 class Vaccin {
 
@@ -119,6 +120,8 @@ public:
     /**
      * \brief subtracts transportAmount from fvaccin
      *
+     * @param transportAmount Amount of Vaccins that will be transported to a VaccinationCenter
+     *
      * @pre
      * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
@@ -126,6 +129,22 @@ public:
      *
      */
     void updateVaccinsTransport(const int transportAmount);
+
+    /**
+     * \brief Calculate how many cargo's there will be transported to a Center
+     *
+     * @param center Pointer to the VaccinationCenter which transport shall be calculated
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
+     * @post
+     * ENSURE(vaccinsTransport <= this->fvaccin, "Amount of vaccinsTransport is too high")
+     * ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high")
+     *
+     * @return Amount of cargo that will be transported as int
+     */
+     int calculateTransport(const VaccinationCenter * center) const;
 
     /**
      * \brief Print out data of Vaccin
@@ -136,7 +155,6 @@ public:
      * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      */
     void print(std::ofstream& stream) const;
-
 };
 
 #endif //VACCINDISTRIBUTOR_VACCIN_H

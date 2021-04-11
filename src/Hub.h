@@ -164,28 +164,31 @@ public:
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
-     *
      */
     void updateVaccins();
 
     /**
      * \brief Calculate how many cargo's there will be transported to a Center
      *
+     * @param center Pointer to the VaccinationCenter which transport shall be calculated
+     * @param vaccin Pointer to Vaccin
+     *
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
      *
      * @post
-     * ENSURE(vaccinsTransport <= fvaccin, "Amount of vaccinsTransport is too high");
-     * ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high");
+     * ENSURE(vaccinsTransport <= vaccin->getVaccin(), "Amount of vaccinsTransport is too high")
+     * ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high")
      *
      * @return Amount of cargo that will be transported as int
      */
-    int calculateTransport(const VaccinationCenter* center) const;
+    int calculateTransport(const VaccinationCenter* center, const Vaccin * vaccin) const;
 
     /**
      * \brief Transport vaccin from Hub to VaccinationCenter and display information if needed
      *
      * @param centerName Name of the VaccinationCenter where will be transported to
+     * @param stream Output stream
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
