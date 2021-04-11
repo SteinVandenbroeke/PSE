@@ -159,19 +159,6 @@ void Hub::updateVaccins() {
 //    ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated");
 //}
 
-void Hub::print(std::ofstream &stream) const {
-
-    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-
-    stream << "Hub (" << getAmountVaccin() << " vaccins)\n";
-
-    // Traverse VaccinationCentra
-    for(std::map<std::string,VaccinationCenter*>::const_iterator it = this->fcentra.begin(); it != this->fcentra.end(); it++){
-        REQUIRE(it->second->properlyInitialized(), "VaccinationCenter must be properly initialized");
-        stream << " -> " << it->first << " (" << (it->second)->getVaccins() << " vaccins)\n";
-    }
-    stream << "\n";
-}
 
 void Hub::addVaccin(Vaccin* vaccin) {
 
@@ -191,4 +178,27 @@ std::map<std::string, Vaccin *> &Hub::getVaccins() {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return fvaccins;
+}
+
+void Hub::print(std::ofstream &stream) const {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+
+    stream << "Hub (" << getAmountVaccin() << " vaccins)\n";
+
+    // Traverse VaccinationCentra
+    for(std::map<std::string,VaccinationCenter*>::const_iterator it = this->fcentra.begin(); it != this->fcentra.end(); it++){
+        REQUIRE(it->second->properlyInitialized(), "VaccinationCenter must be properly initialized");
+        stream << " -> " << it->first << " (" << (it->second)->getVaccins() << " vaccins)\n";
+    }
+    stream << "\n";
+}
+
+void Hub::printGraphical(std::ostream &stream) const {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+
+    for (std::map<std::string, VaccinationCenter*>::const_iterator it = this->fcentra.begin(); it != this->fcentra.end(); it++) {
+        it->second->printGraphical(stream);
+    }
 }
