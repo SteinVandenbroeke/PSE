@@ -13,6 +13,8 @@
 #include <fstream>
 #include "VaccinationCenter.h"
 
+class VaccinationCenter;
+
 class Vaccin {
 
 private:
@@ -85,6 +87,26 @@ public:
      * @return Interval between deliveries as int
      */
     int getInterval() const;
+
+    /**
+     * \brief Get renewal between Vaccin shots
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
+     * @return Renewal as int
+     */
+    int getRenewal() const;
+
+    /**
+     * \brief Get temperature of Vaccin to be stored
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
+     * @return Temperature as int
+     */
+    int getTemperature() const;
 
     /**
      * \brief Get amount of vaccins delivered to VaccinationCenters

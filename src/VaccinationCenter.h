@@ -9,15 +9,29 @@
 #define TTT_VACCINATIONCENTER_H
 
 #include <string>
+#include <map>
 #include <iostream>
 #include <fstream>
 #include "DesignByContract.h"
 #include "Utils.h"
 
+class Vaccin;
+
 /**
  * \brief Class implemented for a VaccinationCenter
  */
 class VaccinationCenter {
+
+struct vaccinType {
+
+    vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount);
+
+public:
+    std::string fvaccinType;
+    int fvaccinTemperature;
+    int fvaccinRenewal;
+    int fvaccinAmount;
+};
 
 private:
     std::string fname; ///< Name of the VaccinationCenter
@@ -26,6 +40,7 @@ private:
     int fcapacity; ///< Amount of vaccins that can be stored
     int fvaccins; ///< Amount of vaccins currently in the VaccinationCenter
     int fvaccinated; ///< Amount of people already vaccinated
+    std::map<const std::string, vaccinType> fvaccinsType;
     VaccinationCenter *_initCheck;
 
 public:
@@ -119,6 +134,9 @@ public:
     /**
      * \brief Add amount of vaccins to Center
      *
+     * @param amount Amount of vaccins to be added
+     * @param vaccin Pointer to Vaccin Object
+     *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
@@ -126,7 +144,7 @@ public:
      * ENSURE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity of Center")
      *
      */
-    void addVaccins(int amount);
+    void addVaccins(const int amount, const Vaccin* vaccin);
 
     /**
      * \brief Amount of peaple that can be vaccineded/day
@@ -168,6 +186,8 @@ public:
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      */
     void printGraphical(std::ostream &stream) const;
+
+    void printVaccins(std::ostream &stream) const;
 };
 
 #endif //TTT_VACCINATIONCENTER_H

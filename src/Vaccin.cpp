@@ -122,3 +122,15 @@ void Vaccin::print(std::ofstream &stream) const {
     stream << "Temperature: " << ftemperature << "\n";
 }
 
+int Vaccin::getRenewal() const {
+
+    REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+    return frenewal;
+}
+
+int Vaccin::getTemperature() const {
+
+    REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+    return ftemperature;
+}
+

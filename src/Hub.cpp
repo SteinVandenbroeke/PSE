@@ -138,31 +138,32 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
     int vaccinsHub = getAmountVaccin();
     int vaccinsCenter = center->getVaccins();
 
-    // Calculate cargo
     int vaccinsTransport = 0;
+    int cargo = 0;
 
-    for (std::map<std::string, Vaccin*>::const_iterator it = this->fvaccins.begin(); it != this->fvaccins.end(); it++) {
+    if (this->fvaccins.size() == 1) {
 
-        vaccinsTransport += it->second->calculateTransport(center);
-        center->addVaccins(vaccinsTransport);
-        break;
+        Vaccin* vaccin = NULL;
+        vaccin = this->fvaccins.begin()->second;
+        vaccinsTransport = vaccin->calculateTransport(center);
+        cargo = vaccinsTransport / getTransport();
+
+        // Subtract transported amount of Vaccin and add to Center
+        vaccin->updateVaccinsTransport(vaccinsTransport);
+        center->addVaccins(vaccinsTransport, vaccin);
     }
-    int cargo = vaccinsTransport / getTransport();
+    else {
+        std::cout << "more than 1 vaccin in hub" << std::endl;
+    }
 
     // Display nothing
     if (cargo == 0) {
         return;
     }
 
-    // Update amount of vaccins in Hub and Center
-//    fvaccin -= vaccinsTransport;
-//    center->addVaccins(vaccinsTransport);
-
     // Display information of transport
     stream << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins) getransporteerd naar ";
     stream << center->getName() << ".\n";
-
-    std::cout << "lol" << std::endl;
 
     ENSURE(vaccinsHub != this->getAmountVaccin(), "Amount of vaccins in Hub must be updated");
     ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated");

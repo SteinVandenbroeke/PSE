@@ -1,40 +1,19 @@
-<HUB>
-    <HUB>
-        <VACCIN>
-            <type>Pfizer</type>
-            <levering>93000</levering>
-            <interval>6</interval>
-            <transport>2000</transport>
-        </VACCIN>
-        <VACCIN>
-            <type>Moderna</type>
-            <levering>46000</levering>
-            <interval>13</interval>
-            <transport>1000</transport>
-        </VACCIN>
-        <VACCIN>
-            <type>AstraZeneca</type>
-            <levering>67000</levering>
-            <interval>4</interval>
-            <transport>1500</transport>
-        </VACCIN>
-        <CENTRA>
-            ...
-        </CENTRA>
-    </HUB>
 
+<HUB>
+    <levering>93000</levering>
+    <interval>6</interval>
+    <transport>2000</transport>
     <CENTRA>
         <centrum>Park Spoor Oost</centrum>
         <centrum>AED Studios</centrum>
         <centrum>De Zoerla</centrum>
         <centrum>Flanders Expo</centrum>
     </CENTRA>
-    <test></test>
 </HUB>
 <VACCINATIECENTRUM>
 <naam>Park Spoor Oost</naam>
 <adres>Noordersingel 40, Antwerpen</adres>
-<inwoners>10000</inwoners>
+<inwoners>540173</inwoners>
 <capaciteit>7500</capaciteit>
 </VACCINATIECENTRUM>
 <VACCINATIECENTRUM>
@@ -51,7 +30,5 @@
 </VACCINATIECENTRUM>
 <VACCINATIECENTRUM>
 <naam>Flanders Expo</naam>
-<adres>Maaltekouter 1, Sint-Denijs-Westrem</adres>
-<inwoners>257029</inwoners>
-<capaciteit>3000</capaciteit>
+<adres>Maaltekouter 1, Sint-Denijs-Westrem</adres> <inwoners>257029</inwoners> <capaciteit>3000</capaciteit>
 </VACCINATIECENTRUM>

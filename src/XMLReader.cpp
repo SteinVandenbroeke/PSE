@@ -115,24 +115,45 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
         Hub* newHub = new Hub();
 
         TiXmlElement* xmlVaccin = xmlHub->FirstChildElement("VACCIN");
-        while (xmlVaccin != NULL) {
-            std::string type = getElementValue(*xmlVaccin, "type");
-            std::string delivery = getElementValue(*xmlVaccin, "levering");
-            std::string interval = getElementValue(*xmlVaccin, "interval");
-            std::string transport = getElementValue(*xmlVaccin, "transport");
-            std::string renewal = getElementValue(*xmlVaccin, "hernieuwing");
-            std::string temp = getElementValue(*xmlVaccin, "temperatuur");
+
+        // TODO
+        // Hub heeft maar een vaccin en er is geen vaccin tag
+        if (xmlVaccin == NULL) {
+            std::string type = "HUB_BASE_VACCIN";
+            std::string delivery = getElementValue(*xmlHub, "levering");
+            std::string interval = getElementValue(*xmlHub, "interval");
+            std::string transport = getElementValue(*xmlHub, "transport");
 
             int intDelivery = ToInt(delivery);
             int intInterval = ToInt(interval);
             int intTransport = ToInt(transport);
-            int intRenewal = ToInt(renewal);
-            int intTemp = ToInt(temp);
+            int intRenewal = 0;
+            int intTemp = 420;
 
             Vaccin* newVaccin = new Vaccin(type, intDelivery, intInterval, intTransport,
-                                           intRenewal, intTemp);
+                                                intRenewal, intTemp);
             newHub->addVaccin(newVaccin);
-            xmlVaccin = xmlVaccin->NextSiblingElement("VACCIN");
+        }
+        else {
+            while (xmlVaccin != NULL) {
+                std::string type = getElementValue(*xmlVaccin, "type");
+                std::string delivery = getElementValue(*xmlVaccin, "levering");
+                std::string interval = getElementValue(*xmlVaccin, "interval");
+                std::string transport = getElementValue(*xmlVaccin, "transport");
+                std::string renewal = getElementValue(*xmlVaccin, "hernieuwing");
+                std::string temp = getElementValue(*xmlVaccin, "temperatuur");
+
+                int intDelivery = ToInt(delivery);
+                int intInterval = ToInt(interval);
+                int intTransport = ToInt(transport);
+                int intRenewal = ToInt(renewal);
+                int intTemp = ToInt(temp);
+
+                Vaccin* newVaccin = new Vaccin(type, intDelivery, intInterval, intTransport,
+                                                    intRenewal, intTemp);
+                newHub->addVaccin(newVaccin);
+                xmlVaccin = xmlVaccin->NextSiblingElement("VACCIN");
+            }
         }
 
         TiXmlElement* xmlCentra = xmlHub->FirstChildElement("CENTRA");

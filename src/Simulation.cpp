@@ -186,73 +186,80 @@ void Simulation::simulateTransport(std::ostream &stream) {
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 
-    // Traverse VaccinationCentra
-    for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
+    for (std::vector<Hub*>::iterator ite = this->fhub.begin(); ite != this->fhub.end(); ite++) {
 
-        //get name of first center connected to hub
-        for (std::vector<Hub*>::iterator ite = this->fhub.begin(); ite != this->fhub.end(); ite++) {
+        for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
 
             if ((*ite)->getCentra().find(it->first) == (*ite)->getCentra().end()) {
                 continue;
             }
-            // Transport Vaccins from Hub to Center
+
             std::string centerName = (*ite)->getCentra().find(it->first)->first;
             (*ite)->transportVaccin(centerName, stream);
         }
     }
+
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
 }
 
-//void Simulation::simulateVaccination(std::ostream &stream) {
-////
-////    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
-////    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
-////
-////    // Traverse VaccinationCentra
-////    for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
-////
-////        // Vaccinate in center
-////        it->second->vaccinateCenter(stream);
-////    }
-////
-////    ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-////}
-////
-////void Simulation::increaseIterator() {
-////
-////    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
-////    iter ++;
-////}
+void Simulation::simulateVaccination(std::ostream &stream) {
 
-//void Simulation::automaticSimulation(const int days, std::ostream &stream) {
-//
-//    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
-//    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
-//
-//    if (iter == 0) {
-//        REQUIRE(fhub->getDelivery() == fhub->getVaccin()
-//        , "Hub must have equal amount of vaccins as delivery on day zero");
-//    }
-//
-//    for(std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end();it++){
-//        REQUIRE(it->second->getVaccins() == 0 && it->second->getVaccinated() == 0,
-//                "Amount of vaccins or amount of vaccinated in a center must be 0 at begin of simulation");
-//    }
-//
-//    while (iter < days) {
-//
-//        // Interval between deliveries is over
-//        if (iter % fhub->getInterval() == 0 && iter != 0) {
-//            fhub->updateVaccins();
-//        }
-//
-//        simulateTransport(stream);
-//        simulateVaccination(stream);
-//        exportFile("Day-" + ToString(iter));
-//        increaseIterator();
-//    }
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 
-//    //day, month, year --> time_t
+    // Traverse VaccinationCentra
+    for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
+
+        // Vaccinate in center
+        it->second->vaccinateCenter(stream);
+    }
+
+    ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+}
+
+void Simulation::increaseIterator() {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    iter ++;
+}
+
+void Simulation::automaticSimulation(const int days, std::ostream &stream) {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
+
+    if (iter == 0) {
+        ENSURE(checkVaccins(),"Hub must have equal amount of vaccins as delivery on day zero");
+    }
+
+    for(std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end();it++){
+        REQUIRE(it->second->getVaccins() == 0 && it->second->getVaccinated() == 0,
+                "Amount of vaccins or amount of vaccinated in a center must be 0 at begin of simulation");
+    }
+
+    while (iter < days) {
+
+        for (std::vector<Hub*>::iterator it = fhub.begin(); it != fhub.end(); it++) {
+
+            Hub* currentHub = (*it);
+
+            for (std::map<std::string, Vaccin*>::iterator ite = currentHub->getVaccins().begin();
+                    ite != currentHub->getVaccins().end(); ite++) {
+
+                // Interval between deliveries is over
+                if (iter % ite->second->getInterval() == 0 && iter != 0) {
+                    ite->second->updateVaccins();
+                }
+            }
+        }
+
+        simulateTransport(stream);
+        simulateVaccination(stream);
+        exportFile("Day-" + ToString(iter));
+        increaseIterator();
+    }
+//
+//    day, month, year --> time_t
 //    struct tm * timeinfo;
 //    time_t rawtime;
 //    time(&rawtime);
@@ -277,5 +284,5 @@ void Simulation::simulateTransport(std::ostream &stream) {
 //    }
 //
 //
-//    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
-//}
+    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
+}

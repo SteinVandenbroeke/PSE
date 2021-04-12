@@ -213,8 +213,8 @@ TEST_F(VaccinSimulationTests, intenseInterval) {
 
     unsigned long int x = 4;
     EXPECT_EQ(x, s.getFcentra().size());
-    EXPECT_TRUE(NULL != s.getFhub());
-    EXPECT_EQ(93000, s.getFhub()->getVaccin());
+    EXPECT_TRUE(!s.getHub().empty());
+    EXPECT_EQ(93000, (*s.getHub().begin())->getVaccins());
     EXPECT_EQ("Park Spoor Oost", s.getFcentra().find("Park Spoor Oost")->first);
     EXPECT_EQ("AED Studios", s.getFcentra().find("AED Studios")->first);
     EXPECT_EQ("De Zoerla", s.getFcentra().find("De Zoerla")->first);

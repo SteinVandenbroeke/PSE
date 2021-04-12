@@ -6,6 +6,7 @@
  */
 
 #include "VaccinationCenter.h"
+#include "Vaccin.h"
 
 VaccinationCenter::VaccinationCenter(const std::string &fname, const std::string &faddress, int fpopulation
                                      ,int fcapacity) :
@@ -18,6 +19,7 @@ VaccinationCenter::VaccinationCenter(const std::string &fname, const std::string
     _initCheck = this;
     fvaccins = 0;
     fvaccinated = 0;
+    fvaccinsType.clear();
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
 }
 
@@ -62,10 +64,20 @@ int VaccinationCenter::getVaccinated() const {
     return this->fvaccinated;
 }
 
-void VaccinationCenter::addVaccins(int amount) {
+void VaccinationCenter::addVaccins(const int amount, const Vaccin* vaccin) {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     fvaccins += amount;
+
+    if (this->fvaccinsType.find(vaccin->getType()) == this->fvaccinsType.end()) {
+
+        VaccinationCenter::vaccinType newVaccin(vaccin->getType(), vaccin->getTemperature(),
+                                                vaccin->getRenewal(), 0);
+
+        this->fvaccinsType.insert(std::make_pair(newVaccin.fvaccinType, newVaccin));
+    }
+    this->fvaccinsType.find(vaccin->getType())->second.fvaccinAmount += amount;
+
     ENSURE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity of Center");
 }
 
@@ -104,6 +116,7 @@ void VaccinationCenter::printGraphical(std::ostream &stream) const {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
+    // TODO - Geeft 200 % # vaccins wanneer = 2 * capacity?
     int perVaccin = ToPercent(fvaccins, fcapacity);
     int perVaccinated = ToPercent(fvaccinated, fpopulation);
 
@@ -111,3 +124,25 @@ void VaccinationCenter::printGraphical(std::ostream &stream) const {
     stream << "\t" << "- " << "vaccins       " << ProgressBar(perVaccin, 20)   << " "<< perVaccin << "%" <<"\n";
     stream << "\t" << "- " << "geavaccineerd " << ProgressBar(perVaccinated, 20) << " " <<  perVaccinated << "%" << "\n";
 }
+
+void VaccinationCenter::printVaccins(std::ostream &stream) const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
+    int perVaccin = ToPercent(fvaccins, fcapacity);
+    int perVaccinated = ToPercent(fvaccinated, fpopulation);
+
+    stream << this->fname << ":" << "\n";
+    stream << "\t" << "- " << "vaccins       " << ProgressBar(perVaccin, 20)   << " "<< perVaccin << "%" <<"\n";
+    stream << "\t" << "- " << "geavaccineerd " << ProgressBar(perVaccinated, 20) << " " <<  perVaccinated << "%" << "\n";
+
+    for (std::map<const std::string, VaccinationCenter::vaccinType>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
+
+        stream << it->first << ":" << "\n";
+        stream << "\t" << "- " << "vaccins       " << it->second.fvaccinAmount << "\n";
+    }
+}
+
+
+VaccinationCenter::vaccinType::vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount)
+        : fvaccinType(vaccinType), fvaccinTemperature(vaccinTemperature), fvaccinRenewal(vaccinRenewal), fvaccinAmount(vaccinAmount) {}

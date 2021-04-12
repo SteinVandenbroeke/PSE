@@ -44,7 +44,7 @@ TEST_F(VaccinDistributorDomainTests, defaultConstructorSimulation) {
     EXPECT_TRUE(simulation.properlyInitialized());
     EXPECT_FALSE(!simulation.properlyInitialized());
     EXPECT_EQ(0, simulation.getIter());
-    EXPECT_EQ(NULL, simulation.getFhub());
+    EXPECT_EQ(NULL, simulation.getHub());
     EXPECT_TRUE(simulation.getFcentra().empty());
 }
 

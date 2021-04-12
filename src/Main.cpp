@@ -12,12 +12,13 @@
 int main() {
     Simulation s;
     try{
-        s.importXmlFile("simulate_spec_20.xml", "knownTags_spec_20.xml" ,std::cerr);
+        s.importXmlFile("simulate_spec_10.xml", "knownTags_spec_10.xml" ,std::cerr);
+        std::cout << "Done importing" << std::endl;
 
         s.simulateTransport(std::cout);
 
-//        s.automaticSimulation(4, std::cout);
-//        s.exportFile("test.txt");
+        s.getHub()[0]->printGraphical(std::cout);
+
 
     }
     catch (Exception ex) {
