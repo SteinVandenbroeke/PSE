@@ -24,13 +24,25 @@ class VaccinationCenter {
 
 struct vaccinType {
 
+public:
     vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount);
+
+    bool getRenewal() const {
+
+        return this->fvaccinRenewal == 0;
+    }
+    
+    bool checkRenewal() const {
+
+        return ftracker == fvaccinRenewal;
+    }
 
 public:
     std::string fvaccinType;
     int fvaccinTemperature;
     int fvaccinRenewal;
     int fvaccinAmount;
+    int ftracker;
 };
 
 private:
@@ -155,8 +167,12 @@ public:
      */
     int calculateVaccinationAmount();
 
+    int calculateVaccinationAmount(const VaccinationCenter::vaccinType & vaccin) const;
+
     /**
      * \brief Vacinate center, update fvaccins and fvaccins
+     *
+     * @param stream Output stream
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")

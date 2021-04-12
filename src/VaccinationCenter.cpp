@@ -90,20 +90,37 @@ int VaccinationCenter::calculateVaccinationAmount() {
     return std::min(smallest, notVaccinated);
 }
 
+int VaccinationCenter::calculateVaccinationAmount(const VaccinationCenter::vaccinType & vaccin) const{
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
+    int notVaccinated = fpopulation - fvaccinated;
+    int smallest = std::min(vaccin.fvaccinAmount, fcapacity);
+    return std::min(smallest, notVaccinated);
+}
+
 void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     REQUIRE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
 
-    int vaccinationAmount = calculateVaccinationAmount();
+//    int vaccinationAmount = calculateVaccinationAmount();
+//
+//    fvaccins -= vaccinationAmount;
+//    fvaccinated += vaccinationAmount;
+//
 
+    int vaccinationAmount = 0;
+    for (std::map<const std::string, VaccinationCenter::vaccinType>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
+
+        vaccinationAmount += calculateVaccinationAmount(it->second);
+        it->second.fvaccinAmount -= calculateVaccinationAmount(it->second);
+    }
     fvaccins -= vaccinationAmount;
     fvaccinated += vaccinationAmount;
 
     stream << "Er werden " << vaccinationAmount << " inwoners gevaccineerd in " << fname << ".\n";
 }
-
-
 
 void VaccinationCenter::print(std::ofstream &stream) const {
 
@@ -143,6 +160,5 @@ void VaccinationCenter::printVaccins(std::ostream &stream) const {
     }
 }
 
-
 VaccinationCenter::vaccinType::vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount)
-        : fvaccinType(vaccinType), fvaccinTemperature(vaccinTemperature), fvaccinRenewal(vaccinRenewal), fvaccinAmount(vaccinAmount) {}
+        : fvaccinType(vaccinType), fvaccinTemperature(vaccinTemperature), fvaccinRenewal(vaccinRenewal), fvaccinAmount(vaccinAmount), ftracker(0) {}

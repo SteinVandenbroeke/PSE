@@ -16,7 +16,7 @@ int main() {
         std::cout << "Done importing" << std::endl;
 
         s.simulateTransport(std::cout);
-
+        s.simulateVaccination(std::cout);
         s.getHub()[0]->printGraphical(std::cout);
 
 
