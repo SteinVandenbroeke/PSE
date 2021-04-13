@@ -116,7 +116,6 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
 
         TiXmlElement* xmlVaccin = xmlHub->FirstChildElement("VACCIN");
 
-        // TODO
         // Hub heeft maar een vaccin en er is geen vaccin tag
         if (xmlVaccin == NULL) {
             std::string type = "HUB_BASE_VACCIN";

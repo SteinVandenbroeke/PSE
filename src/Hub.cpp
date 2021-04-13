@@ -143,8 +143,19 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
 
     if (this->fvaccins.size() == 1) {
 
+
         Vaccin* vaccin = NULL;
         vaccin = this->fvaccins.begin()->second;
+
+        if (vaccin->getTemperature() < 0) {
+
+            if (vaccin->getRenewal() != 0) {
+
+
+            }
+
+        }
+
         vaccinsTransport = vaccin->calculateTransport(center);
         cargo = vaccinsTransport / getTransport();
 
@@ -153,7 +164,21 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
         center->addVaccins(vaccinsTransport, vaccin);
     }
     else {
-        std::cout << "more than 1 vaccin in hub" << std::endl;
+
+//        for (std::map<std::string, Vaccin*>::iterator it = fvaccins.begin(); it != fvaccins.end(); it++) {
+//
+//            std::cout << it->first << std::endl;
+//
+//            Vaccin* vaccin = NULL;
+//            vaccin = it->second;
+//            vaccinsTransport = vaccin->calculateTransport(center);
+//            cargo = vaccinsTransport / getTransport();
+//
+//            // Subtract transported amount of Vaccin and add to Center
+//            vaccin->updateVaccinsTransport(vaccinsTransport);
+//            center->addVaccins(vaccinsTransport, vaccin);
+//        }
+
     }
 
     // Display nothing

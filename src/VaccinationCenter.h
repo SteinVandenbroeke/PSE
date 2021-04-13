@@ -9,7 +9,10 @@
 #define TTT_VACCINATIONCENTER_H
 
 #include <string>
+#include <algorithm>
 #include <map>
+#include <vector>
+#include <utility>
 #include <iostream>
 #include <fstream>
 #include "DesignByContract.h"
@@ -27,14 +30,9 @@ struct vaccinType {
 public:
     vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount);
 
-    bool getRenewal() const {
+    bool isRenewal() const {
 
-        return this->fvaccinRenewal == 0;
-    }
-    
-    bool checkRenewal() const {
-
-        return ftracker == fvaccinRenewal;
+        return this->fvaccinRenewal != 0;
     }
 
 public:
@@ -42,7 +40,7 @@ public:
     int fvaccinTemperature;
     int fvaccinRenewal;
     int fvaccinAmount;
-    int ftracker;
+    std::vector<std::pair<int, int> > ftracker;
 };
 
 private:
@@ -168,6 +166,10 @@ public:
     int calculateVaccinationAmount();
 
     int calculateVaccinationAmount(const VaccinationCenter::vaccinType & vaccin) const;
+
+    int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType & vaccin, const int vaccinated);
+
+    void updateRenewal();
 
     /**
      * \brief Vacinate center, update fvaccins and fvaccins
