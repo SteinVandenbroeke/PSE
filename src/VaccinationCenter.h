@@ -50,15 +50,21 @@ public:
         return ftracker;
     }
 
-    void insertRequerdDay(int requiredPeaple, int day){
-        ftracker1[day] += requiredPeaple;
+    void addDay(){
+        std::map<int, int> newTracker;
+        newTracker[0] = 0;
+        for (std::map<int, int>::iterator it = ftracker1.begin(); it != ftracker1.end(); it++){
+            if(it->first + 1 <= 0) {
+                newTracker[it->first + 1] = it->second;
+            }
+            else{
+                newTracker[0] += it->second;
+            }
+        }
+        ftracker1 = newTracker;
     }
 
-    void addDay(){
-        std::map<int, int> newTracker = ftracker1;
-        for (std::map<int, int>::iterator it = ftracker1.begin(); it != ftracker1.end(); it++){
-            newTracker[it->first + 1] = it->second;
-        }
+    void insertRequerdDay(int requiredPeaple, int day){
         ftracker1[day] += requiredPeaple;
     }
 
