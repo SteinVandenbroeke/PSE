@@ -166,7 +166,7 @@ public:
      *
      * @return Amount of cargo that will be transported as int
      */
-     int calculateTransport(const VaccinationCenter * center) const;
+     int calculateTransport(const VaccinationCenter * center, bool zeroVaccin) const;
 
     /**
      * \brief Print out data of Vaccin

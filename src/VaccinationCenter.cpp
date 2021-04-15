@@ -136,18 +136,33 @@ int VaccinationCenter::calculateVaccinationAmountRenewal(VaccinationCenter::vacc
 }
 
 void VaccinationCenter::updateRenewal() {
-    for (std::map<const std::string, VaccinationCenter::vaccinType>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");       for (std::map<const std::string, VaccinationCenter::vaccinType>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
             (it)->second.addDay();
     }
 }
 
-void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
+std::map<const std::string, VaccinationCenter::vaccinType> VaccinationCenter::getVaccin(bool zeroVaccin) const {
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    std::map<const std::string, vaccinType> zeroVaccins;
+    for (std::map<const std::string, VaccinationCenter::vaccinType>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
+        if((it->second.getVaccinTemperature() < 0 && zeroVaccin) || (it->second.getVaccinTemperature() > 0 && !zeroVaccin)) {
+            zeroVaccins.insert(std::make_pair(it->first, it->second));
+        }
+    }
+    return zeroVaccins;
+}
+
+
+
+void VaccinationCenter::vaccinateCenter(std::map<const std::string, vaccinType> vaccinsType, std::ostream &stream) {
+
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     REQUIRE(this->getVaccins() <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
 
     int vaccinationAmount = 0;
-    for (std::map<const std::string, VaccinationCenter::vaccinType>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
+    for (std::map<const std::string, VaccinationCenter::vaccinType>::iterator it = vaccinsType.begin(); it != vaccinsType.end(); it++) {
 
         // Vaccin with renewal
         if (it->second.isRenewal()) {
@@ -184,20 +199,20 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 //                it->second.getTracker().erase(std::remove_if(it->second.getTracker().begin(), it->second.getTracker().end(),
 //                                                         check), it->second.getTracker().end());
             }
-            //continue;
+        }
+        // Vaccin without renewal
+        else {
+            vaccinationAmount += calculateVaccinationAmount(it->second);
+            it->second.getVaccinAmount() -= calculateVaccinationAmount(it->second);
         }
 
-        // Vaccin without renewal
-        vaccinationAmount += calculateVaccinationAmount(it->second);
-        it->second.getVaccinAmount() -= calculateVaccinationAmount(it->second);
     }
-
     fvaccinated += vaccinationAmount;
 
     stream << "Er werden " << vaccinationAmount << " inwoners gevaccineerd in " << fname << ".\n";
 }
 
-void VaccinationCenter::print(std::ofstream &stream) const {
+void VaccinationCenter::print(std::ostream &stream) const {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     stream << this->fname << ": " << this->fvaccinated << " gevaccineerd, nog ";
@@ -231,23 +246,27 @@ void VaccinationCenter::printVaccins(std::ostream &stream) const {
     stream << this->fname << ":" << "\n";
     stream << "\t" << "- " << "vaccins       " << ProgressBar(perVaccin, 20)   << " "<< perVaccin << "%" <<"\n";
     stream << "\t" << "- " << "geavaccineerd " << ProgressBar(perVaccinated, 20) << " " <<  perVaccinated << "%" << "\n";
-
     for (std::map<const std::string, VaccinationCenter::vaccinType>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
-
-        stream << it->first << ":" << "\n";
-        stream << "\t" << "- " << "vaccins       " << it->second.getVaccinAmount() << "\n";
+        stream << "\t \t- " << it->first << ": " << it->second.getVaccinAmount() << "\n";
     }
+    stream << "---------------" << std::endl;
 }
 
 std::map<std::string, int> VaccinationCenter::requiredAmountVaccinType() {
 
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     std::map<std::string, int> requiredVaccin;
     for(std::map<const std::string, VaccinationCenter::vaccinType>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
-
-//        TODO
-//        requiredVaccin[it->first] = it->second.ftracker[0];
+        requiredVaccin[it->first] = it->second.getTracker()[0];
     }
-    return std::map<std::string, int>();
+    return requiredVaccin;
+}
+
+void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    vaccinateCenter(getVaccin(true), stream);
+    vaccinateCenter(getVaccin(false), stream);
 }
 
 VaccinationCenter::vaccinType::vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount)

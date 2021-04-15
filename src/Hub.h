@@ -184,6 +184,8 @@ public:
      */
     int calculateTransport(const VaccinationCenter* center, const Vaccin * vaccin) const;
 
+    std::map<std::string, Vaccin*> getVaccinZero();
+
     /**
      * \brief Transport vaccin from Hub to VaccinationCenter and display information if needed
      *

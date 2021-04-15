@@ -32,9 +32,6 @@ int ToPercent(const int x, const int max);
 
 std::string ProgressBar(const int x, const int barWidth);
 
-static bool check(const std::pair<int, int> & i) {
-    return i.second <=0;
-}
 
 // Closing of the ``header guard''.
 

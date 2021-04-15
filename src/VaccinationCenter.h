@@ -213,6 +213,12 @@ public:
 
     void updateRenewal();
 
+
+    std::map<const std::string, vaccinType> getVaccin(bool zeroVaccin) const;
+
+
+    void vaccinateCenter(std::ostream &stream);
+
     /**
      * \brief Vacinate center, update fvaccins and fvaccins
      *
@@ -225,7 +231,7 @@ public:
      * @param stream Output stream
      *
      */
-    void vaccinateCenter(std::ostream &stream);
+    void vaccinateCenter(std::map<const std::string, vaccinType>, std::ostream &stream);
 
     /**
      * \brief Print out data of VaccinationCenter
@@ -235,7 +241,7 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      */
-    void print(std::ofstream &stream) const;
+    void print(std::ostream &stream) const;
 
     /**
      *\brief Prints out data of VaccinationCenter the fancy way with a progressbar

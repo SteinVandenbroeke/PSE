@@ -127,6 +127,20 @@ int Hub::calculateTransport(const VaccinationCenter* center, const Vaccin * vacc
     return vaccinsTransport;
 }
 
+std::map<std::string, Vaccin*> Hub::getVaccinZero() {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+
+    std::map<std::string, Vaccin*> vaccinUnderZero;
+    for (std::map<std::string, Vaccin*>::iterator it = fvaccins.begin(); it != fvaccins.end(); it++) {
+
+        if (it->second->getTemperature() < 0) {
+            vaccinUnderZero.insert(*it);
+        }
+    }
+    return vaccinUnderZero;
+}
+
 
 void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
 
@@ -141,53 +155,34 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
     int vaccinsTransport = 0;
     int cargo = 0;
 
-    if (this->fvaccins.size() == 1) {
+    std::map<std::string, Vaccin*> underZeroVaccins = this->getVaccinZero();
 
+    for (std::map<std::string, Vaccin*>::iterator it = fvaccins.begin(); it != fvaccins.end(); it++) {
 
-        Vaccin* vaccin = NULL;
-        vaccin = this->fvaccins.begin()->second;
-
-        if (vaccin->getTemperature() < 0) {
-
-            if (vaccin->getRenewal() != 0) {
-
-            }
-
+        bool zeroVaccin = false;
+        if(underZeroVaccins.find(it->first) != underZeroVaccins.end()){
+            zeroVaccin = true;
         }
 
-        vaccinsTransport = vaccin->calculateTransport(center);
-        cargo = vaccinsTransport / getTransport();
+        Vaccin* vaccin = NULL;
+        vaccin = it->second;
+
+        vaccinsTransport = vaccin->calculateTransport(center, zeroVaccin);
+        cargo = vaccinsTransport / vaccin->getTransport();
 
         // Subtract transported amount of Vaccin and add to Center
         vaccin->updateVaccinsTransport(vaccinsTransport);
         center->addVaccins(vaccinsTransport, vaccin);
-    }
-    else {
 
-//        for (std::map<std::string, Vaccin*>::iterator it = fvaccins.begin(); it != fvaccins.end(); it++) {
-//
-//            std::cout << it->first << std::endl;
-//
-//            Vaccin* vaccin = NULL;
-//            vaccin = it->second;
-//            vaccinsTransport = vaccin->calculateTransport(center);
-//            cargo = vaccinsTransport / getTransport();
-//
-//            // Subtract transported amount of Vaccin and add to Center
-//            vaccin->updateVaccinsTransport(vaccinsTransport);
-//            center->addVaccins(vaccinsTransport, vaccin);
-//        }
-
+        // Display information of transport
+        stream << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins)" << " van " << it->first << " getransporteerd naar ";
+        stream << center->getName() << ".\n";
     }
 
     // Display nothing
-    if (cargo == 0) {
-        return;
-    }
-
-    // Display information of transport
-    stream << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins) getransporteerd naar ";
-    stream << center->getName() << ".\n";
+//    if (cargo == 0) {
+//        return;
+//    }
 
     ENSURE(vaccinsHub != this->getAmountVaccin(), "Amount of vaccins in Hub must be updated");
     ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated");
