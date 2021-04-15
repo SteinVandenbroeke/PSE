@@ -30,17 +30,49 @@ struct vaccinType {
 public:
     vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount);
 
-    bool isRenewal() const {
+    const std::string &getVaccinType() const {
+        return fvaccinType;
+    }
 
+    int getVaccinTemperature() const {
+        return fvaccinTemperature;
+    }
+
+    int getVaccinRenewal() const {
+        return fvaccinRenewal;
+    }
+
+    int getVaccinAmount() {
+        return fvaccinAmount;
+    }
+
+    const std::vector<std::pair<int, int> > &getTracker() {
+        return ftracker;
+    }
+
+    void insertRequerdDay(int requiredPeaple, int day){
+        ftracker1[day] += requiredPeaple;
+    }
+
+    void addDay(){
+        std::map<int, int> newTracker = ftracker1;
+        for (std::map<int, int>::iterator it = ftracker1.begin(); it != ftracker1.end(); it++){
+            newTracker[it->first + 1] = it->second;
+        }
+        ftracker1[day] += requiredPeaple;
+    }
+
+    bool isRenewal() const {
         return this->fvaccinRenewal != 0;
     }
 
-public:
-    std::string fvaccinType;
-    int fvaccinTemperature;
-    int fvaccinRenewal;
-    int fvaccinAmount;
-    std::vector<std::pair<int, int> > ftracker;
+private:
+    std::string fvaccinType; ///< Type of the vaccin
+    int fvaccinTemperature; ///< Temperature required to store the Vaccin
+    int fvaccinRenewal; ///< Interval between two shots of the Vaccin
+    int fvaccinAmount; ///< Amount of vaccins of this type
+    std::vector<std::pair<int, int> > ftracker; ///< <Days till second shot, amount of people with first shot>
+    std::map<int, int> ftracker1;
 };
 
 private:
@@ -48,7 +80,7 @@ private:
     std::string faddress; ///< Address of the VaccinationCenter
     int fpopulation; ///< Amount of people the VaccinationCenter is responsible for
     int fcapacity; ///< Amount of vaccins that can be stored
-    int fvaccins; ///< Amount of vaccins currently in the VaccinationCenter
+    //int fvaccins;  ///< Amount of vaccins currently in the VaccinationCenter
     int fvaccinated; ///< Amount of people already vaccinated
     std::map<const std::string, vaccinType> fvaccinsType;
     VaccinationCenter *_initCheck;
@@ -206,6 +238,8 @@ public:
     void printGraphical(std::ostream &stream) const;
 
     void printVaccins(std::ostream &stream) const;
+
+    std::map<std::string, int> requiredAmountVaccinType();
 };
 
 #endif //TTT_VACCINATIONCENTER_H

@@ -151,7 +151,6 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
 
             if (vaccin->getRenewal() != 0) {
 
-
             }
 
         }

@@ -94,7 +94,7 @@ int ToInt(std::string& s) {
 
 int ToPercent(const int x, const int max) {
     double a = static_cast<double>(x) / max;
-    return static_cast<int>(std::round(a * 100));
+    return static_cast<int>(round(a * 100));
 }
 
 std::string ProgressBar(const int x, const int barWidth) {

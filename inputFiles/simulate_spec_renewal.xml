@@ -2,7 +2,7 @@
     <VACCIN>
         <type>Pfizer</type>
         <levering>93000</levering>
-        <interval>6</interval>
+        <interval>1</interval>
         <transport>2000</transport>
         <hernieuwing>1</hernieuwing>
         <temperatuur>-70</temperatuur>

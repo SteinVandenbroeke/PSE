@@ -61,25 +61,6 @@ void Simulation::importXmlFile(const char *path, const char *knownTagsPad, std::
     XMLReader xmlReader = XMLReader(path);
     this->fcentra = xmlReader.readVaccinationCenters(errorStream);
     this->fhub = xmlReader.readHubs(this->fcentra, errorStream);
-//    for(std::map<std::string, VaccinationCenter*>::iterator it = this->fcentra.begin(); it != this->fcentra.end(); it++){
-//        std::cout << "Centra: " << it->first << std::endl;
-//    }
-//    std::cout << std::endl;
-//    int teller = 0;
-//    for(std::vector<Hub*>::iterator it = this->fhub.begin(); it != this->fhub.end(); it++){
-//        std::cout << "Hub: " << teller << std::endl;
-//        (*it)->printGraphical(std::cout);
-//        std::map<std::string, VaccinationCenter*> test = (*it)->getCentra();
-//        for(std::map<std::string, VaccinationCenter*>::iterator it1 = test.begin(); it1 != test.end(); it1++){
-//            std::cout << "\t " << it1->first << std::endl;
-//        }
-//        std::cout << std::endl << "\t --------" << std::endl;
-//        std::map<std::string, Vaccin *> vaccins = (*it)->getVaccins();
-//        for( std::map<std::string, Vaccin *>::iterator it2 = vaccins.begin(); it2 != vaccins.end(); it2++){
-//            std::cout << "\t " << it2->first << std::endl;
-//        }
-//        teller++;
-//    }
 
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
     ENSURE(checkVaccins(),"Hub must have equal amount of vaccins as delivery on day zero");
@@ -258,31 +239,5 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream) {
         exportFile("Day-" + ToString(iter));
         increaseIterator();
     }
-//
-//    day, month, year --> time_t
-//    struct tm * timeinfo;
-//    time_t rawtime;
-//    time(&rawtime);
-//    timeinfo = localtime ( &rawtime );
-//    timeinfo->tm_year = year - 1900;
-//    timeinfo->tm_mon = month - 1;
-//    timeinfo->tm_mday = day;
-//    time_t endDate = mktime(timeinfo);
-//
-//    time_t current_date = time(0);
-//    while(current_date <= endDate){
-//        simulateTransport(stream);
-//        simulateVaccination(stream);
-//        increaseIterator();
-//
-//        //time_t --> strings
-//        std::tm * tm = std::localtime(&current_date);
-//        char dateString[32];
-//        std::strftime(dateString, 32, "%d-%m-%Y.txt", tm);
-//        exportFile(dateString); //make export file
-//        current_date += 86400; // 1 dag toevoegen 24*60*60
-//    }
-//
-//
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 }
