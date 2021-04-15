@@ -50,14 +50,14 @@ public:
         return fvaccinAmount;
     }
 
-    std::vector<std::pair<int, int> > &getTracker() {
+    std::map<int, int> &getTracker() {
         return ftracker;
     }
 
     void addDay(){
         std::map<int, int> newTracker;
         newTracker[0] = 0;
-        for (std::map<int, int>::iterator it = ftracker1.begin(); it != ftracker1.end(); it++){
+        for (std::map<int, int>::iterator it = ftracker.begin(); it != ftracker.end(); it++){
             if(it->first + 1 <= 0) {
                 newTracker[it->first + 1] = it->second;
             }
@@ -65,11 +65,11 @@ public:
                 newTracker[0] += it->second;
             }
         }
-        ftracker1 = newTracker;
+        ftracker = newTracker;
     }
 
-    void insertRequerdDay(int requiredPeaple, int day){
-        ftracker1[day] += requiredPeaple;
+    void insertRequerdDay(int day, int requiredPeaple){
+        ftracker[day] += requiredPeaple;
     }
 
     bool isRenewal() const {
@@ -81,8 +81,8 @@ private:
     int fvaccinTemperature; ///< Temperature required to store the Vaccin
     int fvaccinRenewal; ///< Interval between two shots of the Vaccin
     int fvaccinAmount; ///< Amount of vaccins of this type
-    std::vector<std::pair<int, int> > ftracker; ///< <Days till second shot, amount of people with first shot>
-    std::map<int, int> ftracker1;
+    //std::vector<std::pair<int, int> > ftracker; ///< <Days till second shot, amount of people with first shot>
+    std::map<int, int> ftracker;
 };
 
 private:

@@ -19,7 +19,6 @@ int main() {
         s.getHub()[0]->printGraphical(std::cout);
         s.simulateVaccination(std::cout);
         for (std::map<std::string, VaccinationCenter*>::iterator it = s.getHub()[0]->getCentra().begin(); it != s.getHub()[0]->getCentra().end(); it++) {
-
             it->second->updateRenewal();
         }
         std::cout << "############# VACCINATION REPORT #############" << std::endl;

@@ -125,7 +125,7 @@ int VaccinationCenter::calculateVaccinationAmountRenewal(VaccinationCenter::vacc
 
         if (firstShot != 0) {
 
-            vaccin.getTracker().push_back(std::make_pair(vaccin.getVaccinRenewal() * (-1), firstShot));
+            vaccin.insertRequerdDay(vaccin.getVaccinRenewal() * (-1), firstShot);
         }
 
         // Substract first shot - secondShot will be substracted from callee side
@@ -136,19 +136,8 @@ int VaccinationCenter::calculateVaccinationAmountRenewal(VaccinationCenter::vacc
 }
 
 void VaccinationCenter::updateRenewal() {
-
-    for (std::map<const std::string, VaccinationCenter::vaccinType>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
-
-        if (it->second.isRenewal() && !it->second.getTracker().empty()) {
-
-            for (std::vector<std::pair<int, int> >::iterator ite = it->second.getTracker().begin();
-                 ite != it->second.getTracker().end(); ite++) {
-
-                if (ite->first < 0 && ite->first != 0) {
-                    ite->first += 1;
-                }
-            }
-        }
+    for (std::map<const std::string, VaccinationCenter::vaccinType>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
+            (it)->second.addDay();
     }
 }
 
@@ -168,16 +157,15 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 
                 int amountVaccinated = calculateVaccinationAmount(it->second);
                 it->second.getVaccinAmount() -= amountVaccinated; // Substract from type vaccin
-                it->second.getTracker().push_back(std::make_pair(it->second.getVaccinRenewal() * (-1), amountVaccinated));
+
+                it->second.insertRequerdDay(it->second.getVaccinRenewal() * (-1), amountVaccinated);
             }
 
             // Population already got a first Vaccin
             else {
+                std::map<int, int> &alreadyVaccinated = it->second.getTracker();
 
-                std::vector<std::pair<int, int> >&alreadyVaccinated = it->second.getTracker();
-
-                for (std::vector<std::pair<int, int> >::iterator ite = alreadyVaccinated.begin();
-                        ite != alreadyVaccinated.end(); ite++) {
+                for (std::map<int, int>::iterator ite = alreadyVaccinated.begin(); ite != alreadyVaccinated.end(); ite++) {
 
                     // Renewal interval is over
                     if (ite->first == 0) {
@@ -191,14 +179,12 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
                         ite->second -= amountVaccinated;
 
                     }
+
                 }
-
-                it->second.getTracker().erase(std::remove_if(it->second.getTracker().begin(), it->second.getTracker().end(),
-                                                         check), it->second.getTracker().end());
-
-
+//                it->second.getTracker().erase(std::remove_if(it->second.getTracker().begin(), it->second.getTracker().end(),
+//                                                         check), it->second.getTracker().end());
             }
-            continue;
+            //continue;
         }
 
         // Vaccin without renewal
