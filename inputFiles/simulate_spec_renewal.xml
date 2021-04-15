@@ -7,14 +7,6 @@
         <hernieuwing>1</hernieuwing>
         <temperatuur>-70</temperatuur>
     </VACCIN>
-<!--    <VACCIN>-->
-<!--        <type>Moderna</type>-->
-<!--        <levering>46000</levering>-->
-<!--        <interval>13</interval>-->
-<!--        <transport>1000</transport>-->
-<!--        <hernieuwing>2</hernieuwing>-->
-<!--        <temperatuur>-20</temperatuur>-->
-<!--    </VACCIN>-->
     <CENTRA>
         <centrum>Park Spoor Oost</centrum>
         <centrum>AED Studios</centrum>
