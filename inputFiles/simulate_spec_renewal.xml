@@ -5,15 +5,7 @@
         <interval>1</interval>
         <transport>2000</transport>
         <hernieuwing>1</hernieuwing>
-        <temperatuur>-84</temperatuur>
-    </VACCIN>
-    <VACCIN>
-        <type>Astra</type>
-        <levering>7000</levering>
-        <interval>1</interval>
-        <transport>1000</transport>
-        <hernieuwing>1</hernieuwing>
-        <temperatuur>120</temperatuur>
+        <temperatuur>123</temperatuur>
     </VACCIN>
     <CENTRA>
         <centrum>Park Spoor Oost</centrum>

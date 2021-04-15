@@ -153,6 +153,7 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
     int vaccinsCenter = center->getVaccins();
 
     int vaccinsTransport = 0;
+    int cargoTotal = 0;
     int cargo = 0;
 
     std::map<std::string, Vaccin*> underZeroVaccins = this->getVaccinZero();
@@ -169,6 +170,7 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
 
         vaccinsTransport = vaccin->calculateTransport(center, zeroVaccin);
         cargo = vaccinsTransport / vaccin->getTransport();
+        cargoTotal += cargo;
 
         // Subtract transported amount of Vaccin and add to Center
         vaccin->updateVaccinsTransport(vaccinsTransport);
@@ -180,9 +182,9 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
     }
 
     // Display nothing
-//    if (cargo == 0) {
-//        return;
-//    }
+    if (cargoTotal == 0) {
+        return;
+    }
 
     ENSURE(vaccinsHub != this->getAmountVaccin(), "Amount of vaccins in Hub must be updated");
     ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated");

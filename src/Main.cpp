@@ -17,25 +17,25 @@ int main() {
 
 
         s.simulateTransport(std::cout);
-//        s.getHub()[0]->printGraphical(std::cout);
-//        s.simulateVaccination(std::cout);
-//        for (std::map<std::string, VaccinationCenter*>::iterator it = s.getHub()[0]->getCentra().begin(); it != s.getHub()[0]->getCentra().end(); it++) {
-//            it->second->updateRenewal();
-//        }
-//        s.getHub()[0]->printGraphical(std::cout);
-//
-//        s.simulateTransport(std::cout);
-//        s.simulateVaccination(std::cout);
-//        std::cout << "############# VACCINATION REPORT #############" << std::endl;
-//        s.getHub()[0]->printGraphical(std::cout);
-//        s.simulateTransport(std::cout);
-//        s.getHub()[0]->printGraphical(std::cout);
-//        s.simulateVaccination(std::cout);
-//        s.getHub()[0]->printGraphical(std::cout);
-//        for (std::map<std::string, VaccinationCenter*>::iterator it = s.getHub()[0]->getCentra().begin(); it != s.getHub()[0]->getCentra().end(); it++) {
-//            it->second->updateRenewal();
-//        }
-//        s.simulateVaccination(std::cout);
+        s.getHub()[0]->printGraphical(std::cout);
+        s.simulateVaccination(std::cout);
+        for (std::map<std::string, VaccinationCenter*>::iterator it = s.getHub()[0]->getCentra().begin(); it != s.getHub()[0]->getCentra().end(); it++) {
+            it->second->updateRenewal();
+        }
+        s.getHub()[0]->printGraphical(std::cout);
+
+        s.simulateTransport(std::cout);
+        s.simulateVaccination(std::cout);
+        std::cout << "############# VACCINATION REPORT #############" << std::endl;
+       s.getHub()[0]->printGraphical(std::cout);
+        s.simulateTransport(std::cout);
+        s.getHub()[0]->printGraphical(std::cout);
+        s.simulateVaccination(std::cout);
+        s.getHub()[0]->printGraphical(std::cout);
+        for (std::map<std::string, VaccinationCenter*>::iterator it = s.getHub()[0]->getCentra().begin(); it != s.getHub()[0]->getCentra().end(); it++) {
+            it->second->updateRenewal();
+        }
+        s.simulateVaccination(std::cout);
 
 
     }

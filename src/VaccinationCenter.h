@@ -92,7 +92,7 @@ private:
     int fcapacity; ///< Amount of vaccins that can be stored
     //int fvaccins;  ///< Amount of vaccins currently in the VaccinationCenter
     int fvaccinated; ///< Amount of people already vaccinated
-    std::map<const std::string, vaccinType> fvaccinsType;
+    std::map<const std::string, vaccinType*> fvaccinsType;
     VaccinationCenter *_initCheck;
 
 public:
@@ -207,14 +207,14 @@ public:
      */
     int calculateVaccinationAmount();
 
-    int calculateVaccinationAmount(const VaccinationCenter::vaccinType & vaccin) const;
+    int calculateVaccinationAmount(const VaccinationCenter::vaccinType* vaccin) const;
 
-    int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType & vaccin, const int vaccinated);
+    int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int vaccinated);
 
     void updateRenewal();
 
 
-    std::map<const std::string, vaccinType> getVaccin(bool zeroVaccin) const;
+    std::map<const std::string, vaccinType*> getVaccin(bool zeroVaccin) const;
 
 
     void vaccinateCenter(std::ostream &stream);
@@ -231,7 +231,7 @@ public:
      * @param stream Output stream
      *
      */
-    void vaccinateCenter(std::map<const std::string, vaccinType>, std::ostream &stream);
+    int vaccinateCenter(std::map<const std::string, vaccinType*>, std::ostream &stream);
 
     /**
      * \brief Print out data of VaccinationCenter
