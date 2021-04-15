@@ -42,11 +42,15 @@ public:
         return fvaccinRenewal;
     }
 
-    int getVaccinAmount() {
+    int &getVaccinAmount() {
         return fvaccinAmount;
     }
 
-    const std::vector<std::pair<int, int> > &getTracker() {
+    int getVaccinAmount() const{
+        return fvaccinAmount;
+    }
+
+    std::vector<std::pair<int, int> > &getTracker() {
         return ftracker;
     }
 
