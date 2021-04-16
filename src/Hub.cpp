@@ -141,8 +141,7 @@ std::map<std::string, Vaccin*> Hub::getVaccinZero() {
     return vaccinUnderZero;
 }
 
-
-void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
+void Hub::transportVaccin(const std::string &centerName, int currentDay, std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(this->getCentra().find(centerName) != this->getCentra().end(), "Given centerName must exist");
@@ -168,7 +167,7 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
         Vaccin* vaccin = NULL;
         vaccin = it->second;
 
-        vaccinsTransport = vaccin->calculateTransport(center, zeroVaccin);
+        vaccinsTransport = vaccin->calculateTransport(center, this->VaccinCentraCapacityRatio(center),currentDay, zeroVaccin);
         cargo = vaccinsTransport / vaccin->getTransport();
         cargoTotal += cargo;
 
@@ -190,6 +189,69 @@ void Hub::transportVaccin(const std::string &centerName, std::ostream &stream) {
     ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated");
 }
 
+void Hub::distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream) {
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    vaccinationCenter->requiredAmountVaccinType();
+    // Display information of transport
+    std::map<std::string, int> requeredVaccins = vaccinationCenter->requiredAmountVaccinType();
+    for (std::map<std::string, int>::iterator it = requeredVaccins.begin(); it != requeredVaccins.end(); it++) {
+
+        if(fvaccins.find(it->first) != fvaccins.end()){
+            Vaccin* vaccin = fvaccins[it->first];
+            int vaccinsNeeded = it->second;
+
+            int cargo = ceil(vaccinsNeeded/vaccin->getTransport());
+
+            while(vaccinationCenter->getOpenVaccinStorage(vaccin) < vaccin->getTransport() * cargo)
+            {
+                cargo--;
+            }
+            int vaccinsTransport = cargo * vaccin->getTransport();
+            vaccin->updateVaccinsTransport(vaccinsTransport);
+            vaccinationCenter->addVaccins(vaccinsTransport, vaccin);
+
+            stream << "(required) Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins)" << " van " << vaccin->getType() << " getransporteerd naar ";
+            stream << vaccinationCenter->getName() << ".\n";
+        }
+        else{
+            std::cerr << "FOUT" << std::endl;
+        }
+
+    }
+}
+
+void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &stream) {
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    REQUIRE(this->getVaccins().find(vaccin->getType()) != this->getVaccins().end(), "Given centerName must exist");
+
+    std::map<VaccinationCenter*, std::pair<int,int> > vaccinationCenterCargoTransport;
+    int maxVaccinDeliveryDay = (vaccin->getVaccin())/(vaccin->getInterval() - (currentDay%vaccin->getInterval()));
+
+    int vaccinsTransport = vaccin->getTransport();
+    for(int i = 0; i <= maxVaccinDeliveryDay; i+=vaccinsTransport){
+        if(vaccin->getVaccin() >= vaccin->getTransport()){
+            VaccinationCenter* center = mostSuitableVaccinationCenter(vaccin->getTransport(), vaccin);
+
+            if(center->properlyInitialized()){
+                if(vaccinationCenterCargoTransport.find(center) == vaccinationCenterCargoTransport.end()){
+                    vaccinationCenterCargoTransport[center] = std::make_pair(0,0);
+                }
+                vaccinationCenterCargoTransport[center].first += 1;
+                vaccinationCenterCargoTransport[center].second += vaccinsTransport;
+                vaccin->updateVaccinsTransport(vaccinsTransport);
+                center->addVaccins(vaccinsTransport, vaccin);
+            }
+        }
+    }
+
+    // Display information of transport
+    for (std::map<VaccinationCenter*, std::pair<int,int> >::iterator it = vaccinationCenterCargoTransport.begin(); it != vaccinationCenterCargoTransport.end(); it++) {
+        int cargo = it->second.first;
+        int vaccinsTransport = it->second.second;
+        stream << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins)" << " van " << vaccin->getType() << " getransporteerd naar ";
+        stream << it->first->getName() << ".\n";
+    }
+}
 
 void Hub::addVaccin(Vaccin* vaccin) {
 
@@ -231,5 +293,34 @@ void Hub::printGraphical(std::ostream &stream) const {
 
     for (std::map<std::string, VaccinationCenter*>::const_iterator it = this->fcentra.begin(); it != this->fcentra.end(); it++) {
         it->second->printVaccins(stream);
+    }
+}
+
+int Hub::totalVaccinCentraCapacity() {
+    int totalCapacity = 0;
+    for(std::map<std::string, VaccinationCenter*>::const_iterator it = fcentra.begin(); it != fcentra.end(); it++){
+        totalCapacity += (*it).second->getCapacity();
+    }
+    return totalCapacity;
+}
+
+double Hub::VaccinCentraCapacityRatio(VaccinationCenter* center) {
+    return (double)(center->getCapacity())/(double)(this->totalVaccinCentraCapacity());
+}
+
+VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin) {
+    VaccinationCenter* center = this->getCentra().begin()->second;
+    bool centerReached = false;
+    for (std::map<std::string, VaccinationCenter *>::iterator it = this->getCentra().begin(); it != this->getCentra().end(); it++) {
+        //selecteer het centrum met het miste vaccins tov de capaciteit
+
+        if(((((double)(it->second->getVaccinated()) + (double)(it->second->getVaccins()))/(double)(it->second->getPopulation()) <= ((double)(center->getVaccinated())+ (double)(center->getVaccins()))/(double)(center->getPopulation()))
+        || !centerReached) && (it->second->getOpenVaccinStorage(vaccin) >= vaccinCount)){
+            center = it->second;
+            centerReached = true;
+        }
+    }
+    if(centerReached){
+        return center;
     }
 }

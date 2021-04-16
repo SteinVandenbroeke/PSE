@@ -14,21 +14,26 @@ int main() {
     try{
         s.importXmlFile("simulate_spec_renewal.xml", "knownTags_spec_10.xml" ,std::cerr);
         std::cout << "Done importing" << std::endl;
-
-
-        s.simulateTransport(std::cout);
+        s.automaticSimulation(20, std::cout);
+/*
+        s.simulateTransport(0, std::cout);
         s.getHub()[0]->printGraphical(std::cout);
         s.simulateVaccination(std::cout);
+
         for (std::map<std::string, VaccinationCenter*>::iterator it = s.getHub()[0]->getCentra().begin(); it != s.getHub()[0]->getCentra().end(); it++) {
             it->second->updateRenewal();
         }
+
+        for (std::map<std::string, Vaccin*>::iterator it = s.getHub()[0]->getVaccins().begin(); it != s.getHub()[0]->getVaccins().end(); it++) {
+            it->second->updateVaccins();
+        }
         s.getHub()[0]->printGraphical(std::cout);
 
-        s.simulateTransport(std::cout);
+        s.simulateTransport(1, std::cout);
         s.simulateVaccination(std::cout);
         std::cout << "############# VACCINATION REPORT #############" << std::endl;
        s.getHub()[0]->printGraphical(std::cout);
-        s.simulateTransport(std::cout);
+        s.simulateTransport(2, std::cout);
         s.getHub()[0]->printGraphical(std::cout);
         s.simulateVaccination(std::cout);
         s.getHub()[0]->printGraphical(std::cout);
@@ -37,7 +42,7 @@ int main() {
         }
         s.simulateVaccination(std::cout);
 
-
+*/
     }
     catch (Exception ex) {
         std::cerr << ex.value() << std::endl;

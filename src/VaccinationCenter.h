@@ -76,6 +76,14 @@ public:
         return this->fvaccinRenewal != 0;
     }
 
+    int totalFirstVaccination() const {
+        int total = 0;
+        for (std::map<int, int>::const_iterator it = ftracker.begin(); it != ftracker.end(); it++){
+            total += it->second;
+        }
+        return total;
+    }
+
 private:
     std::string fvaccinType; ///< Type of the vaccin
     int fvaccinTemperature; ///< Temperature required to store the Vaccin
@@ -89,7 +97,7 @@ private:
     std::string fname; ///< Name of the VaccinationCenter
     std::string faddress; ///< Address of the VaccinationCenter
     int fpopulation; ///< Amount of people the VaccinationCenter is responsible for
-    int fcapacity; ///< Amount of vaccins that can be stored
+    int fcapacity; ///< Amount of peaple that can be vaccined on one day
     //int fvaccins;  ///< Amount of vaccins currently in the VaccinationCenter
     int fvaccinated; ///< Amount of people already vaccinated
     std::map<const std::string, vaccinType*> fvaccinsType;
@@ -207,7 +215,7 @@ public:
      */
     int calculateVaccinationAmount();
 
-    int calculateVaccinationAmount(const VaccinationCenter::vaccinType* vaccin) const;
+    int calculateVaccinationAmount(const VaccinationCenter::vaccinType* vaccin, int alreadyVaccinedToDay) const;
 
     int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int vaccinated);
 
@@ -231,7 +239,7 @@ public:
      * @param stream Output stream
      *
      */
-    int vaccinateCenter(std::map<const std::string, vaccinType*>, std::ostream &stream);
+    int vaccinateCenter(std::map<const std::string, vaccinType*>, std::ostream &stream,  int alreadyVaccinedToDay);
 
     /**
      * \brief Print out data of VaccinationCenter
@@ -256,6 +264,10 @@ public:
     void printVaccins(std::ostream &stream) const;
 
     std::map<std::string, int> requiredAmountVaccinType();
+
+    int getOpenVaccinStorage(Vaccin* vaccin);
+
+    int requiredAmountVaccin(VaccinationCenter::vaccinType *vaccin);
 };
 
 #endif //TTT_VACCINATIONCENTER_H

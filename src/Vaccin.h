@@ -128,6 +128,8 @@ public:
      */
     int getVaccin() const;
 
+    int getVaccinSmart(int curentDay, double VaccinationCenterCapacityRatio) const;
+
     /**
      * \brief Update the amount of vaccins
      *
@@ -166,7 +168,7 @@ public:
      *
      * @return Amount of cargo that will be transported as int
      */
-     int calculateTransport(const VaccinationCenter * center, bool zeroVaccin) const;
+     int calculateTransport(const VaccinationCenter * center,double VaccinationCenterCapacityRatio , int currentDay, bool zeroVaccin) const;
 
     /**
      * \brief Print out data of Vaccin
@@ -177,6 +179,8 @@ public:
      * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      */
     void print(std::ofstream& stream) const;
+
+    bool ifUnderZero();
 };
 
 #endif //VACCINDISTRIBUTOR_VACCIN_H

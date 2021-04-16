@@ -63,8 +63,8 @@ void Vaccin::updateVaccins() {
 }
 
 void Vaccin::updateVaccinsTransport(int transportAmount) {
-
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+    REQUIRE(transportAmount%this->getTransport() == 0, "Wrong transport amount");
     // Update amount of vaccins in Hub and Center
     fvaccin -= transportAmount;
 }
@@ -75,7 +75,7 @@ const std::string &Vaccin::getType() const {
     return ftype;
 }
 
-int Vaccin::calculateTransport(const VaccinationCenter *center, bool zeroVaccin) const {
+int Vaccin::calculateTransport(const VaccinationCenter *center, double VaccinationCenterCapacityRatio, int currentDay , bool zeroVaccin) const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
 
@@ -139,3 +139,9 @@ int Vaccin::getTemperature() const {
     return ftemperature;
 }
 
+bool Vaccin::ifUnderZero() {
+    if(getTemperature() < 0){
+        return true;
+    }
+    return false;
+}

@@ -183,7 +183,7 @@ public:
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      */
-    void simulateTransport(std::ostream &stream);
+    void simulateTransport(int currentDay, std::ostream &stream);
 
     /**
     * \brief Simulate vaccination in centra

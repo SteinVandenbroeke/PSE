@@ -162,21 +162,40 @@ void Simulation::exportFile(const std::string & path) const {
     ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty");
 }
 
-void Simulation::simulateTransport(std::ostream &stream) {
+/*
+void Simulation::simulateTransport(int currentDay, std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
 
     for (std::vector<Hub*>::iterator ite = this->fhub.begin(); ite != this->fhub.end(); ite++) {
 
-        for (std::map<std::string, VaccinationCenter*>::iterator it = fcentra.begin(); it != fcentra.end(); it++) {
+        std::map<std::string, VaccinationCenter *> centra = (*ite)->getCentra();
+        for (std::map<std::string, VaccinationCenter*>::iterator it = centra.begin(); it != centra.end(); it++) {
+            std::string centerName = it->first;
+            (*ite)->transportVaccin(centerName,currentDay, stream);
+        }
+    }
 
-            if ((*ite)->getCentra().find(it->first) == (*ite)->getCentra().end()) {
-                continue;
-            }
+    ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+}
+ */
 
-            std::string centerName = (*ite)->getCentra().find(it->first)->first;
-            (*ite)->transportVaccin(centerName, stream);
+void Simulation::simulateTransport(int currentDay, std::ostream &stream) {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
+
+    for (std::vector<Hub*>::iterator ite = this->fhub.begin(); ite != this->fhub.end(); ite++) {
+
+        std::map<std::string, VaccinationCenter *> centra = (*ite)->getCentra();
+        for (std::map<std::string, VaccinationCenter *>::iterator it = centra.begin(); it != centra.end(); it++) {
+            (*ite)->distributeRequeredVaccins(it->second, stream);
+        }
+
+        std::map<std::string, Vaccin *> vaccins = (*ite)->getVaccins();
+        for (std::map<std::string, Vaccin *>::iterator it = vaccins.begin(); it != vaccins.end(); it++) {
+            (*ite)->distributeVaccinsFair(it->second,currentDay, stream);
         }
     }
 
@@ -220,6 +239,7 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream) {
 
     while (iter < days) {
 
+        std::cout << "dag: " << iter << std::endl;
         for (std::vector<Hub*>::iterator it = fhub.begin(); it != fhub.end(); it++) {
 
             Hub* currentHub = (*it);
@@ -232,10 +252,21 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream) {
                     ite->second->updateVaccins();
                 }
             }
+            std::cout << "VaccinCount startday: " << currentHub->getAmountVaccin() << std::endl;
         }
 
-        simulateTransport(stream);
+        simulateTransport(iter, stream);
         simulateVaccination(stream);
+
+        for (std::vector<Hub*>::iterator ite = this->fhub.begin(); ite != this->fhub.end(); ite++) {
+            (*ite)->printGraphical(std::cout);
+            std::map<std::string, VaccinationCenter *> centra = (*ite)->getCentra();
+            for (std::map<std::string, VaccinationCenter*>::iterator it = centra.begin(); it != centra.end(); it++) {
+                it->second->updateRenewal();
+            }
+            std::cout << "VaccinCount endDay: " << (*ite)->getAmountVaccin() << std::endl;
+        }
+
         exportFile("Day-" + ToString(iter));
         increaseIterator();
     }

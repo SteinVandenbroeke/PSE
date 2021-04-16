@@ -13,6 +13,7 @@
 #include "DesignByContract.h"
 #include "VaccinationCenter.h"
 #include "Vaccin.h"
+#include <cmath>
 
 /**
  * \brief Class implemented for a Hub
@@ -23,6 +24,9 @@ private:
     std::map<std::string, Vaccin*> fvaccins; ///< Map with pointers to Vaccins of hub
     std::map<std::string, VaccinationCenter*> fcentra; ///< Map with the connected VaccinationCenters
     Hub *_initCheck;
+
+    int totalVaccinCentraCapacity();
+    double VaccinCentraCapacityRatio(VaccinationCenter* center);
 
 public:
     /**
@@ -201,8 +205,12 @@ public:
      * ENSURE(vaccinsHub != fvaccin, "Amount of vaccins in Hub must be updated")
      * ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated")
      */
-    void transportVaccin(const std::string &centerName, std::ostream &stream);
+    void transportVaccin(const std::string &centerName, int currentDay, std::ostream &stream);
+    void distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &stream);
 
+    void distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream);
+
+    VaccinationCenter* mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin);
     /**
      * \brief Print out data of Hub
      *
