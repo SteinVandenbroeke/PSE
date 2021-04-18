@@ -378,6 +378,8 @@ double Hub::VaccinCentraCapacityRatio(VaccinationCenter* center) {
 }
 
 VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin) {
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
     VaccinationCenter* center = this->getCentra().begin()->second;
     bool centerReached = false;
     for (std::map<std::string, VaccinationCenter *>::iterator it = this->getCentra().begin(); it != this->getCentra().end(); it++) {

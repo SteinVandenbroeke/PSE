@@ -140,6 +140,7 @@ int Vaccin::getTemperature() const {
 }
 
 bool Vaccin::ifUnderZero() {
+    REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     if(getTemperature() < 0){
         return true;
     }

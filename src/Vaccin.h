@@ -181,7 +181,14 @@ public:
     void print(std::ofstream& stream) const;
 
     /**
-     * TODO
+     * \brief Is vaccin under 0 degrees
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
+     * @return bool:
+     *              true -> (temp<0)
+     *              false -> (temp>=0)
      */
     bool ifUnderZero();
 };

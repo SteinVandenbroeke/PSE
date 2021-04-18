@@ -232,9 +232,9 @@ public:
     void distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &stream);
 
     /**
-    * \brief Distribute requered vaccins over an vaccinationCenter
+    * \brief Distribute required vaccins over an vaccinationCenter
     *
-    * @param vaccinationCenter: gives this center the requered vaccins
+    * @param vaccinationCenter: gives this center the required vaccins
     * @param stream: stream Output stream
     *
     * @pre
@@ -247,8 +247,15 @@ public:
     void distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream);
 
     /**
-     * TODO
-     */
+    * \brief Gives the most suitable VaccinationCenter for a specified amount of a vaccin type
+    *
+    * @param vaccinCount: amount of Vaccins
+    * @param vaccin: vaccin type
+    *
+    * @pre
+    * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    * REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
+    */
     VaccinationCenter* mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin);
 
     /**

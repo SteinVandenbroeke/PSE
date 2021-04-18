@@ -222,7 +222,7 @@ void VaccinationCenter::printGraphical(std::ostream &stream) const {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
-    // TODO - Geeft 200 % # vaccins wanneer = 2 * capacity?
+    // TODO - Geeft 200 % # vaccins wanneer = 2 * capacity? nee ik denk het ni
     int perVaccin = ToPercent(this->getVaccins(), fcapacity);
     int perVaccinated = ToPercent(fvaccinated, fpopulation);
 
@@ -349,6 +349,7 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 }
 
 int VaccinationCenter::getOpenVaccinStorage(Vaccin* vaccin) {
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     //return: hoeveel vaccins er nog kunnen worden opgeslagen
     if((this->getPopulation() - this->getVaccinated()) <= this->getVaccins()){
         //indien er voldoende vaccins op vooraad zijn om iedereen te vaccineren

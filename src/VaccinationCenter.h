@@ -226,33 +226,54 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
+     * @return amount
      */
     int calculateVaccinationAmount();
 
     /**
-     * TODO
+     * \brief Amount of peaple that can be vaccineded/day
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return amount
      */
     int calculateVaccinationAmount(const VaccinationCenter::vaccinType* vaccin, int alreadyVaccinedToDay) const;
 
     /**
-     * TODO
-     */
+    * \brief Amount of people that need 2nd vaccination from specified type
+    *
+    * @param vaccin: the type
+    * @param vaccinated: amount of people already vaccinated
+     *
+    * @pre
+    * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+    *
+    * @return amount
+    */
     int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int vaccinated);
 
     /**
-     * TODO
-     */
+    * \brief Function to update the days for 2nd vaccinations
+    *
+    * @pre
+    * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+    *
+    */
     void updateRenewal();
 
     /**
-     * TODO
-     */
+    * \brief Gives a map of all vaccin or only the underZero vaccins
+    *
+    * @param zeroVaccin: true -> only underZero vaccins
+    *
+    * @pre
+    * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+    *
+    * @return map<name,vaccin>
+    *
+    */
     std::map<const std::string, vaccinType*> getVaccin(bool zeroVaccin) const;
-
-    /**
-     * TODO
-     */
-    void vaccinateCenter(std::ostream &stream);
 
     /**
      * \brief Vacinate center, update fvaccins and fvaccins
@@ -266,7 +287,23 @@ public:
      * @param stream Output stream
      *
      */
-    int vaccinateCenter(std::map<const std::string, vaccinType*>, std::ostream &stream,  int alreadyVaccinedToDay);
+    void vaccinateCenter(std::ostream &stream);
+
+    /**
+     * \brief Vacinate all vaccins of a given map
+     *
+     * @param vaccinsType: map of vaccins
+     * @param stream Output stream
+     * @param alreadyVaccinedToDay: amount of people already vaccinated
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
+     *
+     * @param stream Output stream
+     *
+     */
+    int vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream,  int alreadyVaccinedToDay);
 
     /**
      * \brief Print out data of VaccinationCenter
@@ -289,22 +326,42 @@ public:
     void printGraphical(std::ostream &stream) const;
 
     /**
-     * TODO
+     * \brief Print data / vaccin
+     *
+     * @param stream Output stream
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      */
     void printVaccins(std::ostream &stream) const;
 
     /**
-     * TODO
+     * \brief Gives the amount of vaccines needed for 2nd vaccination today
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return map<naam vaccin, amount needed>
      */
     std::map<std::string, int> requiredAmountVaccinType();
 
     /**
-     * TODO
+     * \brief Gives the storage place for a specified vaccin
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return how manny vaccins
      */
     int getOpenVaccinStorage(Vaccin* vaccin);
 
     /**
-     * TODO
+     * \brief Gives the amount of vaccines needed for 2nd vaccinantie today
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return amount needed
      */
     int requiredAmountVaccin(VaccinationCenter::vaccinType *vaccin);
 
@@ -346,7 +403,8 @@ public:
     std::pair<double, double> generateIni(std::ofstream & stream, int & counterFigures, int & counterCenter,
                                           const double & maxHubX) const;
 
-    virtual ~VaccinationCenter();
+    ~VaccinationCenter();
+
 };
 
 #endif //TTT_VACCINATIONCENTER_H
