@@ -14,29 +14,10 @@ Simulation::Simulation() {
 }
 
 Simulation::~Simulation() {
-
-//    TODO
-//
-//    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
-//
-//    for (std::vector<Hub*>::iterator it = fhub.begin(); it != fhub.end(); it++) {
-//
-//        for (std::map<std::string, VaccinationCenter*>::iterator ite = (*it)->getCentra().begin();
-//             ite != (*it)->getCentra().end(); ite++) {
-//            if (ite->second != NULL) {
-//                delete ite->second;
-//            }
-//        }
-//
-//        for (std::map<std::string, Vaccin*>::iterator ite = (*it)->getVaccins().begin();
-//             ite != (*it)->getVaccins().end(); ite++) {
-//            if (ite->second != NULL) {
-//                delete ite->second;
-//            }
-//        }
-//        delete (*it);
-//    }
-//    delete this;
+    for(std::map<std::string, VaccinationCenter*>::iterator centra = fcentra.begin(); centra != fcentra.end(); centra++){
+        delete centra->second;
+    }
+    fcentra.clear();
 }
 
 bool Simulation::properlyInitialized() const {

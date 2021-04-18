@@ -395,11 +395,6 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* v
 }
 
 Hub::~Hub() {
-    for(std::map<std::string, VaccinationCenter*>::iterator centra = fcentra.begin(); centra != fcentra.end(); centra++){
-        delete centra->second;
-    }
-    fcentra.clear();
-
     for(std::map<std::string, Vaccin*>::iterator vaccins = fvaccins.begin(); vaccins != fvaccins.end(); vaccins++){
         delete vaccins->second;
     }
