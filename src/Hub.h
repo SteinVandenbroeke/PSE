@@ -22,7 +22,7 @@ class Hub {
 
 private:
     std::map<std::string, Vaccin*> fvaccins; ///< Map with pointers to Vaccins of hub
-    std::map<std::string, VaccinationCenter*> fcentra; ///< Map with the connected VaccinationCenters
+    std::map<std::string, VaccinationCenter*> fcentra ; ///< Map with the connected VaccinationCenters
     Hub *_initCheck;
 
     int totalVaccinCentraCapacity();
@@ -45,6 +45,12 @@ public:
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
     Hub();
+
+    /**
+     * \brief deconstructor constructor for a Hub object
+     *
+     */
+    ~Hub();
 
     /**
      * \brief Check whether the Hub object is properly initialised

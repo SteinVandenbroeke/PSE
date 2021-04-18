@@ -8,7 +8,6 @@
 #include "Hub.h"
 
 Hub::Hub(){
-
     fcentra.clear();
     fvaccins.clear();
     _initCheck = this;
@@ -321,7 +320,7 @@ const Hub::stockToSizeReturn Hub::stockToSize() const {
     else {
         const double fac = static_cast<double>(ToPercent(this->getAmountVaccin(), this->getDelivery())) / 100;
         return stockToSizeReturn(0.1125 * fac + 0.1125, 0.1575 * fac + 0.1575,
-                                 static_cast<int>(std::round(8 * fac)) + 8, 0.1125 * fac + 0.1125);
+                                 static_cast<int>(round(8 * fac)) + 8, 0.1125 * fac + 0.1125);
     }
 }
 
@@ -393,4 +392,16 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* v
     if(centerReached){
         return center;
     }
+}
+
+Hub::~Hub() {
+    for(std::map<std::string, VaccinationCenter*>::iterator centra = fcentra.begin(); centra != fcentra.end(); centra++){
+        delete centra->second;
+    }
+    fcentra.clear();
+
+    for(std::map<std::string, Vaccin*>::iterator vaccins = fvaccins.begin(); vaccins != fvaccins.end(); vaccins++){
+        delete vaccins->second;
+    }
+    fvaccins.clear();
 }
