@@ -180,6 +180,9 @@ public:
      */
     void print(std::ofstream& stream) const;
 
+    /**
+     * TODO
+     */
     bool ifUnderZero();
 };
 

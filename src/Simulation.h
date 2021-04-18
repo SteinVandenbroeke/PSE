@@ -218,9 +218,6 @@ public:
     */
     void automaticSimulation(int days, std::ostream &stream);
 
-    // Als er meer dan 1 vaccin is in de verschillende hubs
-    void simulateType(int days, std::ostream &stream);
-
     /**
      * \brief Increase iterator value
      *

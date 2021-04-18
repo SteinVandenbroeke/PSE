@@ -131,13 +131,13 @@ public:
      */
     bool acceptedTags(std::ostream &errorStream, const char *knownTagsDocument);
 
-    /*
-     *
+    /**
+     * TODO
      */
     std::vector<Hub*> readHubs(std::map<std::string, VaccinationCenter *> &vaccinationCentras,  std::ostream &errorStream);
 
-    /*
-     *
+    /**
+     * TODO
      */
     std::map<std::string, VaccinationCenter*> readVaccinationCenters( std::ostream &errorStream);
 };

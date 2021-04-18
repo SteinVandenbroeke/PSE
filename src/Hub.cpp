@@ -191,6 +191,8 @@ void Hub::transportVaccin(const std::string &centerName, int currentDay, std::os
 
 void Hub::distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream) {
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    REQUIRE(vaccinationCenter->properlyInitialized(), "VaccinationCenter must be properly initialized");
+
     vaccinationCenter->requiredAmountVaccinType();
     // Display information of transport
     std::map<std::string, int> requeredVaccins = vaccinationCenter->requiredAmountVaccinType();
@@ -222,7 +224,8 @@ void Hub::distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::o
 
 void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &stream) {
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-    REQUIRE(this->getVaccins().find(vaccin->getType()) != this->getVaccins().end(), "Given centerName must exist");
+    REQUIRE(currentDay >= 0, "currentDay cannot be negative");
+    REQUIRE(this->getVaccins().find(vaccin->getType()) != this->getVaccins().end(), "Given vaccin must exist");
 
     std::map<VaccinationCenter*, std::pair<int,int> > vaccinationCenterCargoTransport;
     int maxVaccinDeliveryDay = (vaccin->getVaccin())/(vaccin->getInterval() - (currentDay%vaccin->getInterval()));

@@ -206,11 +206,44 @@ public:
      * ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated")
      */
     void transportVaccin(const std::string &centerName, int currentDay, std::ostream &stream);
+
+    /**
+    * \brief Distribute vaccin fairly between the centers and over the days (withoud considering 2nd vaccination)
+    *
+    * @param vaccin: viccin that needs to be disdributed
+    * @param currentDay: the current day of the simmulation
+    * @param stream: stream Output stream
+    *
+    * @pre
+    * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    * REQUIRE(currentDay >= 0, "currentDay cannot be negative");
+    * REQUIRE(this->getVaccins().find(vaccin->getType()) != this->getVaccins().end(), "Given vaccin must exist");
+    *
+    * @post
+    * //TODO
+    */
     void distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &stream);
 
+    /**
+    * \brief Distribute requered vaccins over an vaccinationCenter
+    *
+    * @param vaccinationCenter: gives this center the requered vaccins
+    * @param stream: stream Output stream
+    *
+    * @pre
+    * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    * REQUIRE(vaccinationCenter->properlyInitialized(), "VaccinationCenter must be properly initialized");
+    *
+    * @post
+    * //TODO
+    */
     void distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream);
 
+    /**
+     * TODO
+     */
     VaccinationCenter* mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin);
+
     /**
      * \brief Print out data of Hub
      *

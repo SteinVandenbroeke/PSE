@@ -215,16 +215,29 @@ public:
      */
     int calculateVaccinationAmount();
 
+    /**
+     * TODO
+     */
     int calculateVaccinationAmount(const VaccinationCenter::vaccinType* vaccin, int alreadyVaccinedToDay) const;
 
+    /**
+     * TODO
+     */
     int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int vaccinated);
 
+    /**
+     * TODO
+     */
     void updateRenewal();
 
-
+    /**
+     * TODO
+     */
     std::map<const std::string, vaccinType*> getVaccin(bool zeroVaccin) const;
 
-
+    /**
+     * TODO
+     */
     void vaccinateCenter(std::ostream &stream);
 
     /**
@@ -261,12 +274,24 @@ public:
      */
     void printGraphical(std::ostream &stream) const;
 
+    /**
+     * TODO
+     */
     void printVaccins(std::ostream &stream) const;
 
+    /**
+     * TODO
+     */
     std::map<std::string, int> requiredAmountVaccinType();
 
+    /**
+     * TODO
+     */
     int getOpenVaccinStorage(Vaccin* vaccin);
 
+    /**
+     * TODO
+     */
     int requiredAmountVaccin(VaccinationCenter::vaccinType *vaccin);
 };
 

@@ -248,7 +248,8 @@ void VaccinationCenter::printVaccins(std::ostream &stream) const {
     stream << "\t" << "- " << "vaccins       " << ProgressBar(perVaccin, 20)   << " "<< perVaccin << "%" <<"\n";
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
         stream << "\t \t- " << it->first << ": " << it->second->getVaccinAmount() << "\n";
-        stream << "\t \t \t- " << "eerste prik: " << ": " << it->second->totalFirstVaccination() << "\n";
+        if(it->second->totalFirstVaccination() != 0)
+            stream << "\t \t \t- " << "eerste prik: " << ": " << it->second->totalFirstVaccination() << "\n";
     }
     stream << "---------------" << std::endl;
 }
