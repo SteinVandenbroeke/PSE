@@ -162,6 +162,96 @@ void Simulation::exportFile(const std::string & path) const {
     ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty");
 }
 
+void Simulation::generateIni(const std::string &path) const {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
+
+    std::ofstream ini;
+    ini.open(path.c_str());
+
+    // Write general data to string
+    std::string x;
+    x.append("[General]\n");
+    x.append("size = 1024\n");
+    x.append("backgroundcolor = (0.169, 0.169, 0.169)\n");
+    x.append("type = \"ZBuffering\"\n");
+    x.append("eye = (200, 60, 70)\n");
+    int amountFigures = (this->fhub.size() * 2 + 1) + this->fcentra.size();
+    x.append("nrFigures = " + ToString(amountFigures) + "\n");
+    x.append("\n");
+
+    // Write to .ini file and clear string
+    ini << x;
+    x.clear();
+
+    int counterFigures = 0; // Holds current figure number
+    int counterHub = 0; // Holds current hub number
+    double maxHubX = static_cast<double>(fhub.size() * 2) / 1.2; // x-position of last Hub
+    int pointCounter = 0; // Holds current point number
+    std::string centerPoints; // Holds data for position points of centra
+
+    std::map<std::string, std::pair<double, double> > centerPositions;
+
+    // Traverse center and write to string
+    int counterCenter = 1;
+    for (std::map<std::string, VaccinationCenter*>::const_iterator it = this->fcentra.begin(); it != this->fcentra.end(); it++) {
+
+        std::pair<double, double> itPosition = it->second->generateIni(ini, counterFigures, counterCenter, maxHubX);
+        centerPositions[it->first] = itPosition;
+        // Write position data of center to string
+        centerPoints.append("point" + std::to_string(pointCounter) + " = (" + std::to_string(itPosition.first) + ", ");
+        centerPoints.append(std::to_string(itPosition.second) + ", 0)\n");
+        pointCounter++;
+    }
+
+    int lineCounter = 0;
+    int currentHub = pointCounter + fhub.size() - 1; // Number of point of current hub
+    std::string hubPoints;
+    std::string lines;
+
+    for (std::vector<Hub*>::const_iterator it = this->fhub.begin(); it != this->fhub.end(); it++) {
+
+        hubPoints.append("point" + std::to_string(pointCounter) + " = ");
+        hubPoints.append((*it)->generateIni(ini, counterFigures, counterHub, centerPositions));
+        pointCounter++;
+
+        for (std::map<std::string, VaccinationCenter*>::const_iterator ite = (*it)->getCentra().begin(); ite != (*it)->getCentra().end(); ite++) {
+
+            int index = distance(centerPositions.begin(), centerPositions.find(ite->first));
+
+            lines.append("line" + std::to_string(lineCounter) + " = ");
+            lines.append("(" + std::to_string(currentHub) + "," + std::to_string(index) + ")\n");
+            lineCounter++;
+        }
+        currentHub--;
+    }
+
+    // Line drawing for all Hubs
+    x.append("[Figure" + ToString(counterFigures) + "]" + "\n");
+    x.append("type = \"LineDrawing\"\n");
+    x.append("scale = 1.0\n");
+    x.append("rotateX = 0\n");
+    x.append("rotateY = 0\n");
+    x.append("rotateZ = 0\n");
+    x.append("center = (0, 0, 0)\n");
+    x.append("color = (0, 0.4, 1.0)\n");
+
+    x.append("nrPoints = " + std::to_string(pointCounter) + "\n");
+    x.append("nrLines = " + std::to_string(lineCounter) + "\n");
+    x.append(centerPoints);
+    x.append(hubPoints);
+    x.append(lines);
+
+    ini << x;
+    x.clear();
+    ini.close();
+
+    ENSURE(FileExists(path), "File that has been written to must exist");
+    ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty");
+}
+
+
 /*
 void Simulation::simulateTransport(int currentDay, std::ostream &stream) {
 

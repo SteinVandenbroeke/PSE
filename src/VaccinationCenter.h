@@ -18,6 +18,9 @@
 #include "DesignByContract.h"
 #include "Utils.h"
 
+/**
+ * \brief Forward declaration of the Vaccin class
+ */
 class Vaccin;
 
 /**
@@ -25,9 +28,20 @@ class Vaccin;
  */
 class VaccinationCenter {
 
+/**
+ * \brief struct implemented to hold every type of Vaccin that the Center has stored
+ */
 struct vaccinType {
 
 public:
+    /**
+     * \brief Constructor
+     *
+     * @param vaccinType Name / type of the Vaccin as string
+     * @param vaccinTemperature Temperature of Vaccin as int
+     * @param vaccinRenewal Renewal time of Vaccin as int
+     * @param vaccinAmount Amount of vaccins stored as int
+     */
     vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount);
 
     const std::string &getVaccinType() const {
@@ -293,6 +307,44 @@ public:
      * TODO
      */
     int requiredAmountVaccin(VaccinationCenter::vaccinType *vaccin);
+
+    /**
+     * \brief Calculate the scale of the VaccinationCenter in a 3D-environment depending on the number
+     *        of Vaccins in the Center versus the total number of Vaccins that can be stored (=capacity)
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Scale of Center in 3D-environment as string in .ini file format
+     */
+    std::string stockToSize() const;
+
+    /**
+     * \brief Calculate color of VaccinationCenter in 3D-environment depending on the number of people already
+     *        vaccinated versus the population that the Center operates in
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Color of Center in 3D-environment as string in .ini file format
+     */
+    std::string vaccinatedToColor() const;
+
+    /**
+     * \brief Generate a .ini file that describes the VaccinationCenter in a 3D-environment
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @param stream Output stream
+     * @param counterFigures Current number of figures already in the .ini file
+     * @param counterCenter Current number of Centra already in the .ini file
+     * @param maxHubX x-value of cartesian coordinates of last Hub in 3D-environment
+     *
+     * @return x-value and y-value of the Cartesian coordinates of Center as pair of doubles
+     */
+    std::pair<double, double> generateIni(std::ofstream & stream, int & counterFigures, int & counterCenter,
+                                          const double & maxHubX) const;
 };
 
 #endif //TTT_VACCINATIONCENTER_H

@@ -93,6 +93,8 @@ public:
      */
     int getAmountVaccin() const;
 
+    int getTotalDelivery() const;
+
     /**
      * \brief Get vaccins of Hub object
      *
@@ -265,6 +267,53 @@ public:
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      */
     void printGraphical(std::ostream& stream) const;
+
+    /**
+     * \brief Hold the return data of the stockToSize() function
+     */
+    struct stockToSizeReturn {
+        /**
+         * \brief Constructor for stockToSizeReturn object
+         * @param cubeScale Scale of cube as double
+         * @param coneScale Scale of cone as double
+         * @param coneN Amount of corner points used in the ground surface of cone as int
+         * @param coneCenterZ z-value of cartesian coordinates of cone as double
+         */
+        stockToSizeReturn(double cubeScale, double coneScale, double coneN, double coneCenterZ) : cubeScale(cubeScale),
+                                                                                                  coneScale(coneScale),
+                                                                                                  coneN(coneN),
+                                                                                                  coneCenterZ(
+                                                                                                          coneCenterZ) {}
+        double cubeScale; ///< Scale of cube as double
+        double coneScale; ///< Scale of cone as double
+        int coneN; ///< Amount of corner points used in the ground surface of cone as int
+        double coneCenterZ; ///< z-value of cartesian coordinates of cone as double
+    };
+
+    /**
+     * \brief Calculate the properties of the Hub in a 3D-environment depending on the number
+     *        of Vaccins in the Hub versus the total number of Vaccins that can be delivered
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     *
+     * @return stockToSize object with data to construct the Hub in a 3D-environment
+     */
+    const stockToSizeReturn stockToSize() const;
+
+    /**
+     * \brief Generate a .ini file that describes the Hub in a 3D-environment
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     *
+     * @param stream Output stream
+     * @param counterFigures Current number of figures already in the .ini file
+     * @param counterHub Current number of Hubs already in the .ini file
+     *
+     * @return Cartesian coordinates of Hub as string in .ini file format
+     */
+    std::string generateIni(std::ofstream & stream, int & counterFigures, int & counterHub) const;
 };
 
 #endif //TTT_HUB_H

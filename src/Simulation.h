@@ -174,6 +174,23 @@ public:
     void exportFile(const std::string & path) const;
 
     /**
+     * \brief Generate a .ini file of the current situation the Simulation is in
+     *
+     * @param path The path to the file will be written to
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @post
+     * ENSURE(FileExists(), "File that has been written to must exist")
+     * ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty")
+     *
+     */
+    void generateIni(const std::string & path) const;
+
+
+    /**
      * \brief Simulate transport of vaccins between Hub and centra
      *
      * @pre

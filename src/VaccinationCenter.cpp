@@ -254,6 +254,78 @@ void VaccinationCenter::printVaccins(std::ostream &stream) const {
     stream << "---------------" << std::endl;
 }
 
+std::string VaccinationCenter::stockToSize() const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
+    // Min size
+    if (this->getVaccins() == 0) {
+
+        return "scale = 0.05\n";
+    }
+    // Max size
+    else if (this->getVaccins() == this->fcapacity) {
+
+        return "scale = 0.12\n";
+    }
+    else {
+        double scale = 0.05;
+        scale += 0.07 * ToPercent(this->getVaccins(), fcapacity) / 100;
+        return "scale = " + std::to_string(scale) + "\n";
+    }
+}
+
+std::string VaccinationCenter::vaccinatedToColor() const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
+    // Red
+    if (this->fvaccinated == 0) {
+
+        return "color = (1, 0, 0)\n";
+    }
+    // Green
+    else if (this->fvaccinated == this->fpopulation) {
+
+        return "color = (0, 1, 0)\n";
+    }
+    // Mix between Red and Green
+    else {
+
+        double a = static_cast<double>(fvaccinated) / fpopulation;
+        a = static_cast<double>(a * 100);
+
+        double red = 1.0 - a / 100;
+        double green = 0.0 + a / 100;
+        return "color = (" + std::to_string(red) + ", " + std::to_string(green) + ", 0)\n";
+    }
+}
+
+std::pair<double, double> VaccinationCenter::generateIni(std::ofstream & stream, int & counterFigures,
+                                                         int & counterCenter, const double & maxHubX) const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
+    std::string x;
+
+    x.append("[Figure" + ToString(counterFigures) + "]" + "\n");
+    counterFigures++;
+    counterCenter++;
+    x.append("type = \"Cube\"\n");
+    x.append(this->stockToSize());
+    x.append("rotateX = 0\n");
+    x.append("rotateY = 0\n");
+    x.append("rotateZ = 0\n");
+    double positionX = static_cast<double>(counterCenter) / 1.5 + (0 * 2);
+    x.append("center = (" + std::to_string(positionX) + ", " + "1.2" + ", " + "0" + ")\n");
+    x.append(this->vaccinatedToColor());
+
+    x.append("\n");
+
+    stream << x;
+    return std::make_pair(positionX, 1.2);
+}
+
 std::map<std::string, int> VaccinationCenter::requiredAmountVaccinType() {
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     std::map<std::string, int> requiredVaccin;
@@ -264,7 +336,6 @@ std::map<std::string, int> VaccinationCenter::requiredAmountVaccinType() {
     }
     return requiredVaccin;
 }
-
 
 
 void VaccinationCenter::vaccinateCenter(std::ostream &stream) {

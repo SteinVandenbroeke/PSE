@@ -61,6 +61,17 @@ int Hub::getAmountVaccin() const {
     return totalVaccins;
 }
 
+int Hub::getTotalDelivery() const {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    int totalDeliveries = 0;
+
+    for (std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++) {
+        totalDeliveries += (*it).second->getDelivery();
+    }
+    return totalDeliveries;
+}
+
 const std::map<std::string, VaccinationCenter *> &Hub::getCentra() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
@@ -297,6 +308,62 @@ void Hub::printGraphical(std::ostream &stream) const {
     for (std::map<std::string, VaccinationCenter*>::const_iterator it = this->fcentra.begin(); it != this->fcentra.end(); it++) {
         it->second->printVaccins(stream);
     }
+}
+
+const Hub::stockToSizeReturn Hub::stockToSize() const {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+
+    // Min size
+    if (this->getAmountVaccin() == 0) {
+        return stockToSizeReturn(0.1125, 0.1575, 8, 0.1125);
+    }
+    else {
+        const double fac = static_cast<double>(ToPercent(this->getAmountVaccin(), this->getDelivery())) / 100;
+        return stockToSizeReturn(0.1125 * fac + 0.1125, 0.1575 * fac + 0.1575,
+                                 static_cast<int>(std::round(8 * fac)) + 8, 0.1125 * fac + 0.1125);
+    }
+}
+
+std::string Hub::generateIni(std::ofstream &stream, int & counterFigures, int & counterHub) const {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+
+    std::string x;
+
+    Hub::stockToSizeReturn data = stockToSize();
+
+    x.append("[Figure" + ToString(counterFigures) + "]" + "\n");
+    x.append("type = \"Cube\"\n");
+    x.append("scale = " + std::to_string(data.cubeScale) + "\n");
+    x.append("rotateX = 0\n");
+    x.append("rotateY = 0\n");
+    x.append("rotateZ = 0\n");
+    double positionX = static_cast<double>(counterHub) / 1.2;
+    x.append("center = (" + std::to_string(positionX) + ", 0, 0)\n");
+    x.append("color = (0, 0.6, 0.3)\n");
+    counterFigures++;
+    counterHub++;
+
+    x.append("\n");
+
+    x.append("[Figure" + ToString(counterFigures) + "]" + "\n");
+    x.append("type = \"Cone\"\n");
+    x.append("scale = " + std::to_string(data.coneScale) + "\n");
+    x.append("n = " + std::to_string(data.coneN) + "\n");
+    x.append("height = 1\n");
+    x.append("rotateX = 0\n");
+    x.append("rotateY = 0\n");
+    x.append("rotateZ = 0\n");
+    x.append("center = (" + std::to_string(positionX) + ", 0, " + std::to_string(data.coneCenterZ) + ")\n");
+    x.append("color = (0, 0.6, 0.4)\n");
+    counterFigures++;
+    counterHub++;
+
+    x.append("\n");
+
+    stream << x;
+    return "(" + std::to_string(positionX) + ", 0, 0)\n";
 }
 
 int Hub::totalVaccinCentraCapacity() {

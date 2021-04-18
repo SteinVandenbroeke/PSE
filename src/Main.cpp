@@ -14,7 +14,10 @@ int main() {
     try{
         s.importXmlFile("simulate_spec_renewal.xml", "knownTags_spec_10.xml" ,std::cerr);
         std::cout << "Done importing" << std::endl;
-        s.automaticSimulation(20, std::cout);
+//        s.automaticSimulation(20, std::cout);
+
+        s.generateIni("export.ini");
+
 /*
         s.simulateTransport(0, std::cout);
         s.getHub()[0]->printGraphical(std::cout);
