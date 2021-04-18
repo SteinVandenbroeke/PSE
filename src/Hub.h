@@ -47,8 +47,7 @@ public:
     Hub();
 
     /**
-     * \brief deconstructor constructor for a Hub object
-     *
+     * \brief deconstructor for a Hub object
      */
     ~Hub();
 
