@@ -8,6 +8,7 @@
 #include <iostream>
 #include <unistd.h>
 #include "Simulation.h"
+#include <sstream>
 
 int main() {
     Simulation s;
@@ -17,6 +18,8 @@ int main() {
 //        s.automaticSimulation(20, std::cout);
 
         s.generateIni("export.ini");
+
+
 
 /*
         s.simulateTransport(0, std::cout);

@@ -271,7 +271,7 @@ std::string VaccinationCenter::stockToSize() const {
     else {
         double scale = 0.05;
         scale += 0.07 * ToPercent(this->getVaccins(), fcapacity) / 100;
-        return "scale = " + std::to_string(scale) + "\n";
+        return "scale = " + ToString(scale) + "\n";
     }
 }
 
@@ -297,7 +297,7 @@ std::string VaccinationCenter::vaccinatedToColor() const {
 
         double red = 1.0 - a / 100;
         double green = 0.0 + a / 100;
-        return "color = (" + std::to_string(red) + ", " + std::to_string(green) + ", 0)\n";
+        return "color = (" + ToString(red) + ", " + ToString(green) + ", 0)\n";
     }
 }
 
@@ -317,7 +317,7 @@ std::pair<double, double> VaccinationCenter::generateIni(std::ofstream & stream,
     x.append("rotateY = 0\n");
     x.append("rotateZ = 0\n");
     double positionX = static_cast<double>(counterCenter) / 1.5 + (0 * 2);
-    x.append("center = (" + std::to_string(positionX) + ", " + "1.2" + ", " + "0" + ")\n");
+    x.append("center = (" + ToString(positionX) + ", " + "1.2" + ", " + "0" + ")\n");
     x.append(this->vaccinatedToColor());
 
     x.append("\n");

@@ -335,12 +335,12 @@ std::string Hub::generateIni(std::ofstream &stream, int & counterFigures, int & 
 
     x.append("[Figure" + ToString(counterFigures) + "]" + "\n");
     x.append("type = \"Cube\"\n");
-    x.append("scale = " + std::to_string(data.cubeScale) + "\n");
+    x.append("scale = " + ToString(data.cubeScale) + "\n");
     x.append("rotateX = 0\n");
     x.append("rotateY = 0\n");
     x.append("rotateZ = 0\n");
     double positionX = static_cast<double>(counterHub) / 1.2;
-    x.append("center = (" + std::to_string(positionX) + ", 0, 0)\n");
+    x.append("center = (" + ToString(positionX) + ", 0, 0)\n");
     x.append("color = (0, 0.6, 0.3)\n");
     counterFigures++;
     counterHub++;
@@ -349,13 +349,13 @@ std::string Hub::generateIni(std::ofstream &stream, int & counterFigures, int & 
 
     x.append("[Figure" + ToString(counterFigures) + "]" + "\n");
     x.append("type = \"Cone\"\n");
-    x.append("scale = " + std::to_string(data.coneScale) + "\n");
-    x.append("n = " + std::to_string(data.coneN) + "\n");
+    x.append("scale = " + ToString(data.coneScale) + "\n");
+    x.append("n = " + ToString(data.coneN) + "\n");
     x.append("height = 1\n");
     x.append("rotateX = 0\n");
     x.append("rotateY = 0\n");
     x.append("rotateZ = 0\n");
-    x.append("center = (" + std::to_string(positionX) + ", 0, " + std::to_string(data.coneCenterZ) + ")\n");
+    x.append("center = (" + ToString(positionX) + ", 0, " + ToString(data.coneCenterZ) + ")\n");
     x.append("color = (0, 0.6, 0.4)\n");
     counterFigures++;
     counterHub++;
@@ -363,7 +363,7 @@ std::string Hub::generateIni(std::ofstream &stream, int & counterFigures, int & 
     x.append("\n");
 
     stream << x;
-    return "(" + std::to_string(positionX) + ", 0, 0)\n";
+    return "(" + ToString(positionX) + ", 0, 0)\n";
 }
 
 int Hub::totalVaccinCentraCapacity() {

@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <string>
 #include <cmath>
+#include <sstream>
 
 #include "Utils.h"
 
@@ -81,6 +82,13 @@ std::string ToString( int x ) {
     std::string str( buf );
     delete[] buf;
     return str;
+}
+
+std::string ToString(double x) {
+
+    std::ostringstream sstream;
+    sstream << x;
+    return sstream.str();
 }
 
 int ToInt(std::string& s) {

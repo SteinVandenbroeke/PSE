@@ -200,8 +200,8 @@ void Simulation::generateIni(const std::string &path) const {
         std::pair<double, double> itPosition = it->second->generateIni(ini, counterFigures, counterCenter, maxHubX);
         centerPositions[it->first] = itPosition;
         // Write position data of center to string
-        centerPoints.append("point" + std::to_string(pointCounter) + " = (" + std::to_string(itPosition.first) + ", ");
-        centerPoints.append(std::to_string(itPosition.second) + ", 0)\n");
+        centerPoints.append("point" + ToString(pointCounter) + " = (" + ToString(itPosition.first) + ", ");
+        centerPoints.append(ToString(itPosition.second) + ", 0)\n");
         pointCounter++;
     }
 
@@ -212,16 +212,16 @@ void Simulation::generateIni(const std::string &path) const {
 
     for (std::vector<Hub*>::const_iterator it = this->fhub.begin(); it != this->fhub.end(); it++) {
 
-        hubPoints.append("point" + std::to_string(pointCounter) + " = ");
-        hubPoints.append((*it)->generateIni(ini, counterFigures, counterHub, centerPositions));
+        hubPoints.append("point" + ToString(pointCounter) + " = ");
+        hubPoints.append((*it)->generateIni(ini, counterFigures, counterHub));
         pointCounter++;
 
         for (std::map<std::string, VaccinationCenter*>::const_iterator ite = (*it)->getCentra().begin(); ite != (*it)->getCentra().end(); ite++) {
 
             int index = distance(centerPositions.begin(), centerPositions.find(ite->first));
 
-            lines.append("line" + std::to_string(lineCounter) + " = ");
-            lines.append("(" + std::to_string(currentHub) + "," + std::to_string(index) + ")\n");
+            lines.append("line" + ToString(lineCounter) + " = ");
+            lines.append("(" + ToString(currentHub) + "," + ToString(index) + ")\n");
             lineCounter++;
         }
         currentHub--;
@@ -237,8 +237,8 @@ void Simulation::generateIni(const std::string &path) const {
     x.append("center = (0, 0, 0)\n");
     x.append("color = (0, 0.4, 1.0)\n");
 
-    x.append("nrPoints = " + std::to_string(pointCounter) + "\n");
-    x.append("nrLines = " + std::to_string(lineCounter) + "\n");
+    x.append("nrPoints = " + ToString(pointCounter) + "\n");
+    x.append("nrLines = " + ToString(lineCounter) + "\n");
     x.append(centerPoints);
     x.append(hubPoints);
     x.append(lines);

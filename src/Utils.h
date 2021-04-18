@@ -26,6 +26,8 @@ bool FileCompare(const std::string leftFileName, const std::string rightFileName
 
 std::string ToString(int i);
 
+std::string ToString(double i);
+
 int ToInt(std::string&);
 
 int ToPercent(const int x, const int max);
