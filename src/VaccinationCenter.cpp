@@ -381,5 +381,12 @@ int VaccinationCenter::requiredAmountVaccin(VaccinationCenter::vaccinType *vacci
     return needed;
 }
 
+VaccinationCenter::~VaccinationCenter() {
+
+    for (std::map<const std::string, VaccinationCenter::vaccinType*>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
+        delete it->second;
+    }
+}
+
 VaccinationCenter::vaccinType::vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount)
         : fvaccinType(vaccinType), fvaccinTemperature(vaccinTemperature), fvaccinRenewal(vaccinRenewal), fvaccinAmount(vaccinAmount) {}

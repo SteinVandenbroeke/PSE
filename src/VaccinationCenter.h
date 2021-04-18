@@ -345,6 +345,8 @@ public:
      */
     std::pair<double, double> generateIni(std::ofstream & stream, int & counterFigures, int & counterCenter,
                                           const double & maxHubX) const;
+
+    virtual ~VaccinationCenter();
 };
 
 #endif //TTT_VACCINATIONCENTER_H
