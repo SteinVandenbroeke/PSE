@@ -382,3 +382,7 @@ VaccinationCenter::~VaccinationCenter() {
         delete it->second;
     }
 }
+
+VaccinationCenter::VaccinationCenter() {
+    ENSURE(!properlyInitialized(), "Constructor must end in properlyInitialized state");
+}
