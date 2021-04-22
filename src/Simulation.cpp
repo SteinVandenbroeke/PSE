@@ -8,12 +8,14 @@
 #include "Simulation.h"
 
 Simulation::Simulation() {
+
     fhub.clear();
     _initCheck = this;
     iter = 0;
 }
 
 Simulation::~Simulation() {
+
     for(std::map<std::string, VaccinationCenter*>::iterator centra = fcentra.begin(); centra != fcentra.end(); centra++){
         delete centra->second;
     }
@@ -38,6 +40,10 @@ const std::map<std::string, VaccinationCenter*> &Simulation::getFcentra() const 
 }
 
 void Simulation::importXmlFile(const char *path, const char *knownTagsPad, std::ostream &errorStream) {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    REQUIRE(FileExists(path), "The file that needs to be read must exist");
+    REQUIRE(!FileIsEmpty(path), "The file that needs to be read must not be empty");
 
     XMLReader xmlReader = XMLReader(path);
     this->fcentra = xmlReader.readVaccinationCenters(errorStream);
@@ -232,26 +238,6 @@ void Simulation::generateIni(const std::string &path) const {
     ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty");
 }
 
-
-/*
-void Simulation::simulateTransport(int currentDay, std::ostream &stream) {
-
-    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
-    REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
-
-    for (std::vector<Hub*>::iterator ite = this->fhub.begin(); ite != this->fhub.end(); ite++) {
-
-        std::map<std::string, VaccinationCenter *> centra = (*ite)->getCentra();
-        for (std::map<std::string, VaccinationCenter*>::iterator it = centra.begin(); it != centra.end(); it++) {
-            std::string centerName = it->first;
-            (*ite)->transportVaccin(centerName,currentDay, stream);
-        }
-    }
-
-    ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-}
- */
-
 void Simulation::simulateTransport(int currentDay, std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
@@ -338,7 +324,7 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream) {
             std::cout << "VaccinCount endDay: " << (*ite)->getAmountVaccin() << std::endl;
         }
 
-        exportFile("Day-" + ToString(iter));
+        exportFile("Day-" + ToString(iter) + ".txt");
         increaseIterator();
     }
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");

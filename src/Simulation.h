@@ -44,9 +44,6 @@ public:
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
-     *
-     * @post
-     * ENSURE(!properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
     ~Simulation();
 
@@ -73,7 +70,7 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      *
-     * @return  Vector with pointers to VaccinationCenters
+     * @return Vector with pointers to VaccinationCenters
      */
     const std::map<std::string, VaccinationCenter*> &getFcentra() const;
 
@@ -91,6 +88,8 @@ public:
      * \brief Imports a vaccin distribution simulation from a .xml file
      *
      * @param path The path to the .xml file that needs to read from
+     * @param knownTagsPad Path to known tags of .xml file
+     * @param errorStream Output-stream for errors, std = std::cerr
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
@@ -185,13 +184,14 @@ public:
      * @post
      * ENSURE(FileExists(), "File that has been written to must exist")
      * ENSURE(!FileIsEmpty(path), "File that has been written to must not be empty")
-     *
      */
     void generateIni(const std::string & path) const;
 
-
     /**
      * \brief Simulate transport of vaccins between Hub and centra
+     *
+     * @param stream Output-stream
+     * @param currentDay Current day of simulation
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
@@ -205,6 +205,8 @@ public:
     /**
     * \brief Simulate vaccination in centra
     *
+    * @param stream Output-stream
+    *
     * @pre
     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
@@ -215,24 +217,21 @@ public:
     void simulateVaccination(std::ostream &stream);
 
     /**
-    * \brief simulation from current day to given date
-    *
-    * @param day day of end date
-    * @param month month of end date
-    * @param year year of end date
-    * @param stream output stream for logging data
-     * @param days amount of days needed to be simulated
-    *
-    * @pre
-    * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
-    * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
-    * ENSURE(checkVaccins(),"Hub must have equal amount of vaccins as delivery on day zero")
-    * REQUIRE(it->second->getVaccins() == 0 && it->second->getVaccinated() == 0,
+     * \brief Simulation for amount of days
+     *
+     * @param days Amount of days needed to be simulated
+     * @param stream Output-stream
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+     * ENSURE(checkVaccins(),"Hub must have equal amount of vaccins as delivery on day zero")
+     * REQUIRE(it->second->getVaccins() == 0 && it->second->getVaccinated() == 0,
                 "Amount of vaccins or amount of vaccinated in a center must be 0 at begin of the simulation")
-    *
-    * @post
-    * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
-    */
+     *
+     * @post
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     */
     void automaticSimulation(int days, std::ostream &stream);
 
     /**
