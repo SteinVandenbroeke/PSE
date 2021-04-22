@@ -161,7 +161,7 @@ void Hub::transportVaccin(const std::string &centerName, int currentDay, std::os
         Vaccin* vaccin = NULL;
         vaccin = it->second;
 
-        vaccinsTransport = vaccin->calculateTransport(center, this->VaccinCentraCapacityRatio(center),currentDay, zeroVaccin);
+        vaccinsTransport = vaccin->calculateTransport(center, currentDay, zeroVaccin);
         cargo = vaccinsTransport / vaccin->getTransport();
         cargoTotal += cargo;
 

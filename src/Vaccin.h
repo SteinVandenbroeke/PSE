@@ -15,6 +15,9 @@
 
 class VaccinationCenter;
 
+/**
+ * \brief Class implemented for Vaccin object
+ */
 class Vaccin {
 
 private:
@@ -52,7 +55,7 @@ public:
            const int temp);
 
     /**
-     * \brief Check whether the Hub object is properly initialised
+     * \brief Check whether the Vaccin object is properly initialised
      *
      * @return true when object is properly initialised, false when not
      */
@@ -128,69 +131,36 @@ public:
      */
     int getVaccin() const;
 
-    int getVaccinSmart(int curentDay, double VaccinationCenterCapacityRatio) const;
-
     /**
-     * \brief Update the amount of vaccins
+     * \brief Update the amount of vaccins with delivery amount
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
-     *
-     * @post
-     *
      */
     void updateVaccins();
 
     /**
-     * \brief subtracts transportAmount from fvaccin
+     * \brief subtracts transportAmount from fvaccins
      *
      * @param transportAmount Amount of Vaccins that will be transported to a VaccinationCenter
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
-     *
-     * @post
-     *
+     * REQUIRE(transportAmount % this->getTransport() == 0, "Wrong transport amount, Cargo amount must be a int")
      */
     void updateVaccinsTransport(const int transportAmount);
 
     /**
-     * \brief Calculate how many cargo's there will be transported to a Center
-     *
-     * @param center Pointer to the VaccinationCenter which transport shall be calculated
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
-     *
-     * @post
-     * ENSURE(vaccinsTransport <= this->fvaccin, "Amount of vaccinsTransport is too high")
-     * ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high")
-     *
-     * @return Amount of cargo that will be transported as int
-     */
-     int calculateTransport(const VaccinationCenter * center,double VaccinationCenterCapacityRatio , int currentDay, bool zeroVaccin) const;
-
-    /**
-     * \brief Print out data of Vaccin
-     *
-     * @param stream Output stream
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
-     */
-    void print(std::ofstream& stream) const;
-
-    /**
-     * \brief Is vaccin under 0 degrees
+     * \brief Check if Vaccin must be stored under 0 degrees
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
      *
      * @return bool:
-     *              true -> (temp<0)
-     *              false -> (temp>=0)
+     *              true -> (temp < 0)
+     *              false -> (temp >= 0)
      */
-    bool ifUnderZero();
+    bool checkUnderZero();
 };
 
 #endif //VACCINDISTRIBUTOR_VACCIN_H

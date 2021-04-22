@@ -233,12 +233,12 @@ void VaccinationCenter::printGraphical(std::ostream &stream) const {
 
     stream << this->fname << ":" << "\n";
     stream << "\t" << "- " << "geavaccineerd " << ProgressBar(perVaccinated, 20) << " " <<  perVaccinated << "%" << "\n";
-    stream << "\t \t- " << "Totaal volledig: " << ": " << fvaccinated << "/" << fpopulation << "\n";
+//    stream << "\t \t- " << "Totaal volledig: " << ": " << fvaccinated << "/" << fpopulation << "\n";
     stream << "\t" << "- " << "vaccins       " << ProgressBar(perVaccin, 20)   << " "<< perVaccin << "%" <<"\n";
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
         stream << "\t \t- " << it->first << ": " << it->second->getVaccinAmount() << "\n";
         if(it->second->totalFirstVaccination() != 0)
-            stream << "\t \t \t- " << "eerste prik: " << ": " << it->second->totalFirstVaccination() << "\n";
+            stream << "\t \t \t- " << "Eerste prik: " << ": " << it->second->totalFirstVaccination() << "\n";
     }
 }
 
@@ -350,12 +350,12 @@ int VaccinationCenter::getOpenVaccinStorage(Vaccin* vaccin) {
     std::map<const std::string, vaccinType*> zeroVaccins;
     int openVaccinStorageTotal = this->getCapacity() * 2;
     int openVaccinStorage = openVaccinStorageTotal;
-    if(vaccin->ifUnderZero()){
+    if(vaccin->checkUnderZero()){
         openVaccinStorage = this->getCapacity();
     }
 
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
-        if((it->second->getVaccinTemperature() < 0 && vaccin->ifUnderZero()) || (it->second->getVaccinTemperature() > 0 && !vaccin->ifUnderZero())) {
+        if((it->second->getVaccinTemperature() < 0 && vaccin->checkUnderZero()) || (it->second->getVaccinTemperature() > 0 && !vaccin->ifUnderZero())) {
             openVaccinStorage -= it->second->getVaccinAmount();
         }
         openVaccinStorageTotal -= it->second->getVaccinAmount();

@@ -29,6 +29,7 @@ Vaccin::Vaccin(std::string& type, const int delivery, const int interval, const 
     this->ftemperature = temp;
     this->fvaccin = this->fdelivery; //amount of vaccins = delivery on day "zero" of simulation
     _initCheck = this;
+
     ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state");
 }
 
@@ -63,8 +64,10 @@ void Vaccin::updateVaccins() {
 }
 
 void Vaccin::updateVaccinsTransport(int transportAmount) {
+
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
-    REQUIRE(transportAmount%this->getTransport() == 0, "Wrong transport amount");
+    REQUIRE(transportAmount % this->getTransport() == 0, "Wrong transport amount, Cargo amount must be a int");
+
     // Update amount of vaccins in Hub and Center
     fvaccin -= transportAmount;
 }
@@ -73,45 +76,6 @@ const std::string &Vaccin::getType() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return ftype;
-}
-
-int Vaccin::calculateTransport(const VaccinationCenter *center, double VaccinationCenterCapacityRatio, int currentDay , bool zeroVaccin) const {
-
-    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-
-    int factor = 2;
-    if(zeroVaccin){
-        factor = 1;
-    }
-
-    int cargo = 0;
-    int vaccinsTransport = 0;
-
-    if (this->ftransport == 0) {
-        return vaccinsTransport;
-    }
-
-    while ((((this->ftransport * cargo) + center->getVaccins()) <= (factor * center->getCapacity())) &&
-           (this->ftransport * cargo) <= this->getVaccin()) {
-
-        if ((this->ftransport * cargo) + center->getVaccins() > center->getCapacity()) {
-
-            if (((this->ftransport * cargo) + center->getVaccins()) - center->getCapacity() < this->ftransport) {
-                vaccinsTransport = cargo * this->ftransport;
-                cargo ++;
-                break;
-            }
-            else {
-                break;
-            }
-        }
-        vaccinsTransport = cargo * this->ftransport;
-        cargo ++;
-    }
-
-    ENSURE(vaccinsTransport <= this->fvaccin, "Amount of vaccins to transport is too high");
-    ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccins to transport is too high");
-    return vaccinsTransport;
 }
 
 int Vaccin::getRenewal() const {
@@ -126,10 +90,8 @@ int Vaccin::getTemperature() const {
     return ftemperature;
 }
 
-bool Vaccin::ifUnderZero() {
+bool Vaccin::checkUnderZero() {
+
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
-    if(getTemperature() < 0){
-        return true;
-    }
-    return false;
+    return getTemperature() < 0;
 }
