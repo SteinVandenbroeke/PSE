@@ -60,17 +60,6 @@ int Hub::getAmountVaccin() const {
     return totalVaccins;
 }
 
-int Hub::getTotalDelivery() const {
-
-    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-    int totalDeliveries = 0;
-
-    for (std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++) {
-        totalDeliveries += (*it).second->getDelivery();
-    }
-    return totalDeliveries;
-}
-
 const std::map<std::string, VaccinationCenter *> &Hub::getCentra() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
@@ -272,12 +261,6 @@ void Hub::addVaccin(Vaccin* vaccin) {
     REQUIRE(getVaccins().find(vaccin->getType()) == getVaccins().end(), "Vaccin can't yet exist in Hub");
     this->fvaccins.insert(std::make_pair(vaccin->getType(), vaccin));
     ENSURE(getVaccins().find(vaccin->getType()) != getVaccins().end(), "Vaccin must be added to Hub");
-}
-
-const std::map<std::string, Vaccin *> &Hub::getVaccins() const {
-
-    REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
-    return fvaccins;
 }
 
 std::map<std::string, Vaccin *> &Hub::getVaccins() {
