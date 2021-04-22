@@ -24,32 +24,6 @@ private:
     std::map<std::string, Vaccin*> fvaccins; ///< Map with pointers to Vaccins of hub
     std::map<std::string, VaccinationCenter*> fcentra ; ///< Map with the connected VaccinationCenters
     Hub *_initCheck;
-
-    /**
-     * \brief Total vaccin capacity over all centers
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
-     *
-     * @post
-     * ENSURE(totalCapacity > 0, "Total capacity can't be zero or negative");
-     */
-    int totalVaccinCentraCapacity();
-
-    /**
-     * \brief Gives the ratio between the capacity of the given centrum en the total capacity
-     *
-     * @param center: the ratio of this VaccinationCenter
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
-     * REQUIRE(center->properlyInitialized(), "VaccinationCenter must be properly initialized");
-     *
-     * @post
-     *
-     */
-    double VaccinCentraCapacityRatio(VaccinationCenter* center);
-
 public:
     /**
      * \brief Non-default constructor for a Hub object
@@ -197,8 +171,6 @@ public:
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
      */
     void updateVaccins();
-
-    std::map<std::string, Vaccin*> getVaccinZero();
 
     /**
     * \brief Distribute vaccin fairly between the centers and over the days (withoud considering 2nd vaccination)

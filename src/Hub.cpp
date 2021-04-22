@@ -85,20 +85,6 @@ void Hub::updateVaccins() {
     }
 }
 
-std::map<std::string, Vaccin*> Hub::getVaccinZero() {
-
-    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-
-    std::map<std::string, Vaccin*> vaccinUnderZero;
-    for (std::map<std::string, Vaccin*>::iterator it = fvaccins.begin(); it != fvaccins.end(); it++) {
-
-        if (it->second->getTemperature() < 0) {
-            vaccinUnderZero.insert(*it);
-        }
-    }
-    return vaccinUnderZero;
-}
-
 void Hub::distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream) {
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(vaccinationCenter->properlyInitialized(), "VaccinationCenter must be properly initialized");
@@ -257,24 +243,6 @@ std::string Hub::generateIni(std::ofstream &stream, int & counterFigures, int & 
 
     stream << x;
     return "(" + ToString(positionX) + ", 0, 0)\n";
-}
-
-int Hub::totalVaccinCentraCapacity() {
-    int totalCapacity = 0;
-    for(std::map<std::string, VaccinationCenter*>::const_iterator it = fcentra.begin(); it != fcentra.end(); it++){
-        totalCapacity += (*it).second->getCapacity();
-    }
-    ENSURE(totalCapacity > 0, "Total capacity can't be zero or negative");
-    return totalCapacity;
-}
-
-double Hub::VaccinCentraCapacityRatio(VaccinationCenter* center) {
-    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-    REQUIRE(center->properlyInitialized(), "VaccinationCenter must be properly initialized");
-    REQUIRE(this->totalVaccinCentraCapacity() > 0, "totalVaccinCentraCapacity must be larger than 0");
-    double ration = (double)(center->getCapacity())/(double)(this->totalVaccinCentraCapacity());
-    ENSURE((double)(center->getCapacity())/(double)(this->totalVaccinCentraCapacity()) <= 1, "Ratio cannot be larger than 1");
-    return ration;
 }
 
 VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin) {

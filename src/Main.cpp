@@ -15,7 +15,7 @@ int main() {
     try{
         s.importXmlFile("simulate_spec_renewal.xml", "knownTags_spec_10.xml" ,std::cerr);
         std::cout << "Done importing" << std::endl;
-        s.automaticSimulation(20, std::cout);
+        s.automaticSimulation(100, std::cout);
 
         s.generateIni("export.ini");
     }
