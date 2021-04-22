@@ -355,7 +355,7 @@ int VaccinationCenter::getOpenVaccinStorage(Vaccin* vaccin) {
     }
 
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
-        if((it->second->getVaccinTemperature() < 0 && vaccin->checkUnderZero()) || (it->second->getVaccinTemperature() > 0 && !vaccin->ifUnderZero())) {
+        if((it->second->getVaccinTemperature() < 0 && vaccin->checkUnderZero()) || (it->second->getVaccinTemperature() > 0 && !vaccin->checkUnderZero())) {
             openVaccinStorage -= it->second->getVaccinAmount();
         }
         openVaccinStorageTotal -= it->second->getVaccinAmount();
