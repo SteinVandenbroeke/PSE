@@ -198,41 +198,7 @@ public:
      */
     void updateVaccins();
 
-    /**
-     * \brief Calculate how many cargo's there will be transported to a Center
-     *
-     * @param center Pointer to the VaccinationCenter which transport shall be calculated
-     * @param vaccin Pointer to Vaccin
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
-     *
-     * @post
-     * ENSURE(vaccinsTransport <= vaccin->getVaccin(), "Amount of vaccinsTransport is too high")
-     * ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high")
-     *
-     * @return Amount of cargo that will be transported as int
-     */
-    int calculateTransport(const VaccinationCenter* center, const Vaccin * vaccin) const;
-
     std::map<std::string, Vaccin*> getVaccinZero();
-
-    /**
-     * \brief Transport vaccin from Hub to VaccinationCenter and display information if needed
-     *
-     * @param centerName Name of the VaccinationCenter where will be transported to
-     * @param stream Output stream
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
-     * REQUIRE(center->getName() == centerName, "Name of found center and given center name must be equal")
-     * REQUIRE(fcentra.find(centerName) != fcentra.end(), "Given centerName must exist")
-     *
-     * @post
-     * ENSURE(vaccinsHub != fvaccin, "Amount of vaccins in Hub must be updated")
-     * ENSURE(vaccinsCenter != center->getVaccins(), "Amount of vaccins in VaccinationCenter must be updated")
-     */
-    void transportVaccin(const std::string &centerName, int currentDay, std::ostream &stream);
 
     /**
     * \brief Distribute vaccin fairly between the centers and over the days (withoud considering 2nd vaccination)
