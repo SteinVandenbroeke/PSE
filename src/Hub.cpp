@@ -249,8 +249,8 @@ void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &st
     // Display information of transport
     for (std::map<VaccinationCenter*, std::pair<int,int> >::iterator it = vaccinationCenterCargoTransport.begin(); it != vaccinationCenterCargoTransport.end(); it++) {
         int cargo = it->second.first;
-        int vaccinsTransport = it->second.second;
-        stream << "Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins)" << " van " << vaccin->getType() << " getransporteerd naar ";
+        int vaccinTransport = it->second.second;
+        stream << "Er werden " << cargo << " ladingen (" << vaccinTransport << " vaccins)" << " van " << vaccin->getType() << " getransporteerd naar ";
         stream << it->first->getName() << ".\n";
     }
 }
