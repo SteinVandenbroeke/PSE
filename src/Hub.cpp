@@ -236,7 +236,7 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* v
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
     REQUIRE(vaccinCount >= 0, "vaccinCount cannot be negative");
-    REQUIRE(getVaccins().find(vaccin->getType()) == getVaccins().end(), "Vaccin can't yet exist in Hub");
+    REQUIRE(getVaccins().find(vaccin->getType()) != getVaccins().end(), "Vaccin must exist in Hub");
 
     VaccinationCenter* center = this->getCentra().begin()->second;
     bool centerReached = false;

@@ -44,64 +44,106 @@ public:
      */
     vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount)
             : fvaccinType(vaccinType), fvaccinTemperature(vaccinTemperature), fvaccinRenewal(vaccinRenewal),
-              fvaccinAmount(vaccinAmount) {}
+              fvaccinAmount(vaccinAmount) {
+        this->_initCheck = this;
+    }
+
+    /**
+    * \brief Check whether the VaccinationCenter object is properly initialised
+    *
+    * @pre
+    * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+    *
+    * @return true when object is properly initialised, false when not
+    */
+    bool properlyInitialized() const {
+        return this == this->_initCheck;
+    }
 
     /**
      * \brief Get vaccinType name
      *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
      * @return Name as string
      */
     const std::string &getVaccinType() const {
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinType;
     }
 
     /**
      * \brief Get vaccinType temp
      *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
      * @return Temperature as int
      */
     int getVaccinTemperature() const {
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinTemperature;
     }
 
     /**
      * \brief Get vaccinType renewal time
      *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
      * @return Renewal as int
      */
     int getVaccinRenewal() const {
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinRenewal;
     }
 
     /**
      * \brief Get vaccinType amount
      *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
      * @return Amount of Vaccins as int
      */
     int &getVaccinAmount() {
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinAmount;
     }
 
     /**
      * \brief Get vaccinType amount const
      *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
      * @return Amount of Vaccins as int
      */
     int getVaccinAmount() const{
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinAmount;
     }
 
     /**
      * \brief Get vaccinType tracker
      *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
      * @return <days left of renewal, amount vaccinated> as std::map<int, int>
      */
     std::map<int, int> &getTracker() {
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return ftracker;
     }
 
     /**
      * \brief Update every renewal in tracker and merge if zero
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
      */
     void addDay(){
 
@@ -121,31 +163,40 @@ public:
     /**
      * \brief Insert at day amount of people vaccinated
      *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
      * @param day Day left of renewal to be inserted in map
      * @param requiredPeople Amount of vaccinated people to add or remove
      */
     void insertRequiredDay(int day, int requiredPeople){
-
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         ftracker[day] += requiredPeople;
     }
 
     /**
      * \brief Check if this Vaccin is of type renewal
      *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
      * @return true if renewal
      */
     bool isRenewal() const {
-
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return this->fvaccinRenewal != 0;
     }
 
     /**
      * \brief Gives total of people who got first Vaccin shot
      *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
      * @return Amount of people with first shot of Vaccin as int
      */
     int totalFirstVaccination() const {
-
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         int total = 0;
         for (std::map<int, int>::const_iterator it = ftracker.begin(); it != ftracker.end(); it++){
             total += it->second;
@@ -159,6 +210,7 @@ private:
     int fvaccinRenewal; ///< Interval between two shots of the Vaccin
     int fvaccinAmount; ///< Amount of vaccins of this type
     std::map<int, int> ftracker; ///< <Days till second shot, amount of people with first shot>
+    vaccinType *_initCheck;
 };
 
 private:
@@ -166,7 +218,6 @@ private:
     std::string faddress; ///< Address of the VaccinationCenter
     int fpopulation; ///< Amount of people the VaccinationCenter is responsible for
     int fcapacity; ///< Amount of peaple that can be vaccined on one day
-    //int fvaccins;  ///< Amount of vaccins currently in the VaccinationCenter
     int fvaccinated; ///< Amount of people already vaccinated
     std::map<const std::string, vaccinType*> fvaccinsType; ///< Map with name of vaccin type and pointer to vaccinType
     VaccinationCenter *_initCheck;
@@ -258,6 +309,16 @@ public:
     int getVaccins() const;
 
     /**
+     * \brief Get amount of vaccins of the VaccinationCenter
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Amount of vaccins of the VaccinationCenter as int
+     */
+    bool checkAmountVaccins() const;
+
+    /**
      * \brief Get amount of people vaccinated of the VaccinationCenter
      *
      * @pre
@@ -278,7 +339,7 @@ public:
      * REQUIRE(amount + this->getVaccins() <= (this->getCapacity() * 2), "Amount of vaccins must not exceed capacity of Center")
      *
      * @post
-     * ENSURE(this->getVaccins() <= fcapacity * 2, "Amount of vaccins must not exceed capacity of Center")
+     * ENSURE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity of Center");
      */
     void addVaccins(const int amount, const Vaccin* vaccin);
 
@@ -314,6 +375,7 @@ public:
      *
     * @pre
     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+    * REQUIRE(alreadyVaccinated >= 0, "alreadyVaccinated can't be negative");
     *
     * @return Amount of people that can be vaccinated as int with a 2nd shot of the Vaccin with renewal as int
     */
@@ -456,6 +518,9 @@ public:
                                           const double & maxHubX) const;
     /**
      * \brief Deconstructor for VaccinationCenter object
+     *
+     * @pre
+     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      */
     ~VaccinationCenter();
 };

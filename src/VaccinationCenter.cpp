@@ -59,10 +59,20 @@ int VaccinationCenter::getVaccins() const {
     int totalVaccins = 0;
 
     for (std::map<const std::string, vaccinType*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
-
         totalVaccins += it->second->getVaccinAmount();
     }
+    ENSURE(checkAmountVaccins(), "Wrong amount of vaccins");
     return totalVaccins;
+}
+
+bool VaccinationCenter::checkAmountVaccins() const {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    int totalVaccins = 0;
+    for (std::map<const std::string, vaccinType*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
+        totalVaccins += it->second->getVaccinAmount();
+    }
+    return totalVaccins <= getCapacity() * 2;
 }
 
 int VaccinationCenter::getVaccinated() const {
@@ -87,7 +97,7 @@ void VaccinationCenter::addVaccins(const int amount, const Vaccin* vaccin) {
     }
     this->fvaccinsType.find(vaccin->getType())->second->getVaccinAmount() += amount;
 
-    ENSURE(this->getVaccins() <= fcapacity * 2, "Amount of vaccins must not exceed capacity of Center");
+    ENSURE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity of Center");
 }
 
 int VaccinationCenter::calculateVaccinationAmount() {
@@ -110,6 +120,7 @@ int VaccinationCenter::calculateVaccinationAmount(const VaccinationCenter::vacci
 
 int VaccinationCenter::calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int alreadyVaccinated) {
 
+    REQUIRE(alreadyVaccinated >= 0, "alreadyVaccinated can't be negative");
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
     int smallest = std::min(vaccin->getVaccinAmount(), fcapacity);
@@ -162,10 +173,10 @@ std::map<const std::string, VaccinationCenter::vaccinType*> VaccinationCenter::g
     return zeroVaccins;
 }
 
-int VaccinationCenter::vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream, int alreadyVaccinatedTodau = 0) {
+int VaccinationCenter::vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream, int alreadyVaccinatedToday = 0) {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
-    REQUIRE(this->getVaccins() <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
+    REQUIRE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity");
 
     int vaccinationAmount = 0;
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::iterator it = vaccinsType.begin(); it != vaccinsType.end(); it++) {
@@ -176,7 +187,7 @@ int VaccinationCenter::vaccinateCenter(std::map<const std::string, vaccinType*> 
             // Population did not yet get a first Vaccin
             if (it->second->getTracker().empty()) {
 
-                int amountVaccinated = calculateVaccinationAmount(it->second, alreadyVaccinatedTodau);
+                int amountVaccinated = calculateVaccinationAmount(it->second, alreadyVaccinatedToday);
                 it->second->getVaccinAmount() -= amountVaccinated; // Substract from type vaccin
 
                 it->second->insertRequiredDay(it->second->getVaccinRenewal() * (-1), amountVaccinated);
@@ -204,8 +215,8 @@ int VaccinationCenter::vaccinateCenter(std::map<const std::string, vaccinType*> 
         }
         // Vaccin without renewal
         else {
-            vaccinationAmount += calculateVaccinationAmount(it->second, alreadyVaccinatedTodau);
-            it->second->getVaccinAmount() -= calculateVaccinationAmount(it->second, alreadyVaccinatedTodau);
+            vaccinationAmount += calculateVaccinationAmount(it->second, alreadyVaccinatedToday);
+            it->second->getVaccinAmount() -= calculateVaccinationAmount(it->second, alreadyVaccinatedToday);
         }
     }
     fvaccinated += vaccinationAmount;
@@ -330,7 +341,7 @@ std::map<std::string, int> VaccinationCenter::requiredAmountVaccinType() {
 void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
-    REQUIRE(this->getVaccins() <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
+    REQUIRE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity");
 
     int totaal = vaccinateCenter(getVaccin(true), stream);
     totaal += vaccinateCenter(getVaccin(false), stream, totaal);
@@ -341,6 +352,7 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 int VaccinationCenter::getOpenVaccinStorage(Vaccin* vaccin) {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(vaccin->properlyInitialized(), "VaccinationCenter must be properly initialized");
 
     //return: hoeveel vaccins er nog kunnen worden opgeslagen
     if((this->getPopulation() - this->getVaccinated()) <= this->getVaccins()){
@@ -377,7 +389,7 @@ int VaccinationCenter::requiredAmountVaccin(VaccinationCenter::vaccinType *vacci
 }
 
 VaccinationCenter::~VaccinationCenter() {
-
+    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
         delete it->second;
     }
