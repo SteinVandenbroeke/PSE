@@ -132,12 +132,27 @@ public:
     bool acceptedTags(std::ostream &errorStream, const char *knownTagsDocument);
 
     /**
-     * TODO
+     * \brief reads all hubs from xml file
+     *
+     * @param vaccinationCentras: map of all existing vaccinationCentras
+     * @param errorStream: all error streams
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
+     *
+     * @return std::vector<Hub*>: all hubs
      */
     std::vector<Hub*> readHubs(std::map<std::string, VaccinationCenter *> &vaccinationCentras,  std::ostream &errorStream);
 
     /**
-     * TODO
+     * \brief reads all VaccinationCenters from xml file
+     *
+     * @param errorStream: all error streams
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
+     *
+     * @return std::map<std::string, VaccinationCenter*>: all VaccinationCenters
      */
     std::map<std::string, VaccinationCenter*> readVaccinationCenters( std::ostream &errorStream);
 };

@@ -226,7 +226,7 @@ void Hub::distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::o
             stream << vaccinationCenter->getName() << ".\n";
         }
         else{
-            std::cerr << "FOUT" << std::endl;
+            std::cerr << "Centra not found" << std::endl;
         }
 
     }
