@@ -12,7 +12,7 @@ bool Vaccin::properlyInitialized() const {
     return Vaccin::_initCheck == this;
 }
 
-Vaccin::Vaccin(std::string& type, const int delivery, const int interval, const int transport, const int renewal,
+Vaccin::Vaccin(std::string type, const int delivery, const int interval, const int transport, const int renewal,
                const int temp) {
 
     REQUIRE(type != "", "type can't be empty");

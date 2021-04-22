@@ -91,3 +91,36 @@ TEST_F(UtilsTests, FileCompare) {
     EXPECT_FALSE(
             FileCompare("tests/inputTests/nonexisting.txt", "tests/inputTests/file1.txt"));
 }
+
+// Test the ToString() method
+TEST_F(UtilsTests, ToString) {
+
+    ASSERT_TRUE(DirectoryExists("tests/inputTests"));
+
+    EXPECT_EQ("5", ToString(5));
+    EXPECT_EQ("349", ToString(349));
+    EXPECT_EQ("-12", ToString(-12));
+
+    EXPECT_EQ("5.32", ToString(5.32));
+    EXPECT_EQ("5.2222", ToString(5.2222));
+    EXPECT_EQ("-5.2222", ToString(-5.2222));
+}
+
+// Test ToPercent() method
+TEST_F(UtilsTests, ToPercent) {
+
+    ASSERT_TRUE(DirectoryExists("tests/inputTests"));
+
+    EXPECT_EQ(10, ToPercent(12, 120));
+    EXPECT_EQ(1, ToPercent(312, 49679));
+}
+
+// Test ProgressBar() method
+TEST_F(UtilsTests, ProgressBar) {
+
+    ASSERT_TRUE(DirectoryExists("tests/inputTests"));
+
+    EXPECT_EQ("[==                  ]", ProgressBar(12, 20));
+    EXPECT_EQ("[                    ]", ProgressBar(1, 20));
+    EXPECT_EQ("[================    ]", ProgressBar(80, 20));
+}

@@ -13,7 +13,7 @@ VaccinationCenter::VaccinationCenter(const std::string &fname, const std::string
     fname(fname), faddress(faddress), fpopulation(fpopulation),fcapacity(fcapacity){
 
     REQUIRE(fname.length() > 0, "Name can't be empty");
-    REQUIRE(fname.length() > 0, "Adres can't be empty");
+    REQUIRE(faddress.length() > 0, "Adres can't be empty");
     REQUIRE(fpopulation >= 0, "Negative population'");
     REQUIRE(fcapacity >= 0, "Negative capacity");
 

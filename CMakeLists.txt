@@ -69,8 +69,8 @@ set(DEBUG_SOURCE_FILES
         src/Utils.cpp
         src/Utils.h
         src/VdUtilsTests.cpp
-        src/VdSimulateTests.cpp
-        src/VdXMLReaderTests.cpp
+#        src/VdSimulateTests.cpp
+#        src/VdXMLReaderTests.cpp
         src/Vaccin.cpp
         src/Vaccin.h)
 

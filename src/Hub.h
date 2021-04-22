@@ -41,7 +41,7 @@ public:
     Hub();
 
     /**
-     * \brief deconstructor for a Hub object
+     * \brief Deconstructor for a Hub object
      */
     ~Hub();
 
@@ -92,6 +92,7 @@ public:
      */
     int getAmountVaccin() const;
 
+//    TODO
     int getTotalDelivery() const;
 
     /**
@@ -174,10 +175,10 @@ public:
     void updateVaccins();
 
     /**
-    * \brief Distribute vaccin fairly between the centers and over the days (withoud considering 2nd vaccination)
+    * \brief Distribute vaccin fairly between the centers and over the days (without considering 2nd vaccination)
     *
-    * @param vaccin: viccin that needs to be disdributed
-    * @param currentDay: the current day of the simmulation
+    * @param vaccin: Vaccin that needs to be distributed
+    * @param currentDay: the current day of the simulation
     * @param stream: stream Output stream
     *
     * @pre
@@ -201,7 +202,7 @@ public:
     * REQUIRE(vaccinationCenter->properlyInitialized(), "VaccinationCenter must be properly initialized");
     *
     */
-    void distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream);
+    void distributeRequiredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream);
 
     /**
     * \brief Gives the most suitable VaccinationCenter for a specified amount of a vaccin type

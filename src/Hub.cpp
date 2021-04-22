@@ -8,6 +8,7 @@
 #include "Hub.h"
 
 Hub::Hub(){
+
     fcentra.clear();
     fvaccins.clear();
     _initCheck = this;
@@ -20,6 +21,7 @@ bool Hub::properlyInitialized() const {
 }
 
 int Hub::getDelivery() const {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalDelivery = 0;
     for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
@@ -29,6 +31,7 @@ int Hub::getDelivery() const {
 }
 
 int Hub::getInterval() const {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalInterval = 0;
     for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
@@ -38,6 +41,7 @@ int Hub::getInterval() const {
 }
 
 int Hub::getTransport() const {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalTransport = 0;
     for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
@@ -47,6 +51,7 @@ int Hub::getTransport() const {
 }
 
 int Hub::getAmountVaccin() const {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalVaccins = 0;
 
@@ -57,11 +62,13 @@ int Hub::getAmountVaccin() const {
 }
 
 std::map<std::string, VaccinationCenter *> &Hub::getCentra() {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return fcentra;
 }
 
 void Hub::addCenter(const std::string &name, VaccinationCenter *center) {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(center->properlyInitialized(), "VaccinationCenter must be properly initialized");
     REQUIRE(fcentra.find(name) == fcentra.end() ,"VaccinationCenter must not exist yet in map");
@@ -73,13 +80,15 @@ void Hub::addCenter(const std::string &name, VaccinationCenter *center) {
 }
 
 void Hub::updateVaccins() {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
         (*it).second->updateVaccins();
     }
 }
 
-void Hub::distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream) {
+void Hub::distributeRequiredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream) {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(vaccinationCenter->properlyInitialized(), "VaccinationCenter must be properly initialized");
     REQUIRE(vaccinationCenter->properlyInitialized(), "VaccinationCenter must be properly initialized");
@@ -112,6 +121,7 @@ void Hub::distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::o
 }
 
 void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &stream) {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(currentDay >= 0, "currentDay cannot be negative");
     REQUIRE(vaccin->properlyInitialized(), "VaccinationCenter must be properly initialized");
@@ -147,19 +157,24 @@ void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &st
 }
 
 void Hub::addVaccin(Vaccin* vaccin) {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
     REQUIRE(getVaccins().find(vaccin->getType()) == getVaccins().end(), "Vaccin can't yet exist in Hub");
+
     this->fvaccins.insert(std::make_pair(vaccin->getType(), vaccin));
+
     ENSURE(getVaccins().find(vaccin->getType()) != getVaccins().end(), "Vaccin must be added to Hub");
 }
 
 std::map<std::string, Vaccin *> &Hub::getVaccins() {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return fvaccins;
 }
 
 void Hub::print(std::ofstream &stream) const {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
 
     stream << "Hub (" << getAmountVaccin() << " vaccins)\n";
@@ -180,6 +195,7 @@ void Hub::printGraphical(std::ostream &stream) const {
 }
 
 const Hub::stockToSizeReturn Hub::stockToSize() const {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     //Min size
     if (this->getAmountVaccin() == 0) {
@@ -193,6 +209,7 @@ const Hub::stockToSizeReturn Hub::stockToSize() const {
 }
 
 std::string Hub::generateIni(std::ofstream &stream, int & counterFigures, int & counterHub) const {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
 
     std::string x;
@@ -233,6 +250,7 @@ std::string Hub::generateIni(std::ofstream &stream, int & counterFigures, int & 
 }
 
 VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin) {
+
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
     REQUIRE(vaccinCount >= 0, "vaccinCount cannot be negative");
@@ -256,6 +274,7 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* v
 }
 
 Hub::~Hub() {
+
     for(std::map<std::string, Vaccin*>::iterator vaccins = fvaccins.begin(); vaccins != fvaccins.end(); vaccins++){
         delete vaccins->second;
     }

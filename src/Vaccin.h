@@ -51,7 +51,7 @@ public:
      * @post
      * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
      */
-    Vaccin(std::string& type, const int delivery, const int interval, const int transport, const int renewal,
+    Vaccin(std::string type, const int delivery, const int interval, const int transport, const int renewal,
            const int temp);
 
     /**
