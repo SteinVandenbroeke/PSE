@@ -133,6 +133,69 @@ TEST_F(VaccinDistributorDomainTests, doubleVaccinationCenter) {
                  "VaccinationCenter must not exist yet in map");
 }
 
+/** TODO
+ * center add vaccins enzo
+ * print graphical
+ * print std::internal --> .txt file
+ *
+ */
+
+// Test print()
+TEST_F(VaccinDistributorDomainTests, PrintCenter) {
+
+    std::string testName = "PrintCenter";
+    std::ofstream ostream;
+    std::string fileName = "tests/domainTests/generatedOutput/generated" + testName + ".txt";
+    std::string fileNameCompare = "tests/domainTests/expectedOutput/expected" + testName + ".txt";
+    ostream.open(fileName.c_str());
+
+    VaccinationCenter *center = new VaccinationCenter("Flanders Expo", "Maaltekouter 1, 9051 Gent",
+                                                      75000, 5500);
+    EXPECT_TRUE(center->properlyInitialized());
+    EXPECT_EQ("Flanders Expo", center->getName());
+    EXPECT_EQ("Maaltekouter 1, 9051 Gent", center->getAddress());
+    EXPECT_EQ(75000, center->getPopulation());
+    EXPECT_EQ(5500, center->getCapacity());
+    EXPECT_EQ(0, center->getVaccins());
+    EXPECT_EQ(0, center->getVaccinated());
+
+    center->print(ostream);
+    ostream.close();
+
+    EXPECT_TRUE(FileExists(fileName));
+    EXPECT_TRUE(FileExists(fileNameCompare));
+    EXPECT_FALSE(FileIsEmpty(fileName));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+}
+
+// Test printGraphical()
+TEST_F(VaccinDistributorDomainTests, PrintGraphicalCenter) {
+
+    std::string testName = "PrintGraphicalCenter";
+    std::ofstream ostream;
+    std::string fileName = "tests/domainTests/generatedOutput/generated" + testName + ".txt";
+    std::string fileNameCompare = "tests/domainTests/expectedOutput/expected" + testName + ".txt";
+    ostream.open(fileName.c_str());
+
+    VaccinationCenter *center = new VaccinationCenter("Flanders Expo", "Maaltekouter 1, 9051 Gent",
+                                                      75000, 5500);
+    EXPECT_TRUE(center->properlyInitialized());
+    EXPECT_EQ("Flanders Expo", center->getName());
+    EXPECT_EQ("Maaltekouter 1, 9051 Gent", center->getAddress());
+    EXPECT_EQ(75000, center->getPopulation());
+    EXPECT_EQ(5500, center->getCapacity());
+    EXPECT_EQ(0, center->getVaccins());
+    EXPECT_EQ(0, center->getVaccinated());
+
+    center->printGraphical(ostream);
+    ostream.close();
+
+    EXPECT_TRUE(FileExists(fileName));
+    EXPECT_TRUE(FileExists(fileNameCompare));
+    EXPECT_FALSE(FileIsEmpty(fileName));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+}
+
 // Test addVaccin()
 TEST_F(VaccinDistributorDomainTests, addVaccin) {
 
@@ -211,8 +274,11 @@ TEST_F(VaccinDistributorDomainTests, doubleAddVaccin) {
     EXPECT_EQ(vaccin, hub.getVaccins().find("Pfizer")->second);
 
     Vaccin* vaccin1 = new Vaccin("Pfizer", 20000, 12, 1000, 2, 82);
+    EXPECT_FALSE(vaccin1->checkUnderZero());
     EXPECT_DEATH(hub.addVaccin(vaccin1), "Vaccin can't yet exist in Hub");
 }
+
+
 
 //// test calculateTransport()
 //TEST_F(VaccinDistributorDomainTests, calculateTransport) {
