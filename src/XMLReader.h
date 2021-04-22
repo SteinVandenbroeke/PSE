@@ -26,6 +26,7 @@ class XMLReader {
     TiXmlDocument* doc; // Pointer to TiXmlDocument
     XMLReader *_initCheck;
     std::list<std::pair<std::string, int> >* allowedTags;
+
     /**
      * \brief check's if the node with name 'name' is in the allowedTags list
      *

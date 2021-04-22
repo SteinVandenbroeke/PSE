@@ -316,7 +316,7 @@ public:
     void print(std::ostream &stream) const;
 
     /**
-     *\brief Prints out data of VaccinationCenter the fancy way with a progressbar
+     * \brief Prints out data of VaccinationCenter the fancy way with a progressbar
      *
      * @param stream Output stream
      *
@@ -324,16 +324,6 @@ public:
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      */
     void printGraphical(std::ostream &stream) const;
-
-    /**
-     * \brief Print data / vaccin
-     *
-     * @param stream Output stream
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
-     */
-    void printVaccins(std::ostream &stream) const;
 
     /**
      * \brief Gives the amount of vaccines needed for 2nd vaccination today

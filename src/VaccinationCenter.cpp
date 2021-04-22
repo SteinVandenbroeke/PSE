@@ -195,8 +195,6 @@ int VaccinationCenter::vaccinateCenter(std::map<const std::string, vaccinType*> 
                     }
 
                 }
-//                it->second.getTracker().erase(std::remove_if(it->second.getTracker().begin(), it->second.getTracker().end(),
-//                                                         check), it->second.getTracker().end());
             }
         }
         // Vaccin without renewal
@@ -218,29 +216,17 @@ void VaccinationCenter::print(std::ostream &stream) const {
     stream << (this->fpopulation - this->fvaccinated) << " inwoners niet gevaccineerd\n";
 }
 
+
 void VaccinationCenter::printGraphical(std::ostream &stream) const {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
-    // TODO - Geeft 200 % # vaccins wanneer = 2 * capacity? nee ik denk het ni
     int perVaccin = ToPercent(this->getVaccins(), fcapacity);
     int perVaccinated = ToPercent(fvaccinated, fpopulation);
 
-    if(perVaccin > 100) perVaccin = 100;
-
-    stream << this->fname << ":" << "\n";
-    stream << "\t" << "- " << "vaccins       " << ProgressBar(perVaccin, 20)   << " "<< perVaccin << "%" <<"\n";
-    stream << "\t" << "- " << "geavaccineerd " << ProgressBar(perVaccinated, 20) << " " <<  perVaccinated << "%" << "\n";
-}
-
-void VaccinationCenter::printVaccins(std::ostream &stream) const {
-
-    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
-
-    int perVaccin = ToPercent(this->getVaccins(), fcapacity);
-    int perVaccinated = ToPercent(fvaccinated, fpopulation);
-
-    if(perVaccin > 100) perVaccin = 100;
+    if(perVaccin > 100) {
+        perVaccin = 100;
+    }
 
     stream << this->fname << ":" << "\n";
     stream << "\t" << "- " << "geavaccineerd " << ProgressBar(perVaccinated, 20) << " " <<  perVaccinated << "%" << "\n";
@@ -251,7 +237,6 @@ void VaccinationCenter::printVaccins(std::ostream &stream) const {
         if(it->second->totalFirstVaccination() != 0)
             stream << "\t \t \t- " << "eerste prik: " << ": " << it->second->totalFirstVaccination() << "\n";
     }
-    stream << "---------------" << std::endl;
 }
 
 std::string VaccinationCenter::stockToSize() const {
@@ -327,7 +312,9 @@ std::pair<double, double> VaccinationCenter::generateIni(std::ofstream & stream,
 }
 
 std::map<std::string, int> VaccinationCenter::requiredAmountVaccinType() {
+
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
     std::map<std::string, int> requiredVaccin;
     for(std::map<const std::string, VaccinationCenter::vaccinType*>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
         if(requiredAmountVaccin(it->second) != 0) {
@@ -336,7 +323,6 @@ std::map<std::string, int> VaccinationCenter::requiredAmountVaccinType() {
     }
     return requiredVaccin;
 }
-
 
 void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 
@@ -349,7 +335,9 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 }
 
 int VaccinationCenter::getOpenVaccinStorage(Vaccin* vaccin) {
+
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
     //return: hoeveel vaccins er nog kunnen worden opgeslagen
     if((this->getPopulation() - this->getVaccinated()) <= this->getVaccins()){
         //indien er voldoende vaccins op vooraad zijn om iedereen te vaccineren
@@ -374,7 +362,9 @@ int VaccinationCenter::getOpenVaccinStorage(Vaccin* vaccin) {
 }
 
 int VaccinationCenter::requiredAmountVaccin(VaccinationCenter::vaccinType *vaccin) {
+
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
     int needed = vaccin->getTracker()[0] - vaccin->getVaccinAmount();
     if(needed < 0)
         needed = 0;

@@ -305,7 +305,7 @@ void Hub::printGraphical(std::ostream &stream) const {
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
 
     for (std::map<std::string, VaccinationCenter*>::const_iterator it = this->fcentra.begin(); it != this->fcentra.end(); it++) {
-        it->second->printVaccins(stream);
+        it->second->printGraphical(stream);
     }
 }
 
