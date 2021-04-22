@@ -120,8 +120,9 @@ public:
      * @param Vaccin Pointer to Vaccin object to add
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
-     * REQUIRE(getVaccins().find(vaccin->getType()) == getVaccins().end(), "Vaccin can't yet exist in Hub")
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+     * REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
+     * REQUIRE(getVaccins().find(vaccin->getType()) == getVaccins().end(), "Vaccin can't yet exist in Hub");
      *
      * @post
      * ENSURE(getVaccins().find(vaccin->getType()) != getVaccins().end(), "Vaccin must be added to Hub")
@@ -155,8 +156,8 @@ public:
      * @param center Pointer to VaccinationCenter object
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
-     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+     * REQUIRE(center->properlyInitialized(), "VaccinationCenter must be properly initialized");
      * REQUIRE(fcentra.find(name) == fcentra.end() ,"VaccinationCenter must not exist yet in map");
      *
      * @post
@@ -182,6 +183,7 @@ public:
     * @pre
     * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     * REQUIRE(currentDay >= 0, "currentDay cannot be negative");
+    * REQUIRE(vaccin->properlyInitialized(), "VaccinationCenter must be properly initialized");
     * REQUIRE(this->getVaccins().find(vaccin->getType()) != this->getVaccins().end(), "Given vaccin must exist");
     *
     */
@@ -196,6 +198,7 @@ public:
     * @pre
     * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     * REQUIRE(vaccinationCenter->properlyInitialized(), "VaccinationCenter must be properly initialized");
+    * REQUIRE(vaccinationCenter->properlyInitialized(), "VaccinationCenter must be properly initialized");
     *
     */
     void distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::ostream &stream);
@@ -209,6 +212,8 @@ public:
     * @pre
     * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     * REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
+    * REQUIRE(vaccinCount >= 0, "vaccinCount cannot be negative");
+    * REQUIRE(getVaccins().find(vaccin->getType()) == getVaccins().end(), "Vaccin can't yet exist in Hub");
     */
     VaccinationCenter* mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin);
 
