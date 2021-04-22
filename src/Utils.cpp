@@ -20,11 +20,13 @@
 Auxiliary functions for file manipulation.
 */
 bool DirectoryExists(const std::string dirname) {
+
     struct stat st;
     return stat(dirname.c_str(), &st) == 0;
 }
 
 bool FileExists(const std::string filename) {
+
     struct stat st;
     if (stat(filename.c_str(), &st) != 0) return false;
     std::ifstream f(filename.c_str());
@@ -38,12 +40,14 @@ bool FileExists(const std::string filename) {
 }
 
 bool FileIsEmpty(const std::string filename) {
+
     struct stat st;
     if (stat(filename.c_str(), &st) != 0) return true; // File does not exist; thus it is empty
     return st.st_size == 0;
 }
 
 bool FileCompare(const std::string leftFileName, const std::string rightFileName) {
+
     std::ifstream leftFile, rightFile;
     char leftRead, rightRead;
     bool result;
@@ -76,6 +80,7 @@ bool FileCompare(const std::string leftFileName, const std::string rightFileName
 }
 
 std::string ToString( int x ) {
+
     int length = snprintf( NULL, 0, "%d", x );
     char* buf = new char[length + 1];
     snprintf( buf, length + 1, "%d", x );
@@ -92,6 +97,7 @@ std::string ToString(double x) {
 }
 
 int ToInt(std::string& s) {
+
     for(unsigned long int i = 0; i < s.length(); i++){
         if(!isdigit(s[i]) && (s[i] != '-' && i == 0 )){
             throw Exception("Can't convert string to int");
@@ -101,11 +107,13 @@ int ToInt(std::string& s) {
 }
 
 int ToPercent(const int x, const int max) {
+
     double a = static_cast<double>(x) / max;
     return static_cast<int>(round(a * 100));
 }
 
 std::string ProgressBar(const int x, const int barWidth) {
+
     std::string progressBar = "[";
 
     double progress = static_cast<double>(x) / 100;

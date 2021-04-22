@@ -1,0 +1,14 @@
+Hub (-1000 vaccins)
+ -> AED Studios (0 vaccins)
+ -> De Zoerla (0 vaccins)
+ -> Flanders Expo (0 vaccins)
+ -> Park Spoor Oost (0 vaccins)
+
+Hub (1000 vaccins)
+ -> De Zoerla (0 vaccins)
+ -> Flanders Expo (0 vaccins)
+
+AED Studios: 21000 gevaccineerd, nog 35935 inwoners niet gevaccineerd
+De Zoerla: 23500 gevaccineerd, nog 25951 inwoners niet gevaccineerd
+Flanders Expo: 14500 gevaccineerd, nog 15500 inwoners niet gevaccineerd
+Park Spoor Oost: 10000 gevaccineerd, nog 50000 inwoners niet gevaccineerd
