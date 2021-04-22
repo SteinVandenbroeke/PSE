@@ -211,7 +211,7 @@ void Hub::distributeRequeredVaccins(VaccinationCenter* vaccinationCenter, std::o
             vaccin->updateVaccinsTransport(vaccinsTransport);
             vaccinationCenter->addVaccins(vaccinsTransport, vaccin);
 
-            stream << "(required) Er werden " << cargo << " ladingen (" << vaccinsTransport << " vaccins)" << " van " << vaccin->getType() << " getransporteerd naar ";
+            stream << "Er werden " << cargo << " nodige (voor 2de vaccinatie) ladingen (" << vaccinsTransport << " vaccins)" << " van " << vaccin->getType() << " getransporteerd naar ";
             stream << vaccinationCenter->getName() << ".\n";
         }
         else{
@@ -374,9 +374,10 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* v
             centerReached = true;
         }
     }
-    if(centerReached){
+    if(centerReached) {
         return center;
     }
+    return new VaccinationCenter();
 }
 
 Hub::~Hub() {

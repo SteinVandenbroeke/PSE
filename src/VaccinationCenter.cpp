@@ -379,5 +379,9 @@ VaccinationCenter::~VaccinationCenter() {
     }
 }
 
+VaccinationCenter::VaccinationCenter() {
+    ENSURE(!properlyInitialized(), "Constructor must not end in properlyInitialized state");
+}
+
 VaccinationCenter::vaccinType::vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount)
         : fvaccinType(vaccinType), fvaccinTemperature(vaccinTemperature), fvaccinRenewal(vaccinRenewal), fvaccinAmount(vaccinAmount) {}
