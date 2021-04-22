@@ -42,33 +42,69 @@ public:
      * @param vaccinRenewal Renewal time of Vaccin as int
      * @param vaccinAmount Amount of vaccins stored as int
      */
-    vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount);
+    vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount)
+            : fvaccinType(vaccinType), fvaccinTemperature(vaccinTemperature), fvaccinRenewal(vaccinRenewal),
+              fvaccinAmount(vaccinAmount) {}
 
+    /**
+     * \brief Get vaccinType name
+     *
+     * @return Name as string
+     */
     const std::string &getVaccinType() const {
         return fvaccinType;
     }
 
+    /**
+     * \brief Get vaccinType temp
+     *
+     * @return Temperature as int
+     */
     int getVaccinTemperature() const {
         return fvaccinTemperature;
     }
 
+    /**
+     * \brief Get vaccinType renewal time
+     *
+     * @return Renewal as int
+     */
     int getVaccinRenewal() const {
         return fvaccinRenewal;
     }
 
+    /**
+     * \brief Get vaccinType amount
+     *
+     * @return Amount of Vaccins as int
+     */
     int &getVaccinAmount() {
         return fvaccinAmount;
     }
 
+    /**
+     * \brief Get vaccinType amount const
+     *
+     * @return Amount of Vaccins as int
+     */
     int getVaccinAmount() const{
         return fvaccinAmount;
     }
 
+    /**
+     * \brief Get vaccinType tracker
+     *
+     * @return <days left of renewal, amount vaccinated> as std::map<int, int>
+     */
     std::map<int, int> &getTracker() {
         return ftracker;
     }
 
+    /**
+     * \brief Update every renewal in tracker and merge if zero
+     */
     void addDay(){
+
         std::map<int, int> newTracker;
         newTracker[0] = 0;
         for (std::map<int, int>::iterator it = ftracker.begin(); it != ftracker.end(); it++){
@@ -82,15 +118,34 @@ public:
         ftracker = newTracker;
     }
 
-    void insertRequerdDay(int day, int requiredPeaple){
-        ftracker[day] += requiredPeaple;
+    /**
+     * \brief Insert at day amount of people vaccinated
+     *
+     * @param day Day left of renewal to be inserted in map
+     * @param requiredPeople Amount of vaccinated people to add or remove
+     */
+    void insertRequiredDay(int day, int requiredPeople){
+
+        ftracker[day] += requiredPeople;
     }
 
+    /**
+     * \brief Check if this Vaccin is of type renewal
+     *
+     * @return true if renewal
+     */
     bool isRenewal() const {
+
         return this->fvaccinRenewal != 0;
     }
 
+    /**
+     * \brief Gives total of people who got first Vaccin shot
+     *
+     * @return Amount of people with first shot of Vaccin as int
+     */
     int totalFirstVaccination() const {
+
         int total = 0;
         for (std::map<int, int>::const_iterator it = ftracker.begin(); it != ftracker.end(); it++){
             total += it->second;
@@ -103,8 +158,7 @@ private:
     int fvaccinTemperature; ///< Temperature required to store the Vaccin
     int fvaccinRenewal; ///< Interval between two shots of the Vaccin
     int fvaccinAmount; ///< Amount of vaccins of this type
-    //std::vector<std::pair<int, int> > ftracker; ///< <Days till second shot, amount of people with first shot>
-    std::map<int, int> ftracker;
+    std::map<int, int> ftracker; ///< <Days till second shot, amount of people with first shot>
 };
 
 private:
@@ -114,11 +168,10 @@ private:
     int fcapacity; ///< Amount of peaple that can be vaccined on one day
     //int fvaccins;  ///< Amount of vaccins currently in the VaccinationCenter
     int fvaccinated; ///< Amount of people already vaccinated
-    std::map<const std::string, vaccinType*> fvaccinsType;
+    std::map<const std::string, vaccinType*> fvaccinsType; ///< Map with name of vaccin type and pointer to vaccinType
     VaccinationCenter *_initCheck;
 
 public:
-
     /**
     * \brief Non properlyInitialized center
     *
@@ -215,64 +268,67 @@ public:
     int getVaccinated() const;
 
     /**
-     * \brief Add amount of vaccins to Center
+     * \brief Add Vaccin to VaccinationCenter
      *
      * @param amount Amount of vaccins to be added
      * @param vaccin Pointer to Vaccin Object
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(amount + this->getVaccins() <= (this->getCapacity() * 2), "Amount of vaccins must not exceed capacity of Center")
      *
      * @post
-     * ENSURE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity of Center")
-     *
+     * ENSURE(this->getVaccins() <= fcapacity * 2, "Amount of vaccins must not exceed capacity of Center")
      */
     void addVaccins(const int amount, const Vaccin* vaccin);
 
     /**
-     * \brief Amount of peaple that can be vaccineded/day
+     * \brief Amount of people that can be vaccinated that day
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
-     * @return amount
+     * @return Amount of people that can be vaccinated as int
      */
     int calculateVaccinationAmount();
 
     /**
-     * \brief Amount of peaple that can be vaccineded/day
+     * \brief Amount of people that can be vaccinated that day considering renewal period of a Vaccin
+     *
+     * @param vaccin Pointer to vaccinType object
+     * @param alreadyVaccinated Amount of people already vaccinated with a first shot of the Vaccin
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
-     * @return amount
+     * @return Amount of people that can be vaccinated as int
      */
-    int calculateVaccinationAmount(const VaccinationCenter::vaccinType* vaccin, int alreadyVaccinedToDay) const;
+    int calculateVaccinationAmount(const VaccinationCenter::vaccinType* vaccin, int alreadyVaccinated) const;
 
     /**
-    * \brief Amount of people that need 2nd vaccination from specified type
+    * \brief Calculate amount of people that need 2nd vaccination from specified Vaccin and will check if more people
+    *        can be vaccinated if there are Vaccins left of the type
     *
-    * @param vaccin: the type
-    * @param vaccinated: amount of people already vaccinated
+    * @param vaccin Pointer to the vaccinType object
+    * @param alreadyVaccinated Amount of people that already got vaccinated with a first shot of the Vaccin
      *
     * @pre
     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
     *
-    * @return amount
+    * @return Amount of people that can be vaccinated as int with a 2nd shot of the Vaccin with renewal as int
     */
-    int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int vaccinated);
+    int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int alreadyVaccinated);
 
     /**
-    * \brief Function to update the days for 2nd vaccinations
+    * \brief Function to update the days remaining for people who already got a first shot of a Vaccin with renewal
     *
     * @pre
     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
-    *
     */
     void updateRenewal();
 
     /**
-    * \brief Gives a map of all vaccin or only the underZero vaccins
+    * \brief Gives a map of all Vaccins or only the Vaccins with temp under zero
     *
     * @param zeroVaccin: true -> only underZero vaccins
     *
@@ -280,39 +336,32 @@ public:
     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
     *
     * @return map<name,vaccin>
-    *
     */
     std::map<const std::string, vaccinType*> getVaccin(bool zeroVaccin) const;
 
     /**
-     * \brief Vacinate center, update fvaccins and fvaccins
+     * \brief Vaccinate center and update fvaccins
      *
      * @param stream Output stream
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
-     * REQUIRE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
-     *
-     * @param stream Output stream
-     *
+     * REQUIRE(this->getVaccins() <= fcapacity * 2, "Amount of vaccins must not exceed capacity")
      */
     void vaccinateCenter(std::ostream &stream);
 
     /**
-     * \brief Vacinate all vaccins of a given map
+     * \brief Vaccinate all vaccins in a given map
      *
-     * @param vaccinsType: map of vaccins
+     * @param vaccinsType Map of vaccins with name of vaccinType and pointer to vaccinType object
      * @param stream Output stream
-     * @param alreadyVaccinedToDay: amount of people already vaccinated
+     * @param alreadyVaccinatedTodau Amount of people already vaccinated today
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      * REQUIRE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
-     *
-     * @param stream Output stream
-     *
      */
-    int vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream,  int alreadyVaccinedToDay);
+    int vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream,  int alreadyVaccinatedTodau);
 
     /**
      * \brief Print out data of VaccinationCenter
@@ -325,7 +374,7 @@ public:
     void print(std::ostream &stream) const;
 
     /**
-     * \brief Prints out data of VaccinationCenter the fancy way with a progressbar
+     * \brief Prints out data of VaccinationCenter the fancy way with a progressbar and overview of all the Vaccin types
      *
      * @param stream Output stream
      *
@@ -340,22 +389,26 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
-     * @return map<naam vaccin, amount needed>
+     * @return map<name vaccin, amount needed>
      */
     std::map<std::string, int> requiredAmountVaccinType();
 
     /**
-     * \brief Gives the storage place for a specified vaccin
+     * \brief Gives the storage place for a specified Vaccin
+     *
+     * @param vaccin Pointer to Vaccin object
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
-     * @return how manny vaccins
+     * @return How many Vaccins needed
      */
     int getOpenVaccinStorage(Vaccin* vaccin);
 
     /**
-     * \brief Gives the amount of vaccines needed for 2nd vaccinantie today
+     * \brief Gives the amount of vaccines needed for 2nd vaccination of current day
+     *
+     * @param vaccin Pointer to vaccinType object
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
@@ -401,9 +454,10 @@ public:
      */
     std::pair<double, double> generateIni(std::ofstream & stream, int & counterFigures, int & counterCenter,
                                           const double & maxHubX) const;
-
+    /**
+     * \brief Deconstructor for VaccinationCenter object
+     */
     ~VaccinationCenter();
-
 };
 
 #endif //TTT_VACCINATIONCENTER_H
