@@ -295,8 +295,6 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream) {
     }
 
     while (iter < days) {
-
-        std::cout << "dag: " << iter << std::endl;
         for (std::vector<Hub*>::iterator it = fhub.begin(); it != fhub.end(); it++) {
 
             Hub* currentHub = (*it);
@@ -309,7 +307,6 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream) {
                     ite->second->updateVaccins();
                 }
             }
-            std::cout << "VaccinCount startday: " << currentHub->getAmountVaccin() << std::endl;
         }
 
         simulateTransport(iter, stream);
@@ -321,7 +318,6 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream) {
             for (std::map<std::string, VaccinationCenter*>::iterator it = centra.begin(); it != centra.end(); it++) {
                 it->second->updateRenewal();
             }
-            std::cout << "VaccinCount endDay: " << (*ite)->getAmountVaccin() << std::endl;
         }
 
         exportFile("Day-" + ToString(iter) + ".txt");

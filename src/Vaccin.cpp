@@ -114,19 +114,6 @@ int Vaccin::calculateTransport(const VaccinationCenter *center, double Vaccinati
     return vaccinsTransport;
 }
 
-void Vaccin::print(std::ofstream &stream) const {
-
-    REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
-
-    stream << "Type: " << ftype << "\n";
-    stream << "Delivery: " << fdelivery << "\n";
-    stream << "Interval: " << finterval << "\n";
-    stream << "Transport: " << ftransport << "\n";
-    stream << "Currentyly in stock: " << fvaccin << "\n";
-    stream << "Renewal: " << frenewal << "\n";
-    stream << "Temperature: " << ftemperature << "\n";
-}
-
 int Vaccin::getRenewal() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");

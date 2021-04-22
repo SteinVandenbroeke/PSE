@@ -17,38 +17,7 @@ int main() {
         std::cout << "Done importing" << std::endl;
         s.automaticSimulation(20, std::cout);
 
-//        s.generateIni("export.ini");
-
-
-
-/*
-        s.simulateTransport(0, std::cout);
-        s.getHub()[0]->printGraphical(std::cout);
-        s.simulateVaccination(std::cout);
-
-        for (std::map<std::string, VaccinationCenter*>::iterator it = s.getHub()[0]->getCentra().begin(); it != s.getHub()[0]->getCentra().end(); it++) {
-            it->second->updateRenewal();
-        }
-
-        for (std::map<std::string, Vaccin*>::iterator it = s.getHub()[0]->getVaccins().begin(); it != s.getHub()[0]->getVaccins().end(); it++) {
-            it->second->updateVaccins();
-        }
-        s.getHub()[0]->printGraphical(std::cout);
-
-        s.simulateTransport(1, std::cout);
-        s.simulateVaccination(std::cout);
-        std::cout << "############# VACCINATION REPORT #############" << std::endl;
-       s.getHub()[0]->printGraphical(std::cout);
-        s.simulateTransport(2, std::cout);
-        s.getHub()[0]->printGraphical(std::cout);
-        s.simulateVaccination(std::cout);
-        s.getHub()[0]->printGraphical(std::cout);
-        for (std::map<std::string, VaccinationCenter*>::iterator it = s.getHub()[0]->getCentra().begin(); it != s.getHub()[0]->getCentra().end(); it++) {
-            it->second->updateRenewal();
-        }
-        s.simulateVaccination(std::cout);
-
-*/
+        s.generateIni("export.ini");
     }
     catch (Exception ex) {
         std::cerr << ex.value() << std::endl;
