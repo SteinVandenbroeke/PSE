@@ -25,7 +25,29 @@ private:
     std::map<std::string, VaccinationCenter*> fcentra ; ///< Map with the connected VaccinationCenters
     Hub *_initCheck;
 
+    /**
+     * \brief Total vaccin capacity over all centers
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     *
+     * @post
+     * ENSURE(totalCapacity > 0, "Total capacity can't be zero or negative");
+     */
     int totalVaccinCentraCapacity();
+
+    /**
+     * \brief Gives the ratio between the capacity of the given centrum en the total capacity
+     *
+     * @param center: the ratio of this VaccinationCenter
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     * REQUIRE(center->properlyInitialized(), "VaccinationCenter must be properly initialized");
+     *
+     * @post
+     *
+     */
     double VaccinCentraCapacityRatio(VaccinationCenter* center);
 
 public:
@@ -37,12 +59,10 @@ public:
      * @param ftransport Amount of vaccins in each transport to a VaccinationCenter
      *
      * @pre
-     * REQUIRE(delivery >= 0, "Delivery can't be negative");
-     * REQUIRE(interval >= 0, "Interval can't be negative");
-     * REQUIRE(transport >= 0, "Transport can't be negative");
+     * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      *
      * @post
-     * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
+     * ENSURE((double)(center->getCapacity())/(double)(this->totalVaccinCentraCapacity()) <= 1, "Ratio cannot be larger than 1");
      */
     Hub();
 

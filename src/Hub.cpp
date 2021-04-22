@@ -20,7 +20,6 @@ bool Hub::properlyInitialized() const {
 }
 
 int Hub::getDelivery() const {
-
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalDelivery = 0;
     for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
@@ -30,7 +29,6 @@ int Hub::getDelivery() const {
 }
 
 int Hub::getInterval() const {
-
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalInterval = 0;
     for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
@@ -40,7 +38,6 @@ int Hub::getInterval() const {
 }
 
 int Hub::getTransport() const {
-
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalTransport = 0;
     for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
@@ -50,7 +47,6 @@ int Hub::getTransport() const {
 }
 
 int Hub::getAmountVaccin() const {
-
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalVaccins = 0;
 
@@ -61,7 +57,6 @@ int Hub::getAmountVaccin() const {
 }
 
 const std::map<std::string, VaccinationCenter *> &Hub::getCentra() const {
-
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return fcentra;
 }
@@ -353,11 +348,17 @@ int Hub::totalVaccinCentraCapacity() {
     for(std::map<std::string, VaccinationCenter*>::const_iterator it = fcentra.begin(); it != fcentra.end(); it++){
         totalCapacity += (*it).second->getCapacity();
     }
+    ENSURE(totalCapacity > 0, "Total capacity can't be zero or negative");
     return totalCapacity;
 }
 
 double Hub::VaccinCentraCapacityRatio(VaccinationCenter* center) {
-    return (double)(center->getCapacity())/(double)(this->totalVaccinCentraCapacity());
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    REQUIRE(center->properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(this->totalVaccinCentraCapacity() > 0, "totalVaccinCentraCapacity must be larger than 0");
+    double ration = (double)(center->getCapacity())/(double)(this->totalVaccinCentraCapacity());
+    ENSURE((double)(center->getCapacity())/(double)(this->totalVaccinCentraCapacity()) <= 1, "Ratio cannot be larger than 1");
+    return ration;
 }
 
 VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin) {
