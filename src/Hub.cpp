@@ -68,7 +68,6 @@ std::map<std::string, VaccinationCenter *> &Hub::getCentra() {
 }
 
 void Hub::addCenter(const std::string &name, VaccinationCenter *center) {
-
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(center->properlyInitialized(), "VaccinationCenter must be properly initialized");
     REQUIRE(fcentra.find(name) == fcentra.end() ,"VaccinationCenter must not exist yet in map");
@@ -80,45 +79,10 @@ void Hub::addCenter(const std::string &name, VaccinationCenter *center) {
 }
 
 void Hub::updateVaccins() {
-
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
         (*it).second->updateVaccins();
     }
-}
-
-int Hub::calculateTransport(const VaccinationCenter* center, const Vaccin * vaccin) const {
-
-    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-
-    int cargo = 0;
-    int vaccinsTransport = 0;
-
-    if (vaccin->getTransport() == 0) {
-        return vaccinsTransport;
-    }
-
-    while ((((vaccin->getTransport() * cargo) + center->getVaccins()) <= (2 * center->getCapacity())) &&
-           (vaccin->getTransport() * cargo) <= vaccin->getVaccin()) {
-
-        if ((vaccin->getTransport() * cargo) + center->getVaccins() > center->getCapacity()) {
-
-            if (((vaccin->getTransport() * cargo) + center->getVaccins()) - center->getCapacity() < vaccin->getTransport()) {
-                vaccinsTransport = cargo * vaccin->getTransport();
-                cargo ++;
-                break;
-            }
-            else {
-                break;
-            }
-        }
-        vaccinsTransport = cargo * vaccin->getTransport();
-        cargo ++;
-    }
-
-    ENSURE(vaccinsTransport <= vaccin->getVaccin(), "Amount of vaccinsTransport is too high");
-    ENSURE((vaccinsTransport <= (2 * center->getCapacity())), "Amount of vaccinsTransport is too high");
-    return vaccinsTransport;
 }
 
 std::map<std::string, Vaccin*> Hub::getVaccinZero() {
