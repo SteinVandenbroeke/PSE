@@ -391,7 +391,7 @@ public:
     *
     * @return Amount of people that can be vaccinated as int with a 2nd shot of the Vaccin with renewal as int
     */
-    int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int alreadyVaccinated);
+    int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int amountPeapleFirstVaccin, const int alreadyVaccinated);
 
     /**
     * \brief Function to update the days remaining for people who already got a first shot of a Vaccin with renewal
@@ -421,6 +421,9 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      * REQUIRE(this->getVaccins() <= fcapacity * 2, "Amount of vaccins must not exceed capacity")
+     *
+     * @post
+     * ENSURE(totaal <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
      */
     void vaccinateCenter(std::ostream &stream);
 
