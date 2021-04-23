@@ -57,6 +57,7 @@ public:
     * @return true when object is properly initialised, false when not
     */
     bool properlyInitialized() const {
+
         return this == this->_initCheck;
     }
 
@@ -69,6 +70,7 @@ public:
      * @return Name as string
      */
     const std::string &getVaccinType() const {
+
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinType;
     }
@@ -82,6 +84,7 @@ public:
      * @return Temperature as int
      */
     int getVaccinTemperature() const {
+
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinTemperature;
     }
@@ -95,6 +98,7 @@ public:
      * @return Renewal as int
      */
     int getVaccinRenewal() const {
+
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinRenewal;
     }
@@ -108,6 +112,7 @@ public:
      * @return Amount of Vaccins as int
      */
     int &getVaccinAmount() {
+
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinAmount;
     }
@@ -121,6 +126,7 @@ public:
      * @return Amount of Vaccins as int
      */
     int getVaccinAmount() const{
+
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinAmount;
     }
@@ -134,6 +140,7 @@ public:
      * @return <days left of renewal, amount vaccinated> as std::map<int, int>
      */
     std::map<int, int> &getTracker() {
+
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return ftracker;
     }
@@ -147,6 +154,7 @@ public:
      */
     void addDay(){
 
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         std::map<int, int> newTracker;
         newTracker[0] = 0;
         for (std::map<int, int>::iterator it = ftracker.begin(); it != ftracker.end(); it++){
@@ -170,6 +178,7 @@ public:
      * @param requiredPeople Amount of vaccinated people to add or remove
      */
     void insertRequiredDay(int day, int requiredPeople){
+
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         ftracker[day] += requiredPeople;
     }
@@ -183,6 +192,7 @@ public:
      * @return true if renewal
      */
     bool isRenewal() const {
+
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return this->fvaccinRenewal != 0;
     }
@@ -196,7 +206,9 @@ public:
      * @return Amount of people with first shot of Vaccin as int
      */
     int totalFirstVaccination() const {
+
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
+
         int total = 0;
         for (std::map<int, int>::const_iterator it = ftracker.begin(); it != ftracker.end(); it++){
             total += it->second;

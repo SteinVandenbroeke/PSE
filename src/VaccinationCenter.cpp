@@ -227,7 +227,7 @@ int VaccinationCenter::vaccinateCenter(std::map<const std::string, vaccinType*> 
 void VaccinationCenter::print(std::ostream &stream) const {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
-    stream << this->fname << ": " << this->fvaccinated << " gevaccineerd, nog ";
+    stream << this->fname << ": " << this->fvaccinated << " inwoners gevaccineerd, nog ";
     stream << (this->fpopulation - this->fvaccinated) << " inwoners niet gevaccineerd\n";
 }
 

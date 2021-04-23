@@ -160,6 +160,7 @@ TEST_F(VaccinDistributorDomainTests, PrintCenter) {
     EXPECT_EQ(0, center->getVaccinated());
 
     center->print(ostream);
+    center->printGraphical(ostream);
     ostream.close();
 
     EXPECT_TRUE(FileExists(fileName));
@@ -195,6 +196,132 @@ TEST_F(VaccinDistributorDomainTests, PrintGraphicalCenter) {
     EXPECT_FALSE(FileIsEmpty(fileName));
     EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
 }
+
+// Test VaccinationCenter::vaccinType
+TEST_F(VaccinDistributorDomainTests, VaccinType) {
+
+    std::string testName = "VaccinType";
+    std::ofstream ostream;
+    std::string fileName = "tests/domainTests/generatedOutput/generated" + testName + ".txt";
+    std::string fileNameCompare = "tests/domainTests/expectedOutput/expected" + testName + ".txt";
+    ostream.open(fileName.c_str());
+
+    VaccinationCenter *center = new VaccinationCenter("Flanders Expo", "Maaltekouter 1, 9051 Gent",
+                                                      75000, 5500);
+    EXPECT_TRUE(center->properlyInitialized());
+    EXPECT_EQ("Flanders Expo", center->getName());
+    EXPECT_EQ("Maaltekouter 1, 9051 Gent", center->getAddress());
+    EXPECT_EQ(75000, center->getPopulation());
+    EXPECT_EQ(5500, center->getCapacity());
+    EXPECT_EQ(0, center->getVaccins());
+    EXPECT_EQ(0, center->getVaccinated());
+
+    Vaccin* vaccin = new Vaccin("Pfizer", 45000, 12, 2000, 4, -15);
+
+    EXPECT_TRUE(vaccin->properlyInitialized());
+    EXPECT_EQ("Pfizer", vaccin->getType());
+    EXPECT_EQ(45000, vaccin->getDelivery());
+    EXPECT_EQ(12, vaccin->getInterval());
+    EXPECT_EQ(2000, vaccin->getTransport());
+    EXPECT_EQ(4, vaccin->getRenewal());
+    EXPECT_EQ(-15, vaccin->getTemperature());
+    EXPECT_TRUE(vaccin->checkUnderZero());
+    EXPECT_EQ(45000, vaccin->getVaccin());
+
+    EXPECT_DEATH(center->addVaccins(12000, vaccin), "Amount of vaccins must not exceed capacity of Center");
+    center->addVaccins(7500, vaccin);
+
+    EXPECT_EQ(7500, center->getVaccins());
+    EXPECT_EQ(5500, center->calculateVaccinationAmount());
+    EXPECT_EQ("Pfizer", center->getVaccin(true).begin()->first);
+    EXPECT_TRUE(center->getVaccin(true).begin()->second->properlyInitialized());
+    EXPECT_EQ("Pfizer", center->getVaccin(true).begin()->second->getVaccinType());
+    EXPECT_EQ(-15, center->getVaccin(true).begin()->second->getVaccinTemperature());
+    EXPECT_EQ(4, center->getVaccin(true).begin()->second->getVaccinRenewal());
+    EXPECT_EQ(7500, center->getVaccin(true).begin()->second->getVaccinAmount());
+    EXPECT_TRUE(center->getVaccin(true).begin()->second->getTracker().empty());
+    EXPECT_TRUE(center->getVaccin(true).begin()->second->isRenewal());
+    EXPECT_EQ(0, center->getVaccin(true).begin()->second->totalFirstVaccination());
+
+    Vaccin* vaccin1 = new Vaccin("Atrazenica", 20000, 12, 4000, 0, 11);
+
+    EXPECT_TRUE(vaccin1->properlyInitialized());
+    EXPECT_EQ("Atrazenica", vaccin1->getType());
+    EXPECT_EQ(20000, vaccin1->getDelivery());
+    EXPECT_EQ(12, vaccin1->getInterval());
+    EXPECT_EQ(4000, vaccin1->getTransport());
+    EXPECT_EQ(0, vaccin1->getRenewal());
+    EXPECT_EQ(11, vaccin1->getTemperature());
+    EXPECT_FALSE(vaccin1->checkUnderZero());
+    EXPECT_EQ(20000, vaccin1->getVaccin());
+
+    center->addVaccins(0, vaccin1);
+
+    center->print(ostream);
+    center->printGraphical(ostream);
+
+    EXPECT_TRUE(center->getVaccin(false).size() == 1);
+    EXPECT_TRUE(center->getVaccin(true).size() == 1);
+
+    center->addVaccins(2000, vaccin1);
+
+    EXPECT_TRUE(center->getVaccin(false).size() == 1);
+    EXPECT_TRUE(center->getVaccin(true).size() == 1);
+
+    EXPECT_EQ(9500, center->getVaccins());
+    EXPECT_EQ(5500, center->calculateVaccinationAmount());
+    EXPECT_EQ("Atrazenica", center->getVaccin(false).begin()->first);
+    EXPECT_TRUE(center->getVaccin(false).begin()->second->properlyInitialized());
+    EXPECT_EQ("Atrazenica", center->getVaccin(false).begin()->second->getVaccinType());
+    EXPECT_EQ(11, center->getVaccin(false).begin()->second->getVaccinTemperature());
+    EXPECT_EQ(0, center->getVaccin(false).begin()->second->getVaccinRenewal());
+    EXPECT_EQ(2000, center->getVaccin(false).begin()->second->getVaccinAmount());
+    EXPECT_FALSE(center->getVaccin(false).begin()->second->isRenewal());
+
+    EXPECT_EQ(0, center->requiredAmountVaccin(center->getVaccin(false).begin()->second));
+    EXPECT_EQ(0, center->requiredAmountVaccin(center->getVaccin(true).begin()->second));
+
+    EXPECT_EQ(1500, center->getOpenVaccinStorage(vaccin1));
+
+    // TODO
+    center->vaccinateCenter(ostream);
+    EXPECT_EQ(2000, center->getVaccinated());
+    EXPECT_EQ(2000, center->getVaccins());
+
+    center->print(ostream);
+    center->printGraphical(ostream);
+
+    EXPECT_EQ(2000, center->getVaccin(true).begin()->second->getVaccinAmount());
+    EXPECT_FALSE(center->getVaccin(true).begin()->second->getTracker().empty());
+    EXPECT_EQ(-4, center->getVaccin(true).begin()->second->getTracker().begin()->first);
+    EXPECT_EQ(5500, center->getVaccin(true).begin()->second->getTracker().begin()->second);
+    EXPECT_EQ(5500, center->getVaccin(true).begin()->second->totalFirstVaccination());
+
+    for (int i = 0; i != 4; i++) {
+        center->updateRenewal();
+    }
+
+    EXPECT_EQ("Pfizer", center->requiredAmountVaccinType().begin()->first);
+    EXPECT_EQ(3500, center->requiredAmountVaccin(center->getVaccin(true).begin()->second));
+
+    center->vaccinateCenter(ostream);
+
+    EXPECT_EQ(0, center->getVaccin(true).begin()->second->getVaccinAmount());
+    EXPECT_FALSE(center->getVaccin(true).begin()->second->getTracker().empty());
+    EXPECT_EQ(0, center->getVaccin(true).begin()->second->getTracker().begin()->first);
+    EXPECT_EQ(3500, center->getVaccin(true).begin()->second->getTracker().begin()->second);
+    EXPECT_EQ(3500, center->getVaccin(true).begin()->second->totalFirstVaccination());
+
+    EXPECT_EQ(0, center->getVaccins());
+    center->printGraphical(ostream);
+
+    ostream.close();
+    EXPECT_TRUE(FileExists(fileName));
+    EXPECT_TRUE(FileExists(fileNameCompare));
+    EXPECT_FALSE(FileIsEmpty(fileName));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+}
+
 
 // Test addVaccin()
 TEST_F(VaccinDistributorDomainTests, addVaccin) {
