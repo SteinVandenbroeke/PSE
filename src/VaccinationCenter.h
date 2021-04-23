@@ -384,14 +384,17 @@ public:
     *
     * @param vaccin Pointer to the vaccinType object
     * @param alreadyVaccinated Amount of people that already got vaccinated with a first shot of the Vaccin
-     *
+    * @param vaccinated Amount of people vaccinated that day
+    * @param vaccinsUsed Amount of vaccins used that day
+    *
     * @pre
     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
     * REQUIRE(alreadyVaccinated >= 0, "alreadyVaccinated can't be negative");
     *
     * @return Amount of people that can be vaccinated as int with a 2nd shot of the Vaccin with renewal as int
     */
-    int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int amountPeapleFirstVaccin, const int alreadyVaccinated);
+    int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int amountPeapleFirstVaccin,
+                                          const int alreadyVaccinated, int & vaccinated, int & vaccinsUsed);
 
     /**
     * \brief Function to update the days remaining for people who already got a first shot of a Vaccin with renewal
@@ -437,8 +440,10 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      * REQUIRE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
+     *
+     * @return std::pair<amount vaccinated, vaccins used>
      */
-    int vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream,  int alreadyVaccinatedTodau);
+    std::pair<int, int> vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream,  int alreadyVaccinatedTodau);
 
     /**
      * \brief Print out data of VaccinationCenter
@@ -529,7 +534,7 @@ public:
      *
      * @return x-value and y-value of the Cartesian coordinates of Center as pair of doubles
      */
-    std::pair<double, double> generateIni(std::ofstream & stream, int & counterFigures, int & counterCenter,
+    std::pair<double, double> generateIni(std::ofstream & stream, int counterFigures, int & counterCenter,
                                           const double & maxHubX) const;
     /**
      * \brief Deconstructor for VaccinationCenter object
