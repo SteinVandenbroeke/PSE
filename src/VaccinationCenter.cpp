@@ -355,12 +355,12 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
     int vaccinsUsed = 0;
 
     std::pair<int, int> i = vaccinateCenter(getVaccin(true), stream);
-    vaccinated += std::get<0>(i);
-    vaccinsUsed += std::get<1>(i);
+    vaccinated += i.first;
+    vaccinsUsed += i.second;
 
     i = vaccinateCenter(getVaccin(false), stream, vaccinsUsed);
-    vaccinated += std::get<0>(i);
-    vaccinsUsed += std::get<1>(i);
+    vaccinated += i.first;
+    vaccinsUsed +=i.second;
 
     ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
     stream << "Er werden " << vaccinated << " inwoners gevaccineerd in " << this->fname << ".\n";
