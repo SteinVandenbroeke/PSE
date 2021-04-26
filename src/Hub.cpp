@@ -114,9 +114,6 @@ void Hub::distributeRequiredVaccins(VaccinationCenter* vaccinationCenter, std::o
             stream << "Er werden " << cargo << " nodige (voor 2de vaccinatie) ladingen (" << vaccinsTransport << " vaccins)" << " van " << vaccin->getType() << " getransporteerd naar ";
             stream << vaccinationCenter->getName() << ".\n";
         }
-        else{
-            std::cerr << "Centra not found" << std::endl;
-        }
     }
 }
 

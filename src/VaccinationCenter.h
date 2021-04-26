@@ -178,9 +178,10 @@ public:
      * @param requiredPeople Amount of vaccinated people to add or remove
      */
     void insertRequiredDay(int day, int requiredPeople){
-
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
-        ftracker[day] += requiredPeople;
+        if(requiredPeople > 0){
+            ftracker[day] += requiredPeople;
+        }
     }
 
     /**
@@ -543,6 +544,10 @@ public:
      * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      */
     ~VaccinationCenter();
+
+
+
+    int totalWaitingForSeccondPrik();
 };
 
 #endif //TTT_VACCINATIONCENTER_H

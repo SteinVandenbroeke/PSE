@@ -141,6 +141,10 @@ int VaccinationCenter::calculateVaccinationAmountRenewal(VaccinationCenter::vacc
         int firstShot = std::min(smallest_, notVaccinated);
         firstShot = std::min(firstShot, this->getCapacity() - alreadyVaccinated);
 
+        if(fpopulation - (fvaccinated + totalWaitingForSeccondPrik() + secondShot) <= 0){
+            return 0;
+        }
+
         if (firstShot != 0) {
 
             vaccin->insertRequiredDay(vaccin->getVaccinRenewal() * (-1), firstShot);
@@ -189,7 +193,7 @@ std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::strin
         if (it->second->isRenewal()) {
             // Population did not yet get a first Vaccin
             if (it->second->getTracker().empty()) {
-                std::cout << "test1" << std::endl;
+                std::cout << "TEST" << std::endl;
                 int amountVaccinated = calculateVaccinationAmount(it->second, alreadyVaccinatedToday);
                 vaccinsUsed += amountVaccinated;
                 alreadyVaccinatedToday += amountVaccinated;
@@ -201,7 +205,6 @@ std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::strin
 
             // Population already got a first Vaccin
             else {
-                std::cout << "test2" << std::endl;
                 std::map<int, int> &alreadyVaccinated = it->second->getTracker();
 
                 for (std::map<int, int>::iterator ite = alreadyVaccinated.begin(); ite != alreadyVaccinated.end(); ite++) {
@@ -421,4 +424,12 @@ VaccinationCenter::~VaccinationCenter() {
 
 VaccinationCenter::VaccinationCenter() {
     ENSURE(!properlyInitialized(), "Constructor must end in properlyInitialized state");
+}
+
+int VaccinationCenter::totalWaitingForSeccondPrik() {
+    int totalFirstVaccineded = 0;
+    for(std::map<const std::string, vaccinType*>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
+        totalFirstVaccineded += (*it).second->totalFirstVaccination();
+    }
+    return totalFirstVaccineded;
 }
