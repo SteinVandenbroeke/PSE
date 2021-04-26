@@ -236,15 +236,6 @@ private:
 
 public:
     /**
-    * \brief Non properlyInitialized center
-    *
-    *
-    * @post
-    * ENSURE(!properlyInitialized(), "Constructor must end in properlyInitialized state")
-    */
-    VaccinationCenter();
-
-    /**
      * \brief Non-default constructor for a VaccinationCenter object
      *
      * @param name Name of the VaccinationCenter

@@ -320,7 +320,8 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream) {
             }
         }
 
-        exportFile("Day-" + ToString(iter) + ".txt");
+//        TODO
+//        exportFile("Day-" + ToString(iter) + ".txt");
         increaseIterator();
     }
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
