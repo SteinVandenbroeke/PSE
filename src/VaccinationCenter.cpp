@@ -114,7 +114,7 @@ int VaccinationCenter::calculateVaccinationAmount(const VaccinationCenter::vacci
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
     int notVaccinated = fpopulation - fvaccinated;
-    int smallest = std::min(vaccin->getVaccinAmount(), fcapacity - alreadyVaccinated);
+    int smallest = std::min(vaccin->getVaccinAmount(), getCapacity() - alreadyVaccinated);
     return std::min(smallest, notVaccinated);
 }
 
@@ -126,11 +126,12 @@ int VaccinationCenter::calculateVaccinationAmountRenewal(VaccinationCenter::vacc
 
     int smallest = std::min(vaccin->getVaccinAmount(), fcapacity);
     int secondShot = std::min(smallest, amountPeapleFirstVaccin);
+    secondShot = std::min(secondShot, this->getCapacity() - alreadyVaccinated);
 
     // No vaccins left over after vaccinating the already vaccinated population
     if (secondShot >= vaccin->getVaccinAmount()) {
 
-        return std::min(secondShot, this->getCapacity() - alreadyVaccinated);
+        return secondShot;
     }
     // Vaccins left over after vaccinating the already vaccinated population --> Distribute over population
     else {
@@ -138,6 +139,7 @@ int VaccinationCenter::calculateVaccinationAmountRenewal(VaccinationCenter::vacc
         int notVaccinated = fpopulation - (fvaccinated + secondShot);
         int smallest_ = std::min(vaccin->getVaccinAmount() - secondShot, fcapacity - secondShot);
         int firstShot = std::min(smallest_, notVaccinated);
+        firstShot = std::min(firstShot, this->getCapacity() - alreadyVaccinated);
 
         if (firstShot != 0) {
 
@@ -148,7 +150,7 @@ int VaccinationCenter::calculateVaccinationAmountRenewal(VaccinationCenter::vacc
         vaccin->getVaccinAmount() -= firstShot;
         vaccinsUsed += firstShot;
 
-        return std::min(secondShot, this->getCapacity() - alreadyVaccinated);
+        return secondShot;
     }
 }
 
@@ -183,15 +185,13 @@ std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::strin
     int vaccinated = 0;
     int vaccinsUsed = 0;
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::iterator it = vaccinsType.begin(); it != vaccinsType.end(); it++) {
-
         // Vaccin with renewal
         if (it->second->isRenewal()) {
-
             // Population did not yet get a first Vaccin
             if (it->second->getTracker().empty()) {
-
                 int amountVaccinated = calculateVaccinationAmount(it->second, alreadyVaccinatedToday);
                 vaccinsUsed += amountVaccinated;
+                alreadyVaccinatedToday += amountVaccinated;
 
                 it->second->getVaccinAmount() -= amountVaccinated; // Substract from type vaccin
 
@@ -200,7 +200,6 @@ std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::strin
 
             // Population already got a first Vaccin
             else {
-
                 std::map<int, int> &alreadyVaccinated = it->second->getTracker();
 
                 for (std::map<int, int>::iterator ite = alreadyVaccinated.begin(); ite != alreadyVaccinated.end(); ite++) {
@@ -211,6 +210,7 @@ std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::strin
                                                                                  alreadyVaccinatedToday, vaccinated,
                                                                                  vaccinsUsed);
                         vaccinated += amountVaccinated;
+                        alreadyVaccinatedToday += amountVaccinated;
                         it->second->getVaccinAmount() -= amountVaccinated;
 
                         // Check
@@ -225,6 +225,7 @@ std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::strin
         else {
             vaccinated += calculateVaccinationAmount(it->second, alreadyVaccinatedToday);
             it->second->getVaccinAmount() -= calculateVaccinationAmount(it->second, alreadyVaccinatedToday);
+            alreadyVaccinatedToday += vaccinated;
         }
     }
     fvaccinated += vaccinated;
@@ -358,11 +359,13 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
     vaccinated += i.first;
     vaccinsUsed += i.second;
 
+    ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
+
     i = vaccinateCenter(getVaccin(false), stream, vaccinsUsed);
     vaccinated += i.first;
-    vaccinsUsed +=i.second;
+    vaccinsUsed += i.second;
 
-    ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
+    ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity: ");
     stream << "Er werden " << vaccinated << " inwoners gevaccineerd in " << this->fname << ".\n";
 }
 
