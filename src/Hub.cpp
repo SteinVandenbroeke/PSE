@@ -130,7 +130,12 @@ void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &st
     int vaccinsTransport = vaccin->getTransport();
     for(int i = 0; i <= maxVaccinDeliveryDay; i+=vaccinsTransport){
         if(vaccin->getVaccin() >= vaccin->getTransport()){
+
             VaccinationCenter* center = mostSuitableVaccinationCenter(vaccin->getTransport(), vaccin);
+
+            if (center == NULL) {
+                continue;
+            }
 
             if(center->properlyInitialized()){
                 if(vaccinationCenterCargoTransport.find(center) == vaccinationCenterCargoTransport.end()){
@@ -267,7 +272,8 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* v
     if(centerReached) {
         return center;
     }
-    return new VaccinationCenter();
+    return NULL;
+//    return new VaccinationCenter();
 }
 
 Hub::~Hub() {
