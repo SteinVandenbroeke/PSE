@@ -100,6 +100,7 @@ void VaccinationCenter::addVaccins(const int amount, const Vaccin* vaccin) {
     ENSURE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity of Center");
 }
 
+//TODO verwijderen
 int VaccinationCenter::calculateVaccinationAmount() {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
@@ -127,15 +128,14 @@ int VaccinationCenter::calculateVaccinationAmountRenewal(VaccinationCenter::vacc
     int smallest = std::min(vaccin->getVaccinAmount(), fcapacity);
     int secondShot = std::min(smallest, amountPeapleFirstVaccin);
     secondShot = std::min(secondShot, this->getCapacity() - alreadyVaccinated);
+    secondShot = std::min(secondShot, this->getPopulation() - this->getVaccinated());
 
     // No vaccins left over after vaccinating the already vaccinated population
     if (secondShot >= vaccin->getVaccinAmount()) {
-
         return secondShot;
     }
     // Vaccins left over after vaccinating the already vaccinated population --> Distribute over population
     else {
-
         int notVaccinated = fpopulation - (fvaccinated + secondShot);
         int smallest_ = std::min(vaccin->getVaccinAmount() - secondShot, fcapacity - secondShot);
         int firstShot = std::min(smallest_, notVaccinated);
@@ -189,6 +189,7 @@ std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::strin
         if (it->second->isRenewal()) {
             // Population did not yet get a first Vaccin
             if (it->second->getTracker().empty()) {
+                std::cout << "test1" << std::endl;
                 int amountVaccinated = calculateVaccinationAmount(it->second, alreadyVaccinatedToday);
                 vaccinsUsed += amountVaccinated;
                 alreadyVaccinatedToday += amountVaccinated;
@@ -200,6 +201,7 @@ std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::strin
 
             // Population already got a first Vaccin
             else {
+                std::cout << "test2" << std::endl;
                 std::map<int, int> &alreadyVaccinated = it->second->getTracker();
 
                 for (std::map<int, int>::iterator ite = alreadyVaccinated.begin(); ite != alreadyVaccinated.end(); ite++) {
@@ -223,6 +225,7 @@ std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::strin
         }
         // Vaccin without renewal
         else {
+            std::cout << "test3" << std::endl;
             vaccinated += calculateVaccinationAmount(it->second, alreadyVaccinatedToday);
             it->second->getVaccinAmount() -= calculateVaccinationAmount(it->second, alreadyVaccinatedToday);
             alreadyVaccinatedToday += vaccinated;
@@ -361,11 +364,12 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 
     ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
 
-    i = vaccinateCenter(getVaccin(false), stream, vaccinsUsed);
+    i = vaccinateCenter(getVaccin(false), stream, vaccinated + vaccinsUsed);
     vaccinated += i.first;
     vaccinsUsed += i.second;
 
-    ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity: ");
+    ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
+    ENSURE(this->getVaccinated() <= this->getPopulation(), "Peaple that are vaccinated can not be more than the population");
     stream << "Er werden " << vaccinated << " inwoners gevaccineerd in " << this->fname << ".\n";
 }
 
@@ -416,6 +420,5 @@ VaccinationCenter::~VaccinationCenter() {
 }
 
 VaccinationCenter::VaccinationCenter() {
-
     ENSURE(!properlyInitialized(), "Constructor must end in properlyInitialized state");
 }
