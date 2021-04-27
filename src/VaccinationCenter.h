@@ -441,7 +441,7 @@ public:
      *
      * @return std::pair<amount vaccinated, vaccins used>
      */
-    std::pair<int, int> vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream,  int alreadyVaccinatedTodau);
+    std::pair<int, int> vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream);
 
     /**
      * \brief Print out data of VaccinationCenter

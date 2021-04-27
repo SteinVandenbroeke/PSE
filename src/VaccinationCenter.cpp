@@ -130,20 +130,11 @@ int VaccinationCenter::calculateVaccinationAmountRenewal(VaccinationCenter::vacc
     secondShot = std::min(secondShot, this->getCapacity() - alreadyVaccinated);
     secondShot = std::min(secondShot, this->getPopulation() - this->getVaccinated());
 
-//    std::cout << vaccin->getVaccinType() << std::endl;
-
     // No vaccins left over after vaccinating the already vaccinated population
     if (secondShot >= vaccin->getVaccinAmount()) {
-
-//        std::cout << "LOL" << std::endl;
-
         return secondShot;
     }
     else {
-
-//        std::cout << "VACCINS LEFT" << std::endl;
-//        std::cout << secondShot << std::endl;
-
         int notVaccinated = fpopulation - (fvaccinated + secondShot);
 
         if(notVaccinated - totalWaitingForSeccondPrik() - alreadyVaccinated >= 0){
@@ -187,7 +178,7 @@ std::map<const std::string, VaccinationCenter::vaccinType*> VaccinationCenter::g
     return zeroVaccins;
 }
 
-std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream, int alreadyVaccinatedToday = 0) {
+std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream, int alreadyVaccinatedToday = 0, int & vaccinated, int & vaccinsUsed) {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     REQUIRE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity");
@@ -195,7 +186,6 @@ std::pair<int, int> VaccinationCenter::vaccinateCenter(std::map<const std::strin
     int vaccinated = 0;
     int vaccinsUsed = 0;
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::iterator it = vaccinsType.begin(); it != vaccinsType.end(); it++) {
-
 
 
         // Vaccin with renewal
@@ -379,13 +369,13 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
     vaccinated += i.first;
     vaccinsUsed += i.second;
 
-    if(vaccinsUsed == 0 && getVaccins() > 0 && totalWaitingForSeccondPrik() + getVaccinated() == getPopulation()) {
-        for (std::map<const std::string, vaccinType *>::const_iterator it = fvaccinsType.begin();
-                it != fvaccinsType.end(); it++) {
-                    it->second->removeVaccin();
-        }
-        std::cout << "remove" << std::endl;
-    }
+//    TODO
+//    if(vaccinsUsed == 0 && getVaccins() > 0 && totalWaitingForSeccondPrik() + getVaccinated() == getPopulation()) {
+//        for (std::map<const std::string, vaccinType *>::const_iterator it = fvaccinsType.begin();
+//                it != fvaccinsType.end(); it++) {
+//                    it->second->removeVaccin();
+//        }
+//    }
 
     ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
     ENSURE(this->getVaccinated() <= this->getPopulation(), "Peaple that are vaccinated can not be more than the population");
@@ -398,7 +388,7 @@ int VaccinationCenter::getOpenVaccinStorage(Vaccin* vaccin) {
     REQUIRE(vaccin->properlyInitialized(), "VaccinationCenter must be properly initialized");
 
     //return: hoeveel vaccins er nog kunnen worden opgeslagen
-    if((this->getPopulation() - this->getVaccinated()) <= this->getVaccins()){
+    if((this->getPopulation() - this->getVaccinated() + totalWaitingForSeccondPrik()) <= this->getVaccins()){
         //indien er voldoende vaccins op vooraad zijn om iedereen te vaccineren
         return 0;
     }

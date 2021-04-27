@@ -96,12 +96,18 @@ void Hub::distributeRequiredVaccins(VaccinationCenter* vaccinationCenter, std::o
     vaccinationCenter->requiredAmountVaccinType();
     // Display information of transport
     std::map<std::string, int> requeredVaccins = vaccinationCenter->requiredAmountVaccinType();
+
     for (std::map<std::string, int>::iterator it = requeredVaccins.begin(); it != requeredVaccins.end(); it++) {
+
         if(fvaccins.find(it->first) != fvaccins.end()){
+
             Vaccin* vaccin = fvaccins[it->first];
             int vaccinsNeeded = it->second;
 
-            int cargo = ceil(vaccinsNeeded/vaccin->getTransport());
+
+
+//            TODO
+            int cargo = ceil(static_cast<double>(vaccinsNeeded) / vaccin->getTransport());
 
             while(vaccinationCenter->getOpenVaccinStorage(vaccin) < vaccin->getTransport() * cargo)
             {
@@ -141,6 +147,12 @@ void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &st
                 if(vaccinationCenterCargoTransport.find(center) == vaccinationCenterCargoTransport.end()){
                     vaccinationCenterCargoTransport[center] = std::make_pair(0,0);
                 }
+
+//                TODO
+                if (center->totalWaitingForSeccondPrik() + center->getVaccinated() == center->getPopulation()) {
+                    continue;
+                }
+
                 vaccinationCenterCargoTransport[center].first += 1;
                 vaccinationCenterCargoTransport[center].second += vaccinsTransport;
                 vaccin->updateVaccinsTransport(vaccinsTransport);
