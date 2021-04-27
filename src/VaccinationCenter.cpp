@@ -352,6 +352,16 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 
     this->fvaccinated += vaccinated;
 
+    if(vaccinsUsed == 0 && this->fvaccinated + this->totalWaitingForSeccondPrik() == this->getPopulation()){
+        for(std::map<const std::string, vaccinType*>::const_iterator it = fvaccinsType.begin();
+        it != fvaccinsType.end(); it++) {
+            if (it->second->totalFirstVaccination() <= 0 && it->second->getVaccinAmount() > 0) {
+                std::cout << "remove " << it->second->getVaccinAmount() << " van " << it->second->getVaccinType() << std::endl;
+                it->second->removeVaccin();
+            }
+        }
+    }
+
     ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
     ENSURE(this->getVaccinated() <= this->getPopulation(), "Peaple that are vaccinated can not be more than the population");
     stream << "Er werden " << vaccinated << " inwoners gevaccineerd in " << this->fname << ".\n";
