@@ -354,16 +354,6 @@ public:
     void addVaccins(const int amount, const Vaccin* vaccin);
 
     /**
-     * \brief Amount of people that can be vaccinated that day
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
-     *
-     * @return Amount of people that can be vaccinated as int
-     */
-    int calculateVaccinationAmount();
-
-    /**
      * \brief Amount of people that can be vaccinated that day considering renewal period of a Vaccin
      *
      * @param vaccin Pointer to vaccinType object
@@ -391,8 +381,8 @@ public:
     *
     * @return Amount of people that can be vaccinated as int with a 2nd shot of the Vaccin with renewal as int
     */
-    int calculateVaccinationAmountRenewal(VaccinationCenter::vaccinType* vaccin, const int amountPeapleFirstVaccin,
-                                          const int alreadyVaccinated, int & vaccinated, int & vaccinsUsed);
+    int calculateVaccinationAmountSecondShot(VaccinationCenter::vaccinType* vaccin, const int firstShot,
+                                             int & vaccinated, int & vaccinsUsed);
 
     /**
     * \brief Function to update the days remaining for people who already got a first shot of a Vaccin with renewal
@@ -441,7 +431,8 @@ public:
      *
      * @return std::pair<amount vaccinated, vaccins used>
      */
-    std::pair<int, int> vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, std::ostream &stream);
+    void vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, int & vaccinated,
+                                        int & vaccinsUsed);
 
     /**
      * \brief Print out data of VaccinationCenter
