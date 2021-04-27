@@ -362,13 +362,15 @@ int VaccinationCenter::getOpenVaccinStorage(Vaccin* vaccin) {
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     REQUIRE(vaccin->properlyInitialized(), "VaccinationCenter must be properly initialized");
 
-    // TODO
-    //return: hoeveel vaccins er nog kunnen worden opgeslagen
-    if((this->getPopulation() - this->getVaccinated()) <= this->getVaccins()){
-        //indien er voldoende vaccins op vooraad zijn om iedereen te vaccineren
 
+    std::map<std::string, int> requiredVaccins = this->requiredAmountVaccinType();
+    if((this->getPopulation() - this->getVaccinated() - this->totalWaitingForSeccondPrik()) <= this->getVaccins()
+    && (requiredVaccins.find(vaccin->getType()) == requiredVaccins.end() || requiredVaccins.find(vaccin->getType())->second == 0)){
+        //indien er voldoende vaccins op vooraad zijn om iedereen te vaccineren
         return 0;
     }
+
+
     std::map<const std::string, vaccinType*> zeroVaccins;
     int openVaccinStorageTotal = this->getCapacity() * 2;
     int openVaccinStorage = openVaccinStorageTotal;
