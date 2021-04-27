@@ -114,6 +114,10 @@ void Hub::distributeRequiredVaccins(VaccinationCenter* vaccinationCenter, std::o
             vaccin->updateVaccinsTransport(vaccinsTransport);
             vaccinationCenter->addVaccins(vaccinsTransport, vaccin);
 
+            if (cargo == 0 && vaccinsTransport == 0) {
+                return;
+            }
+
             stream << "Er werden " << cargo << " nodige (voor 2de vaccinatie) ladingen (" << vaccinsTransport << " vaccins)" << " van " << vaccin->getType() << " getransporteerd naar ";
             stream << vaccinationCenter->getName() << ".\n";
         }
@@ -145,7 +149,6 @@ void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &st
                     vaccinationCenterCargoTransport[center] = std::make_pair(0,0);
                 }
 
-//                TODO
                 if (center->totalWaitingForSeccondPrik() + center->getVaccinated() == center->getPopulation()) {
                     continue;
                 }
@@ -162,6 +165,7 @@ void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &st
     for (std::map<VaccinationCenter*, std::pair<int,int> >::iterator it = vaccinationCenterCargoTransport.begin(); it != vaccinationCenterCargoTransport.end(); it++) {
         int cargo = it->second.first;
         int vaccinTransport = it->second.second;
+
         stream << "Er werden " << cargo << " ladingen (" << vaccinTransport << " vaccins)" << " van " << vaccin->getType() << " getransporteerd naar ";
         stream << it->first->getName() << ".\n";
     }

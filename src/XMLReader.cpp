@@ -20,6 +20,7 @@ const char* XMLReader::getElementValue(TiXmlElement& elmt, const char *name) {
 }
 
 TiXmlElement *XMLReader::getElement(const char *name) {
+
     REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
 
     TiXmlElement* node = doc->FirstChildElement(name);
@@ -39,6 +40,7 @@ bool XMLReader::properlyInitialized() const {
 }
 
 bool XMLReader::acceptedTags(std::ostream &errorStream, const char *knownTagsDocument) {
+
     REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
 
     if(!FileExists(knownTagsDocument)){
@@ -57,18 +59,19 @@ bool XMLReader::acceptedTags(std::ostream &errorStream, const char *knownTagsDoc
     return checkTags(node,errorStream,0);
 }
 
-bool XMLReader::checkTags(TiXmlNode *node, std::ostream &errorStream, int diepte) const {
+bool XMLReader::checkTags(TiXmlNode *node, std::ostream &errorStream, int depth) const {
+
     REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
 
     bool rtn = true;
     while (node != NULL) {
         std::string naam = node->ToElement()->Value();
-        if (!checkTag(naam, diepte)) {
+        if (!checkTag(naam, depth)) {
             errorStream << "Error unknown tag: '" << node->ToElement()->Value() << "'" << std::endl;
             rtn = false;
         }
         if (node->FirstChildElement() != NULL) {
-            bool rtn1 = checkTags(node->FirstChildElement(),errorStream,diepte + 1);
+            bool rtn1 = checkTags(node->FirstChildElement(), errorStream, depth + 1);
             if(rtn == true)
                 rtn = rtn1;
 
@@ -79,6 +82,7 @@ bool XMLReader::checkTags(TiXmlNode *node, std::ostream &errorStream, int diepte
 }
 
 bool XMLReader::checkTag(std::string& name, int diepte) const {
+
     REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
 
     for(std::list<std::pair<std::string, int> >::iterator it = allowedTags->begin(); it !=  allowedTags->end(); it++){
@@ -90,6 +94,7 @@ bool XMLReader::checkTag(std::string& name, int diepte) const {
 }
 
 void XMLReader::knownTags(TiXmlNode *node,int diepte) {
+
     REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
 
     while (node != NULL) {
@@ -103,6 +108,7 @@ void XMLReader::knownTags(TiXmlNode *node,int diepte) {
 }
 
 std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *> &vaccinationCentras,  std::ostream &errorStream) {
+
     REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
 
     std::vector<Hub*> hubs;
@@ -172,6 +178,7 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
 }
 
 std::map<std::string, VaccinationCenter *> XMLReader::readVaccinationCenters(std::ostream &errorStream) {
+
     REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
     std::map<std::string, VaccinationCenter *> VaccinationCentera;
     // Insert all vaccination centers into 'centra'
@@ -181,6 +188,7 @@ std::map<std::string, VaccinationCenter *> XMLReader::readVaccinationCenters(std
             std::string name = getElementValue(*xmlCentrum, "naam");
             std::string address = getElementValue(*xmlCentrum, "adres");
             std::string inwonersString = getElementValue(*xmlCentrum, "inwoners");
+
             std::string capacityString = getElementValue(*xmlCentrum, "capaciteit");
             int population = ToInt(inwonersString);
             int capacity = ToInt(capacityString);
@@ -198,12 +206,15 @@ std::map<std::string, VaccinationCenter *> XMLReader::readVaccinationCenters(std
 }
 
 XMLReader::XMLReader(const char *filePad) {
-    REQUIRE(FileExists(filePad), "Cannot find file");
+
+    REQUIRE(FileExists(filePad), "File must exist on path");
     doc = NULL;
     doc = new TiXmlDocument();
+
     if(!doc->LoadFile(filePad)) {
         throw Exception(doc->ErrorDesc());
     }
     _initCheck = this;
+    ENSURE(properlyInitialized(), "Constructor must end in a properly initialized state");
 }
 

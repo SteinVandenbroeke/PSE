@@ -92,9 +92,6 @@ public:
      */
     int getAmountVaccin() const;
 
-//    TODO
-    int getTotalDelivery() const;
-
     /**
      * \brief Get vaccins of Hub object
      *

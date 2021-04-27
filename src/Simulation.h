@@ -221,6 +221,8 @@ public:
      *
      * @param days Amount of days needed to be simulated
      * @param stream Output-stream
+     * @param export Export a file with data every day
+     * @param ini Export a .ini file every day
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
@@ -232,7 +234,7 @@ public:
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      */
-    void automaticSimulation(int days, std::ostream &stream);
+    void automaticSimulation(int days, std::ostream &stream, bool exportFlag, bool ini);
 
     /**
      * \brief Increase iterator value

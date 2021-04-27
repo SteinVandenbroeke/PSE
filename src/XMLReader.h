@@ -24,8 +24,8 @@
 class XMLReader {
 
     TiXmlDocument* doc; // Pointer to TiXmlDocument
-    XMLReader *_initCheck;
     std::list<std::pair<std::string, int> >* allowedTags;
+    XMLReader *_initCheck;
 
     /**
      * \brief check's if the node with name 'name' is in the allowedTags list
@@ -37,7 +37,6 @@ class XMLReader {
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      *
      * @return bool true: node name is in list, false: node name is not in the list
-     *
      */
     bool checkTag(std::string& name, int depht) const;
 
@@ -46,7 +45,7 @@ class XMLReader {
      *
      * @param node: the start node
      * @param errorStream: the error stream to print
-     * @param diepte: starting depth
+     * @param depth: starting depth
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
@@ -54,19 +53,19 @@ class XMLReader {
      * @return bool true: node name is in list, false: node name is not in the list
      *
      */
-    bool checkTags(TiXmlNode *node, std::ostream &errorStream, int depht) const;
+    bool checkTags(TiXmlNode *node, std::ostream &errorStream, int depth) const;
 
     /**
      * \brief pushes all node names (sibling, child nodes) to the allowedTags list
      *
      * @param node: the start node
-     * @param depht: starting depth
+     * @param depth: starting depth
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      *
      */
-    void knownTags(TiXmlNode *node,int depht);
+    void knownTags(TiXmlNode *node,int depth);
 public:
     /**
      * \brief initialize XMLReader, en create a TiXmlDocument for filepad
@@ -74,8 +73,10 @@ public:
      * @param filePad location of the xml file
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(FileExists(filePad), "File must exist on path")
      *
+     * @post
+     * ENSURE(properlyInitialized(), "Constructor must end in a properly initialized state")
      */
     XMLReader(const char *filePad) ;
 

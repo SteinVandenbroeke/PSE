@@ -353,33 +353,36 @@ public:
      */
     void addVaccins(const int amount, const Vaccin* vaccin);
 
+
+    int calculateVaccinationAmount() const;
+
     /**
      * \brief Amount of people that can be vaccinated that day considering renewal period of a Vaccin
      *
      * @param vaccin Pointer to vaccinType object
-     * @param alreadyVaccinated Amount of people already vaccinated with a first shot of the Vaccin
+     * @param vaccinsUsed Amount of vaccins used already in center
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
      *
      * @return Amount of people that can be vaccinated as int
      */
-    int calculateVaccinationAmount(const VaccinationCenter::vaccinType* vaccin, int alreadyVaccinated) const;
+    int calculateVaccinationAmount(const VaccinationCenter::vaccinType* vaccin, int vaccinsUsed) const;
 
     /**
-    * \brief Calculate amount of people that need 2nd vaccination from specified Vaccin and will check if more people
-    *        can be vaccinated if there are Vaccins left of the type
+     * \brief Calculate amount of people that need a 2nd shot from the specified Vaccin, this function will also check
+     *        if more people can be vaccinated using this Vaccin.
     *
     * @param vaccin Pointer to the vaccinType object
-    * @param alreadyVaccinated Amount of people that already got vaccinated with a first shot of the Vaccin
-    * @param vaccinated Amount of people vaccinated that day
-    * @param vaccinsUsed Amount of vaccins used that day
+    * @param firstShot Amount of people that already received a first shot of the Vaccin
+    * @param vaccinated Total amount of people vaccinated that day by the center
+    * @param vaccinsUsed Total amount of vaccins used that day by the center
     *
     * @pre
+    * REQUIRE(alreadyVaccinated >= 0, "Amount of people recieved first shot must not be negative")
     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
-    * REQUIRE(alreadyVaccinated >= 0, "alreadyVaccinated can't be negative");
     *
-    * @return Amount of people that can be vaccinated as int with a 2nd shot of the Vaccin with renewal as int
+    * @return Amount of people that got a 2nd shot from the specified Vaccin as int
     */
     int calculateVaccinationAmountSecondShot(VaccinationCenter::vaccinType* vaccin, const int firstShot,
                                              int & vaccinated, int & vaccinsUsed);
@@ -405,16 +408,19 @@ public:
     std::map<const std::string, vaccinType*> getVaccin(bool zeroVaccin) const;
 
     /**
-     * \brief Vaccinate center and update fvaccins
+     * \brief Vaccinate center and update fvaccins, will also delete any Vaccins that may not be needed and will cause
+     *        problems for the Simulation
      *
      * @param stream Output stream
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
-     * REQUIRE(this->getVaccins() <= fcapacity * 2, "Amount of vaccins must not exceed capacity")
+     * REQUIRE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity")
      *
      * @post
-     * ENSURE(totaal <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
+     * ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity")
+     * ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity")
+     * ENSURE(this->getVaccinated() <= this->getPopulation(), "Peaple that are vaccinated can not be more than the population")
      */
     void vaccinateCenter(std::ostream &stream);
 
@@ -422,14 +428,13 @@ public:
      * \brief Vaccinate all vaccins in a given map
      *
      * @param vaccinsType Map of vaccins with name of vaccinType and pointer to vaccinType object
-     * @param stream Output stream
-     * @param alreadyVaccinatedTodau Amount of people already vaccinated today
+     * @param vaccinated Total amount of people vaccinated by the center that day
+     * @param vaccinsUsed Total amount of vaccins used by the center that day
      *
      * @pre
      * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
-     * REQUIRE(fvaccins <= fcapacity * 2, "Amount of vaccins must not exceed capacity");
+     * REQUIRE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity")
      *
-     * @return std::pair<amount vaccinated, vaccins used>
      */
     void vaccinateCenter(std::map<const std::string, vaccinType*> vaccinsType, int & vaccinated,
                                         int & vaccinsUsed);
@@ -525,6 +530,18 @@ public:
      */
     std::pair<double, double> generateIni(std::ofstream & stream, int counterFigures, int & counterCenter,
                                           const double & maxHubX) const;
+
+    /**
+     * \brief Calculate total amount of people wainting for a second shot for all the Vaccins the Center stores
+     *
+     * @pre
+     * ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return Total amount of people waiting for a second shot for all Vaccins as int
+     */
+
+    int totalWaitingForSeccondPrik() const;
+
     /**
      * \brief Deconstructor for VaccinationCenter object
      *
@@ -533,9 +550,6 @@ public:
      */
     ~VaccinationCenter();
 
-
-
-    int totalWaitingForSeccondPrik() const;
 };
 
 #endif //TTT_VACCINATIONCENTER_H

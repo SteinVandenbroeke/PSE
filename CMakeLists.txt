@@ -44,7 +44,10 @@ set(RELEASE_SOURCE_FILES
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES
         src/VdTests.cpp
-        src/VdDomainTests.cpp
+#        src/VdDomainTests.cpp
+#        src/VdUtilsTests.cpp
+        src/VdSimulateTests.cpp
+#        src/VdXMLReaderTests.cpp
         src/XMLReader.cpp
         src/XMLReader.h
         src/XMLReader.cpp
@@ -68,9 +71,6 @@ set(DEBUG_SOURCE_FILES
         src/DesignByContract.h
         src/Utils.cpp
         src/Utils.h
-        src/VdUtilsTests.cpp
-#        src/VdSimulateTests.cpp
-#        src/VdXMLReaderTests.cpp
         src/Vaccin.cpp
         src/Vaccin.h)
 

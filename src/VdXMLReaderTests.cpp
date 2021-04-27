@@ -31,56 +31,78 @@ protected:
 
 };
 
-// Test simulation with an "empty" XML file
-TEST_F(XMLReaderTest, emptyXml) {
+// Test with an "empty" XML file
+TEST_F(XMLReaderTest, EmptyXml) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/emptySimulation.xml"));
     EXPECT_THROW(XMLReader r("tests/inputTests/emptySimulation.xml"), Exception);
 }
 
-// Test simulation acceptedTags not all tags allowed
-TEST_F(XMLReaderTest, emptyAllowedTagTest) {
-    ASSERT_TRUE(FileExists("tests/inputTests/happyDays.xml"));
-    ASSERT_TRUE(FileExists("tests/inputTests/knownTagsNotComplete.xml"));
+// Test acceptedTags not all tags allowed for spec 1.0
+TEST_F(XMLReaderTest, EmptyAllowedTags1) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/happyDays1.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/knownTagsNotComplete1.xml"));
 
     std::ostringstream errorStream;
-    XMLReader r("tests/inputTests/happyDays.xml");
-    r.acceptedTags(errorStream, "tests/inputTests/knownTagsNotComplete.xml");
+    XMLReader r("tests/inputTests/happyDays1.xml");
+    r.acceptedTags(errorStream, "tests/inputTests/knownTagsNotComplete1.xml");
     EXPECT_EQ("Error unknown tag: 'naam'\nError unknown tag: 'naam'\nError unknown tag: 'naam'\nError unknown tag: 'naam'\n"
               ,errorStream.str());
 }
 
-// Test simulation acceptedTags file missing
-TEST_F(XMLReaderTest, noAllowedTagTest) {
+// Test acceptedTags not all tags allowed for spec 2.0
+TEST_F(XMLReaderTest, EmptyAllowedTags2) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/happyDays2.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/knownTagsNotComplete2.xml"));
+
+    std::ostringstream errorStream;
+    XMLReader r("tests/inputTests/happyDays2.xml");
+    r.acceptedTags(errorStream, "tests/inputTests/knownTagsNotComplete2.xml");
+    EXPECT_EQ("Error unknown tag: 'hernieuwing'\nError unknown tag: 'hernieuwing'\nError unknown tag: 'hernieuwing'\n"
+    ,errorStream.str());
+}
+
+// Test acceptedTags with file missing
+TEST_F(XMLReaderTest, NoAllowedTagTest) {
+
     ASSERT_TRUE(FileExists("tests/inputTests/basicXml.xml"));
-    ASSERT_TRUE(!FileExists("tests/inputTests/nofileonthisPath"));
+    ASSERT_TRUE(!FileExists("tests/inputTests/noFileOnThisPath"));
 
     std::ostringstream errorStream;
     XMLReader r("tests/inputTests/basicXml.xml");
-    r.acceptedTags(errorStream, "tests/inputTests/nofileonthisPath.xml");
+    r.acceptedTags(errorStream, "tests/inputTests/noFileOnThisPath.xml");
     EXPECT_EQ("cannot find file with accepted tags\nerror in find file with accepted tags: Failed to open file\nError unknown tag: 'Node1'\nError unknown tag: 'Node2'\nError unknown tag: 'Node3'\n"
     ,errorStream.str());
 }
 
-// Test simulation with wrong pad
-TEST_F(XMLReaderTest, noFileOnPath) {
+// Test with wrong pad
+TEST_F(XMLReaderTest, NoFileOnPath) {
 
-    ASSERT_TRUE(!FileExists("tests/inputTests/nofileonthisPath"));
-    std::ofstream ostream;
-    EXPECT_THROW(XMLReader r("tests/inputTests/nofileonthisPath"), Exception);
+    ASSERT_TRUE(!FileExists("tests/inputTests/noFileOnThisPath"));
+    EXPECT_DEATH(XMLReader r("tests/inputTests/noFileOnThisPath"), "File must exist on path");
 }
 
-// Test simulation with an "broken" XML file
-TEST_F(XMLReaderTest, brokenXml) {
+// Test with an "broken" XML file for spec 1
+TEST_F(XMLReaderTest, BrokenXml1) {
 
-    ASSERT_TRUE(FileExists("tests/inputTests/wrongClosingTagXml.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/wrongClosingTagXml1.xml"));
     std::ofstream ostream;
-    EXPECT_THROW(XMLReader r("tests/inputTests/wrongClosingTagXml.xml"), Exception);
+    EXPECT_THROW(XMLReader r("tests/inputTests/wrongClosingTagXml1.xml"), Exception);
 }
 
+// Test with an "broken" XML file for spec 2
+TEST_F(XMLReaderTest, BrokenXml2) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/wrongClosingTagXml2.xml"));
+    std::ofstream ostream;
+    EXPECT_THROW(XMLReader r("tests/inputTests/wrongClosingTagXml2.xml"), Exception);
+}
 
 // getElementValue happyday test
-TEST_F(XMLReaderTest, getElementValueHappyday) {
+TEST_F(XMLReaderTest, GetElementValueHappyday) {
+
     ASSERT_TRUE(FileExists("tests/inputTests/basicXml.xml"));
     XMLReader r("tests/inputTests/basicXml.xml");
     TiXmlElement* node = r.getElement("Node1");
@@ -89,7 +111,8 @@ TEST_F(XMLReaderTest, getElementValueHappyday) {
 }
 
 // getElementValue none existing name
-TEST_F(XMLReaderTest, getElementValueNonExstingName) {
+TEST_F(XMLReaderTest, GetElementValueNonExstingName) {
+
     ASSERT_TRUE(FileExists("tests/inputTests/basicXml.xml"));
     XMLReader r("tests/inputTests/basicXml.xml");
     TiXmlElement* node = r.getElement("Node1");
@@ -97,7 +120,8 @@ TEST_F(XMLReaderTest, getElementValueNonExstingName) {
 }
 
 // getElement happyday test
-TEST_F(XMLReaderTest, getElementHappyday) {
+TEST_F(XMLReaderTest, GetElementHappyday) {
+
     ASSERT_TRUE(FileExists("tests/inputTests/basicXml.xml"));
     XMLReader r("tests/inputTests/basicXml.xml");
     EXPECT_NO_THROW(r.getElement("Node1"));
@@ -106,17 +130,19 @@ TEST_F(XMLReaderTest, getElementHappyday) {
 }
 
 // getElement none existing name
-TEST_F(XMLReaderTest, getElementNullNode) {
+TEST_F(XMLReaderTest, GetElementNullNode) {
+
     ASSERT_TRUE(FileExists("tests/inputTests/basicXml.xml"));
     XMLReader r("tests/inputTests/basicXml.xml");
     EXPECT_THROW(r.getElement("Node5"), Exception);
 }
 
-// Test simulation with an "working" XML file
-TEST_F(XMLReaderTest, happyday) {
 
-    ASSERT_TRUE(FileExists("tests/inputTests/intenseInterval.xml"));
-    XMLReader r("tests/inputTests/intenseInterval.xml");
+// Test with an "working" XML file for spec 1
+TEST_F(XMLReaderTest, Happyday1) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/happyDays1.xml"));
+    XMLReader r("tests/inputTests/happyDays1.xml");
 
     EXPECT_NO_THROW(r.getElement("HUB"));
     TiXmlElement* elm = r.getElement("HUB");
@@ -124,6 +150,33 @@ TEST_F(XMLReaderTest, happyday) {
     EXPECT_NO_THROW(r.getElementValue(*elm, "levering"));
     std::string delivery = r.getElementValue(*elm, "levering");
     EXPECT_EQ(delivery, "93000");
+
+    EXPECT_NO_THROW(r.getElement("VACCINATIECENTRUM"));
+    elm = r.getElement("VACCINATIECENTRUM");
+
+    EXPECT_NO_THROW(r.getElementValue(*elm, "naam"));
+    std::string name = r.getElementValue(*elm, "naam");
+    EXPECT_EQ(name, "Park Spoor Oost");
+
+    EXPECT_THROW(r.getElementValue(*elm, "NOTEXISTS"), Exception);
+
+    EXPECT_THROW(r.getElement("NOTEXIST"), Exception);
+}
+
+// Test with an "working" XML file for spec 2
+TEST_F(XMLReaderTest, Happyday2) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/happyDays2.xml"));
+    XMLReader r("tests/inputTests/happyDays2.xml");
+
+    EXPECT_NO_THROW(r.getElement("HUB"));
+    TiXmlElement* elm = r.getElement("HUB");
+
+    TiXmlElement* xmlVaccin = elm->FirstChildElement("VACCIN");
+
+    EXPECT_NO_THROW(r.getElementValue(*xmlVaccin, "temperatuur"));
+    std::string temperature = r.getElementValue(*xmlVaccin, "temperatuur");
+    EXPECT_EQ(temperature, "-70");
 
     EXPECT_NO_THROW(r.getElement("VACCINATIECENTRUM"));
     elm = r.getElement("VACCINATIECENTRUM");

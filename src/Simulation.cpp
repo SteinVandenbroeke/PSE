@@ -282,7 +282,7 @@ void Simulation::increaseIterator() {
     iter ++;
 }
 
-void Simulation::automaticSimulation(const int days, std::ostream &stream) {
+void Simulation::automaticSimulation(const int days, std::ostream &stream, bool exportFlag, bool ini) {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
@@ -315,15 +315,19 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream) {
         simulateVaccination(stream);
 
         for (std::vector<Hub*>::iterator ite = this->fhub.begin(); ite != this->fhub.end(); ite++) {
-            (*ite)->printGraphical(std::cout);
+            (*ite)->printGraphical(stream);
             std::map<std::string, VaccinationCenter *> centra = (*ite)->getCentra();
             for (std::map<std::string, VaccinationCenter*>::iterator it = centra.begin(); it != centra.end(); it++) {
                 it->second->updateRenewal();
             }
         }
 
-//        TODO
-//        exportFile("Day-" + ToString(iter) + ".txt");
+        if (exportFlag) {
+            exportFile("Day-" + ToString(iter) + ".txt");
+        }
+        if (ini) {
+            generateIni("Day-" + ToString(iter) + ".ini");
+        }
         increaseIterator();
     }
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");

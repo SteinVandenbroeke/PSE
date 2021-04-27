@@ -100,6 +100,12 @@ void VaccinationCenter::addVaccins(const int amount, const Vaccin* vaccin) {
     ENSURE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity of Center");
 }
 
+int VaccinationCenter::calculateVaccinationAmount() const {
+
+    int notVaccinated = this->fpopulation - (this->fvaccinated + totalWaitingForSeccondPrik());
+    int smallest = std::min(this->getVaccins(), this->getCapacity());
+    return std::min(smallest, notVaccinated);
+}
 
 int VaccinationCenter::calculateVaccinationAmount(const VaccinationCenter::vaccinType* vaccin, int vaccinsUsed) const {
 
@@ -241,7 +247,7 @@ void VaccinationCenter::printGraphical(std::ostream &stream) const {
     }
 
     stream << this->fname << ":" << "\n";
-    stream << "\t" << "-  geavaccineerd " << ProgressBar(perVaccinated, 20) << " " <<  perVaccinated << "%" << ": " << fvaccinated << "/" << fpopulation << "\n";
+    stream << "\t" << "- geavaccineerd " << ProgressBar(perVaccinated, 20) << " " <<  perVaccinated << "%" << ": " << fvaccinated << "/" << fpopulation << "\n";
 //    stream << "\t \t- " << "Totaal volledig: " << ": " << fvaccinated << "/" << fpopulation << "\n";
     stream << "\t" << "- " << "vaccins       " << ProgressBar(perVaccin, 20)   << " "<< perVaccin << "%" <<"\n";
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
@@ -356,7 +362,9 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
         for(std::map<const std::string, vaccinType*>::const_iterator it = fvaccinsType.begin();
         it != fvaccinsType.end(); it++) {
             if (it->second->totalFirstVaccination() <= 0 && it->second->getVaccinAmount() > 0) {
-                std::cout << "remove " << it->second->getVaccinAmount() << " van " << it->second->getVaccinType() << std::endl;
+
+                stream << "Er werden " << it->second->getVaccinAmount() << " onodige vaccins van " << it->second->getVaccinType();
+                stream << " verwijderd." << std::endl;
                 it->second->removeVaccin();
             }
         }
@@ -364,6 +372,10 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 
     ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
     ENSURE(this->getVaccinated() <= this->getPopulation(), "Peaple that are vaccinated can not be more than the population");
+
+    if (vaccinated == 0) {
+        return;
+    }
     stream << "Er werden " << vaccinated << " inwoners gevaccineerd in " << this->fname << ".\n";
 }
 
@@ -379,7 +391,6 @@ int VaccinationCenter::getOpenVaccinStorage(Vaccin* vaccin) {
         //indien er voldoende vaccins op vooraad zijn om iedereen te vaccineren
         return 0;
     }
-
 
     std::map<const std::string, vaccinType*> zeroVaccins;
     int openVaccinStorageTotal = this->getCapacity() * 2;
@@ -412,13 +423,18 @@ int VaccinationCenter::requiredAmountVaccin(VaccinationCenter::vaccinType *vacci
 }
 
 VaccinationCenter::~VaccinationCenter() {
+
     ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
         delete it->second;
     }
 }
 
 int VaccinationCenter::totalWaitingForSeccondPrik() const {
+
+    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+
     int total = 0;
     for(std::map<const std::string, vaccinType*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
         total += it->second->totalFirstVaccination();

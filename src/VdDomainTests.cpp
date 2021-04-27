@@ -38,7 +38,7 @@ protected:
 };
 
 // Test the default constructor of Simulation object
-TEST_F(VaccinDistributorDomainTests, defaultConstructorSimulation) {
+TEST_F(VaccinDistributorDomainTests, DefaultConstructorSimulation) {
 
     Simulation simulation = Simulation();
 
@@ -51,7 +51,7 @@ TEST_F(VaccinDistributorDomainTests, defaultConstructorSimulation) {
 }
 
 // Test iterator of Simulation object
-TEST_F(VaccinDistributorDomainTests, iterator) {
+TEST_F(VaccinDistributorDomainTests, Iterator) {
 
     Simulation simulation = Simulation();
 
@@ -63,7 +63,7 @@ TEST_F(VaccinDistributorDomainTests, iterator) {
 }
 
 // Test constructor of Hub object
-TEST_F(VaccinDistributorDomainTests, constructorHub) {
+TEST_F(VaccinDistributorDomainTests, ConstructorHub) {
 
     Hub hub = Hub();
 
@@ -74,7 +74,7 @@ TEST_F(VaccinDistributorDomainTests, constructorHub) {
 }
 
 // Test addCenter()
-TEST_F(VaccinDistributorDomainTests, addCenter) {
+TEST_F(VaccinDistributorDomainTests, AddCenter) {
 
     Hub hub = Hub();
 
@@ -112,7 +112,7 @@ TEST_F(VaccinDistributorDomainTests, CenterWrongValues) {
 }
 
 // Double VaccinationCenter addCenter()
-TEST_F(VaccinDistributorDomainTests, doubleVaccinationCenter) {
+TEST_F(VaccinDistributorDomainTests, DoubleVaccinationCenter) {
 
     Hub hub = Hub();
 
@@ -328,12 +328,8 @@ TEST_F(VaccinDistributorDomainTests, VaccinType) {
     EXPECT_EQ(2000, center->getVaccin(false).begin()->second->getVaccinAmount());
     EXPECT_FALSE(center->getVaccin(false).begin()->second->isRenewal());
 
-//    TODO Snap functie nog niet goed -> ftracker is niet leeg na deze functie te callen!
-//    TODO wat??
     EXPECT_EQ(0, center->requiredAmountVaccin(center->getVaccin(false).begin()->second));
-    EXPECT_EQ(0, center->requiredAmountVaccin(center->getVaccin(true).begin(
-
-            )->second));
+    EXPECT_EQ(0, center->requiredAmountVaccin(center->getVaccin(true).begin()->second));
 
     EXPECT_EQ(1500, center->getOpenVaccinStorage(vaccin1));
 
@@ -376,7 +372,7 @@ TEST_F(VaccinDistributorDomainTests, VaccinType) {
 }
 
 // Test addVaccin()
-TEST_F(VaccinDistributorDomainTests, addVaccin) {
+TEST_F(VaccinDistributorDomainTests, AddVaccin) {
 
     Hub hub = Hub();
 
@@ -420,7 +416,7 @@ TEST_F(VaccinDistributorDomainTests, VaccinWrongValues) {
 }
 
 // Double Vaccin addVaccin()
-TEST_F(VaccinDistributorDomainTests, doubleAddVaccin) {
+TEST_F(VaccinDistributorDomainTests, DoubleAddVaccin) {
 
     Hub hub = Hub();
 
@@ -481,8 +477,9 @@ TEST_F(VaccinDistributorDomainTests, doubleAddVaccin) {
 //}
 
 // Test distributeVaccinsFair()
-TEST_F(VaccinDistributorDomainTests, distributeVaccinsFair) {
-    std::string testName = "distributeVaccinsFair";
+TEST_F(VaccinDistributorDomainTests, DistributeVaccinsFair) {
+
+    std::string testName = "DistributeVaccinsFair";
     std::ofstream ostream;
     std::string fileName = "tests/domainTests/generatedOutput/generated" + testName + ".txt";
     std::string fileNameCompare = "tests/domainTests/expectedOutput/expected" + testName + ".txt";
@@ -550,7 +547,7 @@ TEST_F(VaccinDistributorDomainTests, distributeVaccinsFair) {
 }
 
 // Test transportNonExistingVaccin() with not-existing Vaccin in Hub
-TEST_F(VaccinDistributorDomainTests, transportNonExistingVaccin) {
+TEST_F(VaccinDistributorDomainTests, TransportNonExistingVaccin) {
 
     Hub hub = Hub();
     EXPECT_TRUE(hub.properlyInitialized());
@@ -564,7 +561,7 @@ TEST_F(VaccinDistributorDomainTests, transportNonExistingVaccin) {
 }
 
 // Test Hub with multiple centra
-TEST_F(VaccinDistributorDomainTests, hubMultipleCenter) {
+TEST_F(VaccinDistributorDomainTests, HubMultipleCenter) {
 
     std::string testName = "hubMultipleCenter";
     std::ofstream ostream;
@@ -619,7 +616,7 @@ TEST_F(VaccinDistributorDomainTests, ConstructorCenter) {
 }
 
 // Test addVaccin()
-TEST_F(VaccinDistributorDomainTests, addVaccinDeath) {
+TEST_F(VaccinDistributorDomainTests, AddVaccinDeath) {
 
     VaccinationCenter center = VaccinationCenter("Park Spoor Oost", "Noordersingel 28/30, 2140 Antwerpen"
             , 54321, 7500);
@@ -631,9 +628,9 @@ TEST_F(VaccinDistributorDomainTests, addVaccinDeath) {
 }
 
 // Tests calculateVaccinationAmount() and vaccinateCenter()
-TEST_F(VaccinDistributorDomainTests, calculateVaccin) {
+TEST_F(VaccinDistributorDomainTests, CalculateVaccin) {
 
-    std::string testName = "calculateVaccin";
+    std::string testName = "CalculateVaccin";
     std::ofstream ostream;
     std::string fileName = "tests/domainTests/generatedOutput/generated" + testName + ".txt";
     std::string fileNameCompare = "tests/domainTests/expectedOutput/expected" + testName + ".txt";
@@ -674,10 +671,10 @@ TEST_F(VaccinDistributorDomainTests, calculateVaccin) {
 }
 
 // Tests calculateVaccinationAmount() and vaccinateCenter()
-TEST_F(VaccinDistributorDomainTests, vaccinateCenter) {
+TEST_F(VaccinDistributorDomainTests, VaccinateCenter) {
 
     Vaccin* vaccin = new Vaccin("Pfizer", 15300, 1, 500, 0,  20);
-    std::string testName = "vaccinateCenter";
+    std::string testName = "VaccinateCenter";
     std::ofstream ostream;
     std::string fileName = "tests/domainTests/generatedOutput/generated" + testName + ".txt";
     std::string fileNameCompare = "tests/domainTests/expectedOutput/expected" + testName + ".txt";
