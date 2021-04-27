@@ -249,7 +249,9 @@ void Simulation::simulateTransport(int currentDay, std::ostream &stream) {
         for (std::map<std::string, VaccinationCenter *>::iterator it = centra.begin(); it != centra.end(); it++) {
             (*ite)->distributeRequiredVaccins(it->second, stream);
         }
+    }
 
+    for (std::vector<Hub*>::iterator ite = this->fhub.begin(); ite != this->fhub.end(); ite++) {
         std::map<std::string, Vaccin *> vaccins = (*ite)->getVaccins();
         for (std::map<std::string, Vaccin *>::iterator it = vaccins.begin(); it != vaccins.end(); it++) {
             (*ite)->distributeVaccinsFair(it->second,currentDay, stream);

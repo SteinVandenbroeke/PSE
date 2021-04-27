@@ -217,6 +217,12 @@ public:
         return total;
     }
 
+    void removeVaccin(){
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
+        this->fvaccinAmount = 0;
+
+    }
+
 private:
     std::string fvaccinType; ///< Type of the vaccin
     int fvaccinTemperature; ///< Temperature required to store the Vaccin
@@ -538,7 +544,7 @@ public:
 
 
 
-    int totalWaitingForSeccondPrik();
+    int totalWaitingForSeccondPrik() const;
 };
 
 #endif //TTT_VACCINATIONCENTER_H
