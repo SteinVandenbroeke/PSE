@@ -405,11 +405,9 @@ TEST_F(VaccinSimulationTests, nonExistingCenter) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/nonExistingCenter.xml"));
 
-    testing::internal::CaptureStderr();
-    s.importXmlFile("tests/inputTests/nonExistingCenter.xml");
-    std::string err = testing::internal::GetCapturedStderr();
-    EXPECT_EQ("Centra Park spoor Oost does not exist\n", err);
-    EXPECT_TRUE(s.checkSimulation());
+    EXPECT_DEATH(s.importXmlFile("tests/inputTests/nonExistingCenter.xml"), "The simulation must be valid/consistent");
+    //EXPECT_EQ("Centra Park spoor Oost does not exist\n", err);
+    EXPECT_FALSE(s.checkSimulation());
 }
 
 // Test simulation with not connected center
