@@ -47,11 +47,11 @@ void Simulation::importXmlFile(const char *path, const char *knownTagsPad, std::
 
     XMLReader xmlReader = XMLReader(path);
     std::string empty = "";
-    if(knownTagsPad != empty && knownTagsPad != NULL){
-        xmlReader.acceptedTags(errorStream, knownTagsPad);
-    }
 
     try{
+        if(knownTagsPad != empty && knownTagsPad != NULL){
+            xmlReader.acceptedTags(errorStream, knownTagsPad);
+        }
         this->fcentra = xmlReader.readVaccinationCenters(errorStream);
         this->fhub = xmlReader.readHubs(this->fcentra, errorStream);
     }
@@ -128,7 +128,7 @@ bool Simulation::checkSimulation() const {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
 
-    if (checkHub() && checkCentra() && checkConnections()) {
+    if (checkHub() && checkCentra() /*&& checkConnections()*/) {
         return true;
     }
     return false;

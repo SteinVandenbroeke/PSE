@@ -706,9 +706,10 @@ TEST_F(VaccinSimulationTests, LowTransport) {
 
 // Test simulation with empty vaccin information
 TEST_F(VaccinSimulationTests, emptyCentraInformation) {
-
     ASSERT_TRUE(FileExists("tests/inputTests/emptyCentraInformation.xml"));
-    s.importXmlFile("tests/inputTests/emptyCentraInformation.xml");
+    std::ostringstream errorStream;
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/emptyCentraInformation.xml", "tests/inputTests/knownTags.xml", errorStream), Exception);
+    EXPECT_EQ("Empty centra name\n", errorStream.str());
     EXPECT_TRUE(s.checkSimulation());
 }
 
