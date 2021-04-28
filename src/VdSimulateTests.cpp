@@ -93,45 +93,45 @@ TEST_F(VaccinSimulationTests, WrongStartSimulation) {
                             "tests/outputTests/generatedOutput/generated" + testName + "_" + ".txt"));
 }
 
-//// TODO
-//// Tests .xml file with closing tags errors
-//TEST_F(VaccinSimulationTests, wrongClosingXml) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/wrongClosingTagXml2.xml"));
-//    ASSERT_TRUE(FileExists("tests/inputTests/wrongLayoutXml.xml"));
-//    ASSERT_TRUE(FileExists("tests/inputTests/containsWrongTagsXml.xml"));
-//    ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
-//    testing::internal::CaptureStderr();
-//
-//    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongClosingTagXml2.xml", "tests/inputTests/knownTags.xml"),
-//                 Exception);
-//    EXPECT_FALSE(s.checkSimulation());
-//
-//    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongLayoutXml.xml", "tests/inputTests/knownTags.xml"), Exception);
-//    EXPECT_FALSE(s.checkSimulation());
-//
-//    std::string err = testing::internal::GetCapturedStderr();
-//    EXPECT_EQ("Element not found: HUB\n", err);
-//
-//    testing::internal::CaptureStderr();
-//    EXPECT_NO_THROW(s.importXmlFile("tests/inputTests/containsWrongTagsXml.xml", "tests/inputTests/knownTags.xml"));
-//    std::string err2 = testing::internal::GetCapturedStderr();
-//    EXPECT_EQ("Error unknown tag: 'HAHAHHAFOUT'\nError unknown tag: 'GG'\n", err2);
-//    EXPECT_TRUE(s.checkSimulation());
-//}
+// TODO
+// Tests .xml file with closing tags errors
+TEST_F(VaccinSimulationTests, wrongClosingXml) {
 
-//// Tests .xml file with wrong Center information
-//TEST_F(VaccinSimulationTests, wrongCentraInformation) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/wrongCentra.xml"));
-//    ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
-//
-//    std::ostringstream errorStream;
-//    s.importXmlFile("tests/inputTests/wrongCentra.xml", "tests/inputTests/knownTags.xml", errorStream);
-//    EXPECT_EQ("Element not found: inwoners\n", errorStream.str());
-//    EXPECT_TRUE(s.checkSimulation());
-//}
+    ASSERT_TRUE(FileExists("tests/inputTests/wrongClosingTagXml2.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/wrongLayoutXml.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/containsWrongTagsXml.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
+    testing::internal::CaptureStderr();
 
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongClosingTagXml2.xml", "tests/inputTests/knownTags.xml"),
+                 Exception);
+    EXPECT_FALSE(s.checkSimulation());
+
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/wrongLayoutXml.xml", "tests/inputTests/knownTags.xml"), Exception);
+    EXPECT_FALSE(s.checkSimulation());
+
+    std::string err = testing::internal::GetCapturedStderr();
+    EXPECT_EQ("Element not found: HUB\n", err);
+
+    testing::internal::CaptureStderr();
+    EXPECT_NO_THROW(s.importXmlFile("tests/inputTests/containsWrongTagsXml.xml", "tests/inputTests/knownTags.xml"));
+    std::string err2 = testing::internal::GetCapturedStderr();
+    EXPECT_EQ("Error unknown tag: 'HAHAHHAFOUT'\nError unknown tag: 'GG'\n", err2);
+    EXPECT_TRUE(s.checkSimulation());
+}
+
+// Tests .xml file with wrong Center information
+TEST_F(VaccinSimulationTests, wrongCentraInformation) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/wrongCentra.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
+
+    std::ostringstream errorStream;
+    s.importXmlFile("tests/inputTests/wrongCentra.xml", "tests/inputTests/knownTags.xml", errorStream);
+    EXPECT_EQ("Element not found: inwoners\n", errorStream.str());
+    EXPECT_TRUE(s.checkSimulation());
+}
+//
 //// Test .xml file with wrong Hub information
 //TEST_F(VaccinSimulationTests, wrongHubInformation) {
 //
@@ -195,7 +195,7 @@ TEST_F(VaccinSimulationTests, WrongStartSimulation) {
 //    EXPECT_FALSE(s.checkSimulation());
 //}
 //
-
+//
 //// Tests scenario with a short interval between deliveries to Hub
 //TEST_F(VaccinSimulationTests, intenseInterval) {
 //

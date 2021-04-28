@@ -329,7 +329,6 @@ TEST_F(VaccinDistributorDomainTests, VaccinType) {
     EXPECT_FALSE(center->getVaccin(false).begin()->second->isRenewal());
 
     EXPECT_EQ(0, center->requiredAmountVaccin(center->getVaccin(false).begin()->second));
-    EXPECT_EQ(0, center->requiredAmountVaccin(center->getVaccin(true).begin()->second));
 
     EXPECT_EQ(1500, center->getOpenVaccinStorage(vaccin1));
 
