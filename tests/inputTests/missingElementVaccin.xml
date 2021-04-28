@@ -10,7 +10,6 @@
     <VACCIN>
         <type>Moderna</type>
         <levering>46000</levering>
-        <interval>13</interval>
         <transport>1000</transport>
         <hernieuwing>28</hernieuwing>
         <temperatuur>-20</temperatuur>
@@ -35,6 +34,7 @@
 <adres>Noordersingel 40, Antwerpen</adres>
 <inwoners>8000</inwoners>
 <capaciteit>7500</capaciteit>
+</VACCINATIECENTRUM>
 <VACCINATIECENTRUM>
 <naam>AED Studios</naam>
 <adres>Fabriekstraat 38, Lint</adres>

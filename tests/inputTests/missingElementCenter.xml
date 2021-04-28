@@ -1,7 +1,28 @@
 <HUB>
-    <levering>93000</levering>
-    <interval>6</interval>
-    <transport>2000</transport>
+    <VACCIN>
+        <type>Pfizer</type>
+        <levering>93000</levering>
+        <interval>6</interval>
+        <transport>2000</transport>
+        <hernieuwing>21</hernieuwing>
+        <temperatuur>-70</temperatuur>
+    </VACCIN>
+    <VACCIN>
+        <type>Moderna</type>
+        <levering>46000</levering>
+        <interval>13</interval>
+        <transport>1000</transport>
+        <hernieuwing>28</hernieuwing>
+        <temperatuur>-20</temperatuur>
+    </VACCIN>
+    <VACCIN>
+        <type>AstraZeneca</type>
+        <levering>67000</levering>
+        <interval>4</interval>
+        <transport>1500</transport>
+        <hernieuwing>28</hernieuwing>
+        <temperatuur>-30</temperatuur>
+    </VACCIN>
     <CENTRA>
         <centrum>Park Spoor Oost</centrum>
         <centrum>AED Studios</centrum>
@@ -23,7 +44,6 @@
 <VACCINATIECENTRUM>
 <naam>De Zoerla</naam>
 <adres>Gevaertlaan 1, Westerlo</adres>
-<inwoners>49451</inwoners>
 <capaciteit>1000</capaciteit>
 </VACCINATIECENTRUM>
 <VACCINATIECENTRUM>

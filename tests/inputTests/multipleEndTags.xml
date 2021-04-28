@@ -6,20 +6,19 @@
         <transport>2000</transport>
         <hernieuwing>21</hernieuwing>
         <temperatuur>-70</temperatuur>
-    </VACCIN>
     <VACCIN>
         <type>Moderna</type>
         <levering>46000</levering>
         <interval>13</interval>
         <transport>1000</transport>
         <hernieuwing>28</hernieuwing>
-        <temperatuur>-20</temperatuur>
+        <temperatuur>-20
     </VACCIN>
     <VACCIN>
         <type>AstraZeneca</type>
         <levering>67000</levering>
         <interval>4</interval>
-        <transport>1500</transport>
+        <transport>1500
         <hernieuwing>28</hernieuwing>
         <temperatuur>-30</temperatuur>
     </VACCIN>
@@ -27,19 +26,49 @@
         <centrum>Park Spoor Oost</centrum>
         <centrum>AED Studios</centrum>
         <centrum>De Zoerla</centrum>
-        <centrum>Flanders Expo</centrum>
+        <centrum>Flanders Expo
     </CENTRA>
+<HUB>
+<VACCIN>
+    <type>Pfizer</type>
+    <levering>93000</levering>
+    <interval>6</interval>
+    <transport>2000</transport>
+    <hernieuwing>21</hernieuwing>
+    <temperatuur>-70</temperatuur>
+</VACCIN>
+<VACCIN>
+    <type>Moderna</type>
+    <levering>46000</levering>
+    <interval>13</interval>
+    <transport>1000</transport>
+    <hernieuwing>28</hernieuwing>
+    <temperatuur>-20</temperatuur>
+</VACCIN>
+<VACCIN>
+    <type>kjkmjk</type>
+    <levering>67000</levering>
+    <interval>4</interval>
+    <transport>1500</transport>
+    <hernieuwing>28</hernieuwing>
+    <temperatuur>-30</temperatuur>
+</VACCIN>
+<CENTRA>
+    <centrum>Park Spoor Oost</centrum>
+    <centrum>AED Studios</centrum>
+    <centrum>Flanders Expo
+</CENTRA>
 </HUB>
 <VACCINATIECENTRUM>
-<naam>Park Spoor Oost</naam>
+<naam>Park Spoor Oost
 <adres>Noordersingel 40, Antwerpen</adres>
-<inwoners>8000</inwoners>
+<inwoners>8000
 <capaciteit>7500</capaciteit>
 <VACCINATIECENTRUM>
 <naam>AED Studios</naam>
 <adres>Fabriekstraat 38, Lint</adres>
 <inwoners>4000</inwoners>
-<capaciteit>2000</capaciteit>
+<capaciteit>2000
 </VACCINATIECENTRUM>
 <VACCINATIECENTRUM>
 <naam>De Zoerla</naam>

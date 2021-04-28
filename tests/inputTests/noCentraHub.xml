@@ -24,10 +24,6 @@
         <temperatuur>-30</temperatuur>
     </VACCIN>
     <CENTRA>
-        <centrum>Park Spoor Oost</centrum>
-        <centrum>AED Studios</centrum>
-        <centrum>De Zoerla</centrum>
-        <centrum>Flanders Expo</centrum>
     </CENTRA>
 </HUB>
 <VACCINATIECENTRUM>
@@ -35,6 +31,7 @@
 <adres>Noordersingel 40, Antwerpen</adres>
 <inwoners>8000</inwoners>
 <capaciteit>7500</capaciteit>
+</VACCINATIECENTRUM>
 <VACCINATIECENTRUM>
 <naam>AED Studios</naam>
 <adres>Fabriekstraat 38, Lint</adres>
