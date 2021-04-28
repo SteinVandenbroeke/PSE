@@ -149,13 +149,6 @@ TEST_F(VaccinDistributorDomainTests, DoubleVaccinationCenter) {
                  "VaccinationCenter must not exist yet in map");
 }
 
-/** TODO
- * center add vaccins enzo
- * print graphical
- * print std::internal --> .txt file
- *
- */
-
 // Test print()
 TEST_F(VaccinDistributorDomainTests, PrintCenter) {
 
@@ -364,7 +357,7 @@ TEST_F(VaccinDistributorDomainTests, VaccinType) {
     EXPECT_EQ(0, center->getVaccin(false).begin()->second->getVaccinRenewal());
     EXPECT_EQ(2000, center->getVaccin(false).begin()->second->getVaccinAmount());
     EXPECT_FALSE(center->getVaccin(false).begin()->second->isRenewal());
-    
+
     EXPECT_EQ(1500, center->getOpenVaccinStorage(vaccin1));
 
     center->vaccinateCenter(ostream);
@@ -486,29 +479,6 @@ TEST_F(VaccinDistributorDomainTests, DoubleAddVaccin) {
     EXPECT_FALSE(vaccin1->checkUnderZero());
     EXPECT_DEATH(hub.addVaccin(vaccin1), "Vaccin can't yet exist in Hub");
 }
-
-//// test calculateTransport() TODO snap deze test niet
-//TEST_F(VaccinDistributorDomainTests, calculateTransport) {
-//
-//    std::string testName = "calculateTransport";
-//    std::ofstream ostream;
-//    std::string fileName = "tests/domainTests/generatedOutput/generated" + testName + ".txt";
-//    std::string fileNameCompare = "tests/domainTests/expectedOutput/expected" + testName + ".txt";
-//    ostream.open(fileName.c_str());
-//
-//    Hub hub = Hub();
-//    EXPECT_TRUE(hub.properlyInitialized());
-//
-//    VaccinationCenter *center = new VaccinationCenter("Flanders Expo", "Maaltekouter 1, 9051 Gent",
-//                                                      15000, 5500);
-//    EXPECT_TRUE(center->properlyInitialized());
-//    hub.addCenter("Flanders Expo", center);
-//
-//    EXPECT_TRUE(FileExists(fileName));
-//    EXPECT_TRUE(FileExists(fileNameCompare));
-//    EXPECT_FALSE(FileIsEmpty(fileName));
-//    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
-//}
 
 // Test distributeVaccinsFair()
 TEST_F(VaccinDistributorDomainTests, DistributeVaccinsFair) {
@@ -751,5 +721,3 @@ TEST_F(VaccinDistributorDomainTests, VaccinateCenter) {
     EXPECT_FALSE(FileIsEmpty(fileName));
     EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
 }
-
-//TODO testen voor Vaccin klasse & vaccin verdeling

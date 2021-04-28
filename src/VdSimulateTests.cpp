@@ -704,10 +704,14 @@ TEST_F(VaccinSimulationTests, LowTransport) {
 //    EXPECT_TRUE(s.checkSimulation());
 //}
 
-// TODO
-//// Test simulation with empty vaccin information
-//TEST_F(VaccinSimulationTests, emptyCentraInformation) {
-//
+// Test simulation with empty vaccin information
+TEST_F(VaccinSimulationTests, emptyCentraInformation) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/emptyCentraInformation.xml"));
+    s.importXmlFile("tests/inputTests/emptyCentraInformation.xml");
+    EXPECT_TRUE(s.checkSimulation());
+}
+
 //// Test simulation with empty capacity information
 //TEST_F(VaccinSimulationTests, emptyCapacityInformation) {
 //
@@ -774,28 +778,6 @@ TEST_F(VaccinSimulationTests, NoVaccinTag) {
                  Exception);
     EXPECT_FALSE(s.checkSimulation());
 }
-
-// TODO
-//// Test simulation with no centra in Hub
-//TEST_F(VaccinSimulationTests, noCentraHub) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/noCentraHub.xml"));
-//    testing::internal::CaptureStderr();
-//    EXPECT_NO_THROW(s.importXmlFile("tests/inputTests/noCentraHub.xml"));
-//    std::string err = testing::internal::GetCapturedStderr();
-//    EXPECT_EQ("Vaccin not added: Element not found: type\n", err);
-//    EXPECT_TRUE(s.checkSimulation());
-//}
-
-// TODO
-//// Test simulation with no centra tag in Hub
-//TEST_F(VaccinSimulationTests, NoCentraTag) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/noCentraTag.xml"));
-//    EXPECT_DEATH(s.importXmlFile("tests/inputTests/noCentraTag.xml"),
-//                 "Hub not added: Element not found: levering");
-//    EXPECT_FALSE(s.checkSimulation());
-//}
 
 // Test simulation with missing element in center
 TEST_F(VaccinSimulationTests, MissingElementCenter) {
