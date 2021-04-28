@@ -51,8 +51,13 @@ void Simulation::importXmlFile(const char *path, const char *knownTagsPad, std::
         xmlReader.acceptedTags(errorStream, knownTagsPad);
     }
 
-    this->fcentra = xmlReader.readVaccinationCenters(errorStream);
-    this->fhub = xmlReader.readHubs(this->fcentra, errorStream);
+    try{
+        this->fcentra = xmlReader.readVaccinationCenters(errorStream);
+        this->fhub = xmlReader.readHubs(this->fcentra, errorStream);
+    }
+    catch (Exception ex) {
+        throw ex.value();
+    }
 
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
     ENSURE(checkVaccins(),"Hub must have equal amount of vaccins as delivery on day zero");
