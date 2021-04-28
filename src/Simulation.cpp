@@ -46,7 +46,10 @@ void Simulation::importXmlFile(const char *path, const char *knownTagsPad, std::
     REQUIRE(!FileIsEmpty(path), "The file that needs to be read must not be empty");
 
     XMLReader xmlReader = XMLReader(path);
-    xmlReader.acceptedTags(errorStream, knownTagsPad);
+    if(knownTagsPad != "" && knownTagsPad != NULL){
+        xmlReader.acceptedTags(errorStream, knownTagsPad);
+    }
+
     this->fcentra = xmlReader.readVaccinationCenters(errorStream);
     this->fhub = xmlReader.readHubs(this->fcentra, errorStream);
 

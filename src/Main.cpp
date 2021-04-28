@@ -13,10 +13,10 @@
 int main() {
     Simulation s;
     try{
-        s.importXmlFile("niels.xml", "knownTags_spec_10.xml" ,std::cerr);
+        s.importXmlFile("simulate_spec_renewal.xml", "knownTags_spec_10.xml" ,std::cerr);
         std::cout << "Done importing" << std::endl;
 
-        s.automaticSimulation(150, std::cout, false, false);
+        s.automaticSimulation(200, std::cout, false, false);
         s.generateIni("export.ini");
     }
     catch (Exception ex) {
