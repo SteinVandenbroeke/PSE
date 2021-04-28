@@ -19,7 +19,6 @@
         <centrum>Park Spoor Oost</centrum>
         <centrum>AED Studios</centrum>
         <centrum>De Zoerla</centrum>
-        <centrum>T</centrum>
         <centrum>Flanders Expo</centrum>
     </CENTRA>
 </HUB>
@@ -44,6 +43,5 @@
 <VACCINATIECENTRUM>
 <naam>Flanders Expo</naam>
 <adres>Maaltekouter 1, Sint-Denijs-Westrem</adres>
-<inwoners>49451</inwoners>
 <capaciteit>3000</capaciteit>
 </VACCINATIECENTRUM>

@@ -115,11 +115,11 @@ TEST_F(VaccinSimulationTests, wrongClosingXml) {
 
 // Tests .xml file with wrong Center information
 TEST_F(VaccinSimulationTests, wrongCentraInformation) {
-    ASSERT_TRUE(FileExists("tests/inputTests/wrongCentraInformation.xml"));
+    ASSERT_TRUE(FileExists("tests/inputTests/wrongCentra.xml"));
     ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
 
     std::ostringstream errorStream;
-    s.importXmlFile("tests/inputTests/wrongCentraInformation.xml", "tests/inputTests/knownTags.xml", errorStream);
+    s.importXmlFile("tests/inputTests/wrongCentra.xml", "tests/inputTests/knownTags.xml", errorStream);
     EXPECT_EQ("Element not found: inwoners\nCentra name does not exist\n", errorStream.str());
     EXPECT_TRUE(s.checkSimulation());
 }
@@ -264,134 +264,134 @@ TEST_F(VaccinSimulationTests, wrongHubInformation) {
 //                            "tests/outputTests/expectedOutput/expectedintenseInterval_.txt"));
 //}
 
-//// Happy day scenario for Simulation
-//TEST_F(VaccinSimulationTests, HappyDays) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/happyDays2.xml"));
-//
-//    std::string testName = "HappyDays";
-//    std::ofstream ostream;
-//    std::string fileName = "tests/outputTests/generatedOutput/generated" + testName + ".txt";
-//    std::string fileNameCompare = "tests/outputTests/expectedOutput/expected" + testName + ".txt";
-//    ostream.open(fileName.c_str());
-//
-//    s.importXmlFile("tests/inputTests/happyDays2.xml");
-//    EXPECT_TRUE(s.properlyInitialized());
-//    EXPECT_TRUE(s.checkSimulation());
-//
-//    unsigned long int x = 4;
-//    EXPECT_EQ(x, s.getFcentra().size());
-//    EXPECT_TRUE(!s.getHub().empty());
-//    EXPECT_EQ("Park Spoor Oost", s.getFcentra().find("Park Spoor Oost")->first);
-//    EXPECT_EQ("AED Studios", s.getFcentra().find("AED Studios")->first);
-//    EXPECT_EQ("De Zoerla", s.getFcentra().find("De Zoerla")->first);
-//    EXPECT_EQ("Flanders Expo", s.getFcentra().find("Flanders Expo")->first);
-//
-//    s.automaticSimulation(77, ostream, false, false);
-//    std::string exportFileName = "tests/outputTests/generatedOutput/generatedHappyDays_.txt";
-//    std::string exportIniName = "tests/outputTests/generatedOutput/generatedHappyDays.ini";
-//    s.exportFile(exportFileName);
-//    s.generateIni(exportIniName);
-//
-//    ostream.close();
-//    EXPECT_TRUE(FileExists(exportFileName));
-//    EXPECT_TRUE(FileExists(fileName));
-//    EXPECT_TRUE(FileExists(fileNameCompare));
-//    EXPECT_FALSE(FileIsEmpty(fileName));
-//    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
-//    EXPECT_TRUE(FileCompare(exportFileName,
-//                            "tests/outputTests/expectedOutput/expectedHappyDays_.txt"));
-//    EXPECT_TRUE(FileExists(exportIniName));
-//    EXPECT_TRUE(FileExists("tests/outputTests/expectedOutput/expectedHappyDays.ini"));
-//    EXPECT_TRUE(FileCompare(exportIniName,
-//                            "tests/outputTests/expectedOutput/expectedHappyDays.ini"));
-//}
-//
-//// Happy day scenario for Simulation with multiple hubs
-//TEST_F(VaccinSimulationTests, HappyDaysMultipleHubs) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/happyDaysMultipleHubs.xml"));
-//
-//    std::string testName = "HappyDaysMultipleHubs";
-//    std::ofstream ostream;
-//    std::string fileName = "tests/outputTests/generatedOutput/generated" + testName + ".txt";
-//    std::string fileNameCompare = "tests/outputTests/expectedOutput/expected" + testName + ".txt";
-//    ostream.open(fileName.c_str());
-//
-//    s.importXmlFile("tests/inputTests/happyDaysMultipleHubs.xml");
-//    EXPECT_TRUE(s.properlyInitialized());
-//    EXPECT_TRUE(s.checkSimulation());
-//
-//    unsigned long int x = 4;
-//    EXPECT_EQ(x, s.getFcentra().size());
-//    EXPECT_TRUE(!s.getHub().empty());
-//    EXPECT_EQ("Park Spoor Oost", s.getFcentra().find("Park Spoor Oost")->first);
-//    EXPECT_EQ("AED Studios", s.getFcentra().find("AED Studios")->first);
-//    EXPECT_EQ("De Zoerla", s.getFcentra().find("De Zoerla")->first);
-//    EXPECT_EQ("Flanders Expo", s.getFcentra().find("Flanders Expo")->first);
-//
-//    s.automaticSimulation(210, ostream, false, false);
-//    std::string exportFileName = "tests/outputTests/generatedOutput/generatedHappyDaysMultipleHubs_.txt";
-//    std::string exportIniName = "tests/outputTests/generatedOutput/generatedHappyDaysMultipleHubs.ini";
-//    s.exportFile(exportFileName);
-//    s.generateIni(exportIniName);
-//
-//    ostream.close();
-//    EXPECT_TRUE(FileExists(exportFileName));
-//    EXPECT_TRUE(FileExists(fileName));
-//    EXPECT_TRUE(FileExists(fileNameCompare));
-//    EXPECT_FALSE(FileIsEmpty(fileName));
-//    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
-//    EXPECT_TRUE(FileCompare(exportFileName,
-//                            "tests/outputTests/expectedOutput/expectedHappyDaysMultipleHubs_.txt"));
-//    EXPECT_TRUE(FileExists(exportIniName));
-//    EXPECT_TRUE(FileExists("tests/outputTests/expectedOutput/expectedHappyDaysMultipleHubs.ini"));
-//    EXPECT_TRUE(FileCompare(exportIniName,
-//                            "tests/outputTests/expectedOutput/expectedHappyDaysMultipleHubs.ini"));
-//}
-//
-//// Happy day scenario for Simulation with even more hubs
-//TEST_F(VaccinSimulationTests, happyDaysOverkillHubs) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/happyDaysOverKillHubs.xml"));
-//
-//    std::string testName = "HappyDaysOverKillHubs";
-//    std::ofstream ostream;
-//    std::string fileName = "tests/outputTests/generatedOutput/generated" + testName + ".txt";
-//    std::string fileNameCompare = "tests/outputTests/expectedOutput/expected" + testName + ".txt";
-//    ostream.open(fileName.c_str());
-//
-//    s.importXmlFile("tests/inputTests/happyDaysMultipleHubs.xml");
-//    EXPECT_TRUE(s.properlyInitialized());
-//    EXPECT_TRUE(s.checkSimulation());
-//
-//    unsigned long int x = 4;
-//    EXPECT_EQ(x, s.getFcentra().size());
-//    EXPECT_TRUE(!s.getHub().empty());
-//    EXPECT_EQ("Park Spoor Oost", s.getFcentra().find("Park Spoor Oost")->first);
-//    EXPECT_EQ("AED Studios", s.getFcentra().find("AED Studios")->first);
-//    EXPECT_EQ("De Zoerla", s.getFcentra().find("De Zoerla")->first);
-//    EXPECT_EQ("Flanders Expo", s.getFcentra().find("Flanders Expo")->first);
-//
-//    s.automaticSimulation(210, ostream, false, false);
-//    std::string exportFileName = "tests/outputTests/generatedOutput/generatedHappyDaysOverKillHubs_.txt";
-//    std::string exportIniName = "tests/outputTests/generatedOutput/generatedHappyDaysOverKillHubs.ini";
-//    s.exportFile(exportFileName);
-//    s.generateIni(exportIniName);
-//
-//    ostream.close();
-//    EXPECT_TRUE(FileExists(exportFileName));
-//    EXPECT_TRUE(FileExists(fileName));
-//    EXPECT_TRUE(FileExists(fileNameCompare));
-//    EXPECT_FALSE(FileIsEmpty(fileName));
-//    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
-//    EXPECT_TRUE(FileCompare(exportFileName,
-//                            "tests/outputTests/expectedOutput/expectedHappyDaysOverKillHubs_.txt"));
-//    EXPECT_TRUE(FileExists(exportIniName));
-//    EXPECT_TRUE(FileExists("tests/outputTests/expectedOutput/expectedHappyDaysOverKillHubs.ini"));
-//    EXPECT_TRUE(FileCompare(exportIniName,
-//                            "tests/outputTests/expectedOutput/expectedHappyDaysOverKillHubs.ini"));
-//}
+// Happy day scenario for Simulation
+TEST_F(VaccinSimulationTests, HappyDays) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/happyDays2.xml"));
+
+    std::string testName = "HappyDays";
+    std::ofstream ostream;
+    std::string fileName = "tests/outputTests/generatedOutput/generated" + testName + ".txt";
+    std::string fileNameCompare = "tests/outputTests/expectedOutput/expected" + testName + ".txt";
+    ostream.open(fileName.c_str());
+
+    s.importXmlFile("tests/inputTests/happyDays2.xml");
+    EXPECT_TRUE(s.properlyInitialized());
+    EXPECT_TRUE(s.checkSimulation());
+
+    unsigned long int x = 4;
+    EXPECT_EQ(x, s.getFcentra().size());
+    EXPECT_TRUE(!s.getHub().empty());
+    EXPECT_EQ("Park Spoor Oost", s.getFcentra().find("Park Spoor Oost")->first);
+    EXPECT_EQ("AED Studios", s.getFcentra().find("AED Studios")->first);
+    EXPECT_EQ("De Zoerla", s.getFcentra().find("De Zoerla")->first);
+    EXPECT_EQ("Flanders Expo", s.getFcentra().find("Flanders Expo")->first);
+
+    s.automaticSimulation(77, ostream, false, false);
+    std::string exportFileName = "tests/outputTests/generatedOutput/generatedHappyDays_.txt";
+    std::string exportIniName = "tests/outputTests/generatedOutput/generatedHappyDays.ini";
+    s.exportFile(exportFileName);
+    s.generateIni(exportIniName);
+
+    ostream.close();
+    EXPECT_TRUE(FileExists(exportFileName));
+    EXPECT_TRUE(FileExists(fileName));
+    EXPECT_TRUE(FileExists(fileNameCompare));
+    EXPECT_FALSE(FileIsEmpty(fileName));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+    EXPECT_TRUE(FileCompare(exportFileName,
+                            "tests/outputTests/expectedOutput/expectedHappyDays_.txt"));
+    EXPECT_TRUE(FileExists(exportIniName));
+    EXPECT_TRUE(FileExists("tests/outputTests/expectedOutput/expectedHappyDays.ini"));
+    EXPECT_TRUE(FileCompare(exportIniName,
+                            "tests/outputTests/expectedOutput/expectedHappyDays.ini"));
+}
+
+// Happy day scenario for Simulation with multiple hubs
+TEST_F(VaccinSimulationTests, HappyDaysMultipleHubs) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/happyDaysMultipleHubs.xml"));
+
+    std::string testName = "HappyDaysMultipleHubs";
+    std::ofstream ostream;
+    std::string fileName = "tests/outputTests/generatedOutput/generated" + testName + ".txt";
+    std::string fileNameCompare = "tests/outputTests/expectedOutput/expected" + testName + ".txt";
+    ostream.open(fileName.c_str());
+
+    s.importXmlFile("tests/inputTests/happyDaysMultipleHubs.xml");
+    EXPECT_TRUE(s.properlyInitialized());
+    EXPECT_TRUE(s.checkSimulation());
+
+    unsigned long int x = 4;
+    EXPECT_EQ(x, s.getFcentra().size());
+    EXPECT_TRUE(!s.getHub().empty());
+    EXPECT_EQ("Park Spoor Oost", s.getFcentra().find("Park Spoor Oost")->first);
+    EXPECT_EQ("AED Studios", s.getFcentra().find("AED Studios")->first);
+    EXPECT_EQ("De Zoerla", s.getFcentra().find("De Zoerla")->first);
+    EXPECT_EQ("Flanders Expo", s.getFcentra().find("Flanders Expo")->first);
+
+    s.automaticSimulation(210, ostream, false, false);
+    std::string exportFileName = "tests/outputTests/generatedOutput/generatedHappyDaysMultipleHubs_.txt";
+    std::string exportIniName = "tests/outputTests/generatedOutput/generatedHappyDaysMultipleHubs.ini";
+    s.exportFile(exportFileName);
+    s.generateIni(exportIniName);
+
+    ostream.close();
+    EXPECT_TRUE(FileExists(exportFileName));
+    EXPECT_TRUE(FileExists(fileName));
+    EXPECT_TRUE(FileExists(fileNameCompare));
+    EXPECT_FALSE(FileIsEmpty(fileName));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+    EXPECT_TRUE(FileCompare(exportFileName,
+                            "tests/outputTests/expectedOutput/expectedHappyDaysMultipleHubs_.txt"));
+    EXPECT_TRUE(FileExists(exportIniName));
+    EXPECT_TRUE(FileExists("tests/outputTests/expectedOutput/expectedHappyDaysMultipleHubs.ini"));
+    EXPECT_TRUE(FileCompare(exportIniName,
+                            "tests/outputTests/expectedOutput/expectedHappyDaysMultipleHubs.ini"));
+}
+
+// Happy day scenario for Simulation with even more hubs
+TEST_F(VaccinSimulationTests, happyDaysOverkillHubs) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/happyDaysOverKillHubs.xml"));
+
+    std::string testName = "HappyDaysOverKillHubs";
+    std::ofstream ostream;
+    std::string fileName = "tests/outputTests/generatedOutput/generated" + testName + ".txt";
+    std::string fileNameCompare = "tests/outputTests/expectedOutput/expected" + testName + ".txt";
+    ostream.open(fileName.c_str());
+
+    s.importXmlFile("tests/inputTests/happyDaysOverKillHubs.xml");
+    EXPECT_TRUE(s.properlyInitialized());
+    EXPECT_TRUE(s.checkSimulation());
+
+    unsigned long int x = 4;
+    EXPECT_EQ(x, s.getFcentra().size());
+    EXPECT_TRUE(!s.getHub().empty());
+    EXPECT_EQ("Park Spoor Oost", s.getFcentra().find("Park Spoor Oost")->first);
+    EXPECT_EQ("AED Studios", s.getFcentra().find("AED Studios")->first);
+    EXPECT_EQ("De Zoerla", s.getFcentra().find("De Zoerla")->first);
+    EXPECT_EQ("Flanders Expo", s.getFcentra().find("Flanders Expo")->first);
+
+    s.automaticSimulation(210, ostream, false, false);
+    std::string exportFileName = "tests/outputTests/generatedOutput/generatedHappyDaysOverKillHubs_.txt";
+    std::string exportIniName = "tests/outputTests/generatedOutput/generatedHappyDaysOverKillHubs.ini";
+    s.exportFile(exportFileName);
+    s.generateIni(exportIniName);
+
+    ostream.close();
+    EXPECT_TRUE(FileExists(exportFileName));
+    EXPECT_TRUE(FileExists(fileName));
+    EXPECT_TRUE(FileExists(fileNameCompare));
+    EXPECT_FALSE(FileIsEmpty(fileName));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+    EXPECT_TRUE(FileCompare(exportFileName,
+                            "tests/outputTests/expectedOutput/expectedHappyDaysOverKillHubs_.txt"));
+    EXPECT_TRUE(FileExists(exportIniName));
+    EXPECT_TRUE(FileExists("tests/outputTests/expectedOutput/expectedHappyDaysOverKillHubs.ini"));
+    EXPECT_TRUE(FileCompare(exportIniName,
+                            "tests/outputTests/expectedOutput/expectedHappyDaysOverKillHubs.ini"));
+}
 
 //// Test simulation where center has already vaccinated/has not 0 vaccins in stock
 //TEST_F(VaccinSimulationTests, alreadyVaccinated) {
@@ -838,7 +838,7 @@ TEST_F(VaccinSimulationTests, MissingElementCenter) {
     testing::internal::CaptureStderr();
     s.importXmlFile("tests/inputTests/missingElementCenter.xml");
     std::string err = testing::internal::GetCapturedStderr();
-    EXPECT_EQ("Element not found: inwoners\nElement not found: inwoners\n",err);
+    EXPECT_EQ("Element not found: inwoners\nElement not found: inwoners\nCentra name does not exist\nCentra name does not exist\n",err);
     EXPECT_TRUE(s.checkSimulation());
 }
 
@@ -850,7 +850,8 @@ TEST_F(VaccinSimulationTests, MissingMultipleElementsCenter) {
     s.importXmlFile("tests/inputTests/missingMultipleElementsCenter.xml");
     std::string err = testing::internal::GetCapturedStderr();
 
-    EXPECT_EQ("Element not found: adres\nElement not found: inwoners\n", err);
+    EXPECT_EQ("Element not found: adres\nElement not found: inwoners\nCentra name does not exist\nCentra name does not exist\nCentra name does not exist\n",
+              err);
     EXPECT_TRUE(s.checkSimulation());
 }
 
