@@ -56,7 +56,7 @@ void Simulation::importXmlFile(const char *path, const char *knownTagsPad, std::
         this->fhub = xmlReader.readHubs(this->fcentra, errorStream);
     }
     catch (Exception ex) {
-        throw ex.value();
+        throw Exception(ex.value());
     }
 
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");

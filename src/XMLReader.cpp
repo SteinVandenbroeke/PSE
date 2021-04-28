@@ -166,6 +166,9 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
             }
 
             TiXmlElement* xmlCentra = xmlHub->FirstChildElement("CENTRA");
+            if(xmlCentra == NULL){
+                throw Exception("No centra");
+            }
             TiXmlElement* xmlCenter = xmlCentra->FirstChildElement("centrum");
             while (xmlCenter != NULL) {
                 std::string name = xmlCenter->GetText();
@@ -184,6 +187,10 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
             errorStream  << "Hub not added: " << ex.value() << std::endl;
         }
         xmlHub = xmlHub->NextSiblingElement("HUB");
+    }
+    if(hubs.size() <= 0){
+        std::cerr << "fout te weinig hubs";
+        throw Exception("0 correct Hubs found");
     }
     return hubs;
 }
