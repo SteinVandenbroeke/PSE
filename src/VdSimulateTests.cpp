@@ -452,16 +452,8 @@ TEST_F(VaccinSimulationTests, alreadyVaccinated) {
 //    EXPECT_FALSE(s.checkSimulation());
 //}
 //
-//// Test simulation with 0 as interval information
-//TEST_F(VaccinSimulationTests, zeroIntervalInformation) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/zeroIntervalInformation.xml"));
-//
-//    EXPECT_DEATH(s.importXmlFile("tests/inputTests/zeroIntervalInformation.xml"),
-//                 "Interval can't be negative or 0");
-//    EXPECT_FALSE(s.checkSimulation());
-//}
-//
+// Test simulation with 0 as interval information
+
 //// Test simulation with string as interval information
 //TEST_F(VaccinSimulationTests, stringIntervalInformation) {
 //

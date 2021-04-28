@@ -247,6 +247,26 @@ TEST_F(VaccinDistributorDomainTests, CenterIni) {
     EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
 }
 
+TEST_F(VaccinDistributorDomainTests, VaccinExceptionalValues) {
+    Vaccin v("Naam", 1, 10, 1, 2, 20);
+    EXPECT_TRUE(v.properlyInitialized());
+
+    Vaccin v1("Naam", 1, 10, 1, 2, -20);
+    EXPECT_TRUE(v.properlyInitialized());
+
+    EXPECT_DEATH(Vaccin("Naam", 1, -10, 1, 2, 20),
+                 "Interval can't be negative");
+
+    EXPECT_DEATH(Vaccin("", 1, 10, 1, 2, 20),
+                 "type can't be empty");
+
+    EXPECT_DEATH(Vaccin("Naam", 1, 10, -1, 2, 20),
+                 "Transport can't be negative");
+
+    EXPECT_DEATH(Vaccin("Naam", 1, -10, 1, -2, 20),
+                 "Interval can't be negative");
+}
+
 // Test VaccinationCenter::vaccinType
 TEST_F(VaccinDistributorDomainTests, VaccinType) {
 
