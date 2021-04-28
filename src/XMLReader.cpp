@@ -170,17 +170,24 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
                 throw Exception("No centra");
             }
             TiXmlElement* xmlCenter = xmlCentra->FirstChildElement("centrum");
+            if(xmlCenter == NULL){
+                std::cerr << "fout" << std::endl;
+            }
             while (xmlCenter != NULL) {
-                std::string name = xmlCenter->GetText();
-                if(vaccinationCentras.find(name) != vaccinationCentras.end()) {
-                    newHub->addCenter(name, vaccinationCentras[name]);
+                if(xmlCenter->GetText() != NULL){
+                    std::string name = xmlCenter->GetText();
+                    if(vaccinationCentras.find(name) != vaccinationCentras.end() && name != "") {
+                        newHub->addCenter(name, vaccinationCentras[name]);
+                    }
+                    else{
+                        errorStream << "Centra name does not exist" <<  std::endl;
+                    }
                 }
                 else{
-                    errorStream << "Centra name does not exist" <<  std::endl;
+                    errorStream << "Empty centra name" <<  std::endl;
                 }
                 xmlCenter = xmlCenter->NextSiblingElement("centrum");
             }
-
             hubs.push_back(newHub);
         }
         catch (Exception ex) {
