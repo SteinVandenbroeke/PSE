@@ -34,8 +34,8 @@ protected:
 // Test with an "empty" XML file
 TEST_F(XMLReaderTest, EmptyXml) {
 
-    ASSERT_TRUE(FileExists("tests/inputTests/emptySimulation.xml"));
-    EXPECT_THROW(XMLReader r("tests/inputTests/emptySimulation.xml"), Exception);
+    ASSERT_TRUE(FileExists("tests/inputTests/emptyFile.xml"));
+    EXPECT_THROW(XMLReader r("tests/inputTests/emptyFile.xml"), Exception);
 }
 
 // Test acceptedTags not all tags allowed for spec 1.0

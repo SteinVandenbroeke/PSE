@@ -774,8 +774,8 @@ TEST_F(VaccinSimulationTests, NoVaccinHub) {
 TEST_F(VaccinSimulationTests, NoVaccinTag) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/noVaccinTag.xml"));
-    EXPECT_DEATH(s.importXmlFile("tests/inputTests/noVaccinTag.xml"),
-                 "Hub not added: Element not found: levering");
+    EXPECT_THROW(s.importXmlFile("tests/inputTests/noVaccinTag.xml"),
+                 Exception);
     EXPECT_FALSE(s.checkSimulation());
 }
 
