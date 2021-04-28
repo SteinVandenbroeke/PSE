@@ -352,8 +352,6 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
 
     vaccinateCenter(getVaccin(true), vaccinated, vaccinsUsed);
 
-    ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
-
     vaccinateCenter(getVaccin(false), vaccinated, vaccinsUsed);
 
     this->fvaccinated += vaccinated;
@@ -370,7 +368,6 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
         }
     }
 
-    ENSURE(vaccinsUsed <= this->getCapacity(), "Amount of vaccinations must not exceed capacity");
     ENSURE(this->getVaccinated() <= this->getPopulation(), "Peaple that are vaccinated can not be more than the population");
 
     if (vaccinated == 0) {

@@ -535,9 +535,9 @@ TEST_F(VaccinDistributorDomainTests, DistributeVaccinsFair) {
     EXPECT_TRUE(FileExists(fileName));
     EXPECT_TRUE(FileExists(fileNameCompare));
     EXPECT_FALSE(FileIsEmpty(fileName));
-    EXPECT_TRUE(FileExists("tests/domainTests/expectedOutput/expectedDistributeVaccinsFair2.txt"));
+    EXPECT_TRUE(FileExists("tests/domainTests/expectedOutput/expectedDistributeVaccinsFair.txt"));
     EXPECT_TRUE(FileCompare(fileName, fileNameCompare) || FileCompare(fileName,
-                "tests/domainTests/expectedOutput/expectedDistributeVaccinsFair2.txt"));
+                "tests/domainTests/expectedOutput/expectedDistributeVaccinsFair.txt"));
 }
 
 // Test transportNonExistingVaccin() with not-existing Vaccin in Hub
@@ -715,10 +715,7 @@ TEST_F(VaccinDistributorDomainTests, VaccinateCenter) {
 // Test createn of Hub with centra and vaccins
 TEST_F(VaccinDistributorDomainTests, Create) {
     //Simulation test
-    Hub* h;
-    EXPECT_FALSE(h->properlyInitialized());
-
-    h = new Hub;
+    Hub* h = new Hub;
     Vaccin* vaccin = new Vaccin("Vaccin 1", 15300, 1, 500, 0,  -20);
     Vaccin* vaccin1 = new Vaccin("Vaccin 2", 30000, 2, 1000, 0,  -80);
     Vaccin* vaccin2 = new Vaccin("Vaccin 3", 2000, 1, 500, 12,  20);

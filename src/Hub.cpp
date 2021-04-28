@@ -129,7 +129,7 @@ void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &st
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(currentDay >= 0, "currentDay cannot be negative");
     REQUIRE(vaccin->properlyInitialized(), "VaccinationCenter must be properly initialized");
-    REQUIRE(this->getVaccins().find(vaccin->getType()) != this->getVaccins().end(), "Given vaccin must exist");
+    REQUIRE(containsVaccin(vaccin), "Given vaccin must exist");
 
     std::map<VaccinationCenter*, std::pair<int,int> > vaccinationCenterCargoTransport;
     int maxVaccinDeliveryDay = (vaccin->getVaccin())/(vaccin->getInterval() - (currentDay%vaccin->getInterval()));
@@ -269,7 +269,7 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* v
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
     REQUIRE(vaccinCount >= 0, "vaccinCount cannot be negative");
-    REQUIRE(getVaccins().find(vaccin->getType()) != getVaccins().end(), "Vaccin must exist in Hub");
+    REQUIRE(containsVaccin(vaccin), "Vaccin must exist in Hub");
 
     VaccinationCenter* center = this->getCentra().begin()->second;
     bool centerReached = false;
@@ -290,7 +290,6 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* v
 }
 
 Hub::~Hub() {
-
     for(std::map<std::string, Vaccin*>::iterator vaccins = fvaccins.begin(); vaccins != fvaccins.end(); vaccins++){
         delete vaccins->second;
     }
@@ -298,9 +297,11 @@ Hub::~Hub() {
 }
 
 bool Hub::containsVaccinationCenter(const std::string &name) const {
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return fcentra.find(name) != fcentra.end();
 }
 
 bool Hub::containsVaccin(const Vaccin* vaccin) {
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return getVaccins().find(vaccin->getType()) != getVaccins().end();
 }

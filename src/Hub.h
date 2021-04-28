@@ -182,7 +182,7 @@ public:
     * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     * REQUIRE(currentDay >= 0, "currentDay cannot be negative");
     * REQUIRE(vaccin->properlyInitialized(), "VaccinationCenter must be properly initialized");
-    * REQUIRE(this->getVaccins().find(vaccin->getType()) != this->getVaccins().end(), "Given vaccin must exist");
+    * REQUIRE(containsVaccin(vaccin), "Given vaccin must exist");
     *
     */
     void distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &stream);
