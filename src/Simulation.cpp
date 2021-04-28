@@ -128,7 +128,7 @@ bool Simulation::checkSimulation() const {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
 
-    if (checkHub() && checkCentra() /*&& checkConnections()*/) {
+    if (checkHub() && checkCentra() && checkConnections()) {
         return true;
     }
     return false;

@@ -393,7 +393,7 @@ TEST_F(VaccinSimulationTests, LowTransport) {
     EXPECT_FALSE(FileIsEmpty(fileName));
     EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
     EXPECT_TRUE(FileCompare(exportFileName,
-                            "tests/outputTests/expectedOutput/expectedLowTransport.txt"));
+                            "tests/outputTests/expectedOutput/expectedLowTransport_.txt"));
     EXPECT_TRUE(FileExists(exportIniName));
     EXPECT_FALSE(FileIsEmpty(exportIniName));
     EXPECT_TRUE(FileCompare(exportIniName,
@@ -405,22 +405,21 @@ TEST_F(VaccinSimulationTests, nonExistingCenter) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/nonExistingCenter.xml"));
 
-    EXPECT_DEATH(s.importXmlFile("tests/inputTests/nonExistingCenter.xml"),
-                 "Centra Park spoor Oost does not exist");
-    EXPECT_FALSE(s.checkSimulation());
+    testing::internal::CaptureStderr();
+    s.importXmlFile("tests/inputTests/nonExistingCenter.xml");
+    std::string err = testing::internal::GetCapturedStderr();
+    EXPECT_EQ("Centra Park spoor Oost does not exist\n", err);
+    EXPECT_TRUE(s.checkSimulation());
 }
 
 // Test simulation with not connected center
 TEST_F(VaccinSimulationTests, notConnectedCenter) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/notConnectedCenter.xml"));
-
     EXPECT_DEATH(s.importXmlFile("tests/inputTests/notConnectedCenter.xml"),
-                 "The simulation must be valid/consistent");
+                                 "The simulation must be valid/consistent");
     EXPECT_FALSE(s.checkSimulation());
 }
-
-
 
 //// Test simulation with string as population information
 //TEST_F(VaccinSimulationTests, stringPopulationInformation) {
