@@ -811,13 +811,13 @@ TEST_F(VaccinSimulationTests, MissingElementCenter) {
 // Test simulation with multiple missing element in center
 TEST_F(VaccinSimulationTests, MissingMultipleElementsCenter) {
 
+    std::ostringstream errorStream;
     ASSERT_TRUE(FileExists("tests/inputTests/missingMultipleElementsCenter.xml"));
-    testing::internal::CaptureStderr();
-    s.importXmlFile("tests/inputTests/missingMultipleElementsCenter.xml");
-    std::string err = testing::internal::GetCapturedStderr();
+    s.importXmlFile("tests/inputTests/missingMultipleElementsCenter.xml",
+                    "tests/inputTests/knownTags.xml", errorStream);
 
     EXPECT_EQ("Element not found: adres\nElement not found: inwoners\nCentra name does not exist\nCentra name does not exist\nCentra name does not exist\n",
-              err);
+              errorStream.str());
     EXPECT_TRUE(s.checkSimulation());
 }
 

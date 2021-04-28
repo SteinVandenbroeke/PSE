@@ -263,6 +263,7 @@ TEST_F(VaccinDistributorDomainTests, CenterIni) {
     EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
 }
 
+// Test vaccin with exceptional values
 TEST_F(VaccinDistributorDomainTests, VaccinExceptionalValues) {
     Vaccin v("Naam", 1, 10, 1, 2, 20);
     EXPECT_TRUE(v.properlyInitialized());
@@ -363,9 +364,7 @@ TEST_F(VaccinDistributorDomainTests, VaccinType) {
     EXPECT_EQ(0, center->getVaccin(false).begin()->second->getVaccinRenewal());
     EXPECT_EQ(2000, center->getVaccin(false).begin()->second->getVaccinAmount());
     EXPECT_FALSE(center->getVaccin(false).begin()->second->isRenewal());
-
-    EXPECT_EQ(0, center->requiredAmountVaccin(center->getVaccin(false).begin()->second));
-
+    
     EXPECT_EQ(1500, center->getOpenVaccinStorage(vaccin1));
 
     center->vaccinateCenter(ostream);
