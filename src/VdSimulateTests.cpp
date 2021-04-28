@@ -120,7 +120,7 @@ TEST_F(VaccinSimulationTests, WrongCentraInformation) {
 
     std::ostringstream errorStream;
     s.importXmlFile("tests/inputTests/wrongCentra.xml", "tests/inputTests/knownTags.xml", errorStream);
-    EXPECT_EQ("Element not found: inwoners\nCentra name does not exist\n", errorStream.str());
+    EXPECT_EQ("Element not found: inwoners\nCentra Flanders Expo does not exist\n", errorStream.str());
     EXPECT_TRUE(s.checkSimulation());
 }
 
@@ -133,7 +133,7 @@ TEST_F(VaccinSimulationTests, wrongHubInformation) {
     std::ostringstream errorStream;
 
     s.importXmlFile("tests/inputTests/wrongHub.xml", "tests/inputTests/knownTags.xml", errorStream);
-    EXPECT_EQ("Centra name does not exist\n"
+    EXPECT_EQ("Centra T does not exist\n"
     , errorStream.str());
     EXPECT_TRUE(s.checkSimulation());
 }
@@ -468,7 +468,7 @@ TEST_F(VaccinSimulationTests, emptyCapacityInformation) {
     s.importXmlFile("tests/inputTests/emptyCapacityInformation.xml");
     std::string err = testing::internal::GetCapturedStderr();
     EXPECT_EQ(
-            "Element is empty: capaciteit\nCentra name does not exist\nCentra name does not exist\n",
+            "Element is empty: capaciteit\nCentra Flanders Expo does not exist\nCentra Flanders Expo does not exist\n",
             err);
     EXPECT_TRUE(s.checkSimulation());
 }
@@ -536,7 +536,8 @@ TEST_F(VaccinSimulationTests, MissingElementCenter) {
     testing::internal::CaptureStderr();
     s.importXmlFile("tests/inputTests/missingElementCenter.xml");
     std::string err = testing::internal::GetCapturedStderr();
-    EXPECT_EQ("Element not found: inwoners\nElement not found: inwoners\nCentra name does not exist\nCentra name does not exist\n",err);
+    EXPECT_EQ("Element not found: inwoners\nElement not found: inwoners\nCentra Park Spoor Oost does not exist\nCentra De Zoerla does not exist\n",
+              err);
     EXPECT_TRUE(s.checkSimulation());
 }
 
@@ -548,7 +549,7 @@ TEST_F(VaccinSimulationTests, MissingMultipleElementsCenter) {
     s.importXmlFile("tests/inputTests/missingMultipleElementsCenter.xml",
                     "tests/inputTests/knownTags.xml", errorStream);
 
-    EXPECT_EQ("Element not found: adres\nElement not found: inwoners\nCentra name does not exist\nCentra name does not exist\nCentra name does not exist\n",
+    EXPECT_EQ("Element not found: adres\nElement not found: inwoners\nCentra De Zoerla does not exist\nCentra Flanders Expo does not exist\nCentra Flanders Expo does not exist\n",
               errorStream.str());
     EXPECT_TRUE(s.checkSimulation());
 }
