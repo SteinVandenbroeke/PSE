@@ -117,61 +117,70 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
 
     TiXmlElement* xmlHub = getElement("HUB");
     while(xmlHub != NULL) {
+        try{
+            Hub* newHub = new Hub();
 
-        Hub* newHub = new Hub();
+            TiXmlElement* xmlVaccin = xmlHub->FirstChildElement("VACCIN");
 
-        TiXmlElement* xmlVaccin = xmlHub->FirstChildElement("VACCIN");
-
-        // Hub heeft maar een vaccin en er is geen vaccin tag
-        if (xmlVaccin == NULL) {
-            std::string type = "HUB_BASE_VACCIN";
-            std::string delivery = getElementValue(*xmlHub, "levering");
-            std::string interval = getElementValue(*xmlHub, "interval");
-            std::string transport = getElementValue(*xmlHub, "transport");
-
-            int intDelivery = ToInt(delivery);
-            int intInterval = ToInt(interval);
-            int intTransport = ToInt(transport);
-            int intRenewal = 0;
-            int intTemp = 420;
-
-            Vaccin* newVaccin = new Vaccin(type, intDelivery, intInterval, intTransport,
-                                                intRenewal, intTemp);
-            newHub->addVaccin(newVaccin);
-        }
-        else {
-            while (xmlVaccin != NULL) {
-                std::string type = getElementValue(*xmlVaccin, "type");
-                std::string delivery = getElementValue(*xmlVaccin, "levering");
-                std::string interval = getElementValue(*xmlVaccin, "interval");
-                std::string transport = getElementValue(*xmlVaccin, "transport");
-                std::string renewal = getElementValue(*xmlVaccin, "hernieuwing");
-                std::string temp = getElementValue(*xmlVaccin, "temperatuur");
+            // Hub heeft maar een vaccin en er is geen vaccin tag
+            if (xmlVaccin == NULL) {
+                std::string type = "HUB_BASE_VACCIN";
+                std::string delivery = getElementValue(*xmlHub, "levering");
+                std::string interval = getElementValue(*xmlHub, "interval");
+                std::string transport = getElementValue(*xmlHub, "transport");
 
                 int intDelivery = ToInt(delivery);
                 int intInterval = ToInt(interval);
                 int intTransport = ToInt(transport);
-                int intRenewal = ToInt(renewal);
-                int intTemp = ToInt(temp);
+                int intRenewal = 0;
+                int intTemp = 420;
 
                 Vaccin* newVaccin = new Vaccin(type, intDelivery, intInterval, intTransport,
-                                                    intRenewal, intTemp);
+                                               intRenewal, intTemp);
                 newHub->addVaccin(newVaccin);
-                xmlVaccin = xmlVaccin->NextSiblingElement("VACCIN");
             }
-        }
+            else {
+                while (xmlVaccin != NULL) {
+                    try{
+                        std::string type = getElementValue(*xmlVaccin, "type");
+                        std::string delivery = getElementValue(*xmlVaccin, "levering");
+                        std::string interval = getElementValue(*xmlVaccin, "interval");
+                        std::string transport = getElementValue(*xmlVaccin, "transport");
+                        std::string renewal = getElementValue(*xmlVaccin, "hernieuwing");
+                        std::string temp = getElementValue(*xmlVaccin, "temperatuur");
 
-        TiXmlElement* xmlCentra = xmlHub->FirstChildElement("CENTRA");
-        TiXmlElement* xmlCenter = xmlCentra->FirstChildElement("centrum");
-        while (xmlCenter != NULL) {
-            std::string name = xmlCenter->GetText();
-            if(vaccinationCentras.find(name) != vaccinationCentras.end()) {
-                newHub->addCenter(name, vaccinationCentras[name]);
+                        int intDelivery = ToInt(delivery);
+                        int intInterval = ToInt(interval);
+                        int intTransport = ToInt(transport);
+                        int intRenewal = ToInt(renewal);
+                        int intTemp = ToInt(temp);
+
+                        Vaccin* newVaccin = new Vaccin(type, intDelivery, intInterval, intTransport,
+                                                       intRenewal, intTemp);
+                        newHub->addVaccin(newVaccin);
+                    }
+                    catch (Exception ex) {
+                        errorStream << "Vaccin not added: " << ex.value() << std::endl;
+                    }
+                    xmlVaccin = xmlVaccin->NextSiblingElement("VACCIN");
+                }
             }
-            xmlCenter = xmlCenter->NextSiblingElement("centrum");
-        }
 
-        hubs.push_back(newHub);
+            TiXmlElement* xmlCentra = xmlHub->FirstChildElement("CENTRA");
+            TiXmlElement* xmlCenter = xmlCentra->FirstChildElement("centrum");
+            while (xmlCenter != NULL) {
+                std::string name = xmlCenter->GetText();
+                if(vaccinationCentras.find(name) != vaccinationCentras.end()) {
+                    newHub->addCenter(name, vaccinationCentras[name]);
+                }
+                xmlCenter = xmlCenter->NextSiblingElement("centrum");
+            }
+
+            hubs.push_back(newHub);
+        }
+        catch (Exception ex) {
+            errorStream  << "Hub not added: " << ex.value() << std::endl;
+        }
         xmlHub = xmlHub->NextSiblingElement("HUB");
     }
     return hubs;
