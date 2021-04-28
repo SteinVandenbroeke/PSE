@@ -16,7 +16,8 @@ int main() {
         s.importXmlFile("niels.xml", "knownTags_spec_10.xml" ,std::cerr);
         std::cout << "Done importing" << std::endl;
 
-        s.automaticSimulation(150, std::cout);
+        s.automaticSimulation(150, std::cout, false, false);
+        s.generateIni("export.ini");
     }
     catch (Exception ex) {
         std::cerr << ex.value() << std::endl;

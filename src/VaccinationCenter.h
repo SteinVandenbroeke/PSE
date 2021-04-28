@@ -528,7 +528,7 @@ public:
      *
      * @return x-value and y-value of the Cartesian coordinates of Center as pair of doubles
      */
-    std::pair<double, double> generateIni(std::ofstream & stream, int counterFigures, int & counterCenter,
+    std::pair<double, double> generateIni(std::ofstream & stream, int & counterFigures, int & counterCenter,
                                           const double & maxHubX) const;
 
     /**

@@ -304,7 +304,7 @@ std::string VaccinationCenter::vaccinatedToColor() const {
     }
 }
 
-std::pair<double, double> VaccinationCenter::generateIni(std::ofstream & stream, int counterFigures,
+std::pair<double, double> VaccinationCenter::generateIni(std::ofstream & stream, int& counterFigures,
                                                          int & counterCenter, const double & maxHubX) const {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
