@@ -180,7 +180,7 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
                         newHub->addCenter(name, vaccinationCentras[name]);
                     }
                     else{
-                        errorStream << "Centra name does not exist" <<  std::endl;
+                        errorStream << "Centra " << name << " does not exist" << std::endl;
                     }
                 }
                 else{
