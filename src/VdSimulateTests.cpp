@@ -139,7 +139,7 @@ TEST_F(VaccinSimulationTests, wrongHubInformation) {
 }
 
 // Tests .xml file with lacking Hub information
-TEST_F(VaccinSimulationTests, brokenHubInformation) {
+TEST_F(VaccinSimulationTests, BrokenHubInformation) {
     ASSERT_TRUE(FileExists("tests/inputTests/brokenHub.xml"));
     ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
     std::ostringstream errorStream;
@@ -149,7 +149,7 @@ TEST_F(VaccinSimulationTests, brokenHubInformation) {
 }
 
 // Tests .xml file with no Hub
-TEST_F(VaccinSimulationTests, noHub) {
+TEST_F(VaccinSimulationTests, NoHub) {
     ASSERT_TRUE(FileExists("tests/inputTests/noHub.xml"));
     ASSERT_TRUE(FileExists("tests/inputTests/knownTags.xml"));
     EXPECT_THROW(s.importXmlFile("tests/inputTests/noHub.xml"), Exception);
@@ -157,7 +157,7 @@ TEST_F(VaccinSimulationTests, noHub) {
 }
 
 // Tests .xml with no VaccinationCentra
-TEST_F(VaccinSimulationTests, noCentra) {
+TEST_F(VaccinSimulationTests, NoCentra) {
     ASSERT_TRUE(FileExists("tests/inputTests/noCentra.xml"));
 
     EXPECT_THROW(s.importXmlFile("tests/inputTests/noCentra.xml"), Exception);
@@ -165,7 +165,7 @@ TEST_F(VaccinSimulationTests, noCentra) {
 }
 
 // Tests simulation with .txt file instead of .xml file
-TEST_F(VaccinSimulationTests, wrongFile) {
+TEST_F(VaccinSimulationTests, WrongFile) {
 
     EXPECT_DEATH(s.importXmlFile("tests/inputTests/noCentra.txt"),
                  "The file that needs to be read must exist");
@@ -173,7 +173,7 @@ TEST_F(VaccinSimulationTests, wrongFile) {
 }
 
 // Tests simulation with empty .xml file
-TEST_F(VaccinSimulationTests, emptyFile) {
+TEST_F(VaccinSimulationTests, EmptyFile) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/emptyFile.xml"));
 
@@ -349,7 +349,7 @@ TEST_F(VaccinSimulationTests, HappyDaysOverkillHubs) {
 }
 
 // Test simulation where center has already vaccinated/has not 0 vaccins in stock
-TEST_F(VaccinSimulationTests, alreadyVaccinated) {
+TEST_F(VaccinSimulationTests, AlreadyVaccinated) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/happyDays2.xml"));
 
@@ -402,7 +402,7 @@ TEST_F(VaccinSimulationTests, LowTransport) {
 }
 
 // Test simulation with non-existing center
-TEST_F(VaccinSimulationTests, nonExistingCenter) {
+TEST_F(VaccinSimulationTests, NonExistingCenter) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/nonExistingCenter.xml"));
 
@@ -412,7 +412,7 @@ TEST_F(VaccinSimulationTests, nonExistingCenter) {
 }
 
 // Test simulation with not connected center
-TEST_F(VaccinSimulationTests, notConnectedCenter) {
+TEST_F(VaccinSimulationTests, NotConnectedCenter) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/notConnectedCenter.xml"));
     EXPECT_DEATH(s.importXmlFile("tests/inputTests/notConnectedCenter.xml"),
@@ -433,7 +433,7 @@ TEST_F(VaccinSimulationTests, StringVaccinInformation) {
 }
 
 // Test simulation with string as center information
-TEST_F(VaccinSimulationTests, stringCenterInformation) {
+TEST_F(VaccinSimulationTests, StringCenterInformation) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/stringCenterInformation.xml"));
 
@@ -445,7 +445,7 @@ TEST_F(VaccinSimulationTests, stringCenterInformation) {
 }
 
 // Test simulation with empty capacity information
-TEST_F(VaccinSimulationTests, emptyCapacityInformation) {
+TEST_F(VaccinSimulationTests, EmptyCapacityInformation) {
 
     ASSERT_TRUE(FileExists("tests/inputTests/emptyCapacityInformation.xml"));
 
