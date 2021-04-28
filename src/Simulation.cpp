@@ -287,15 +287,15 @@ void Simulation::simulateVaccination(std::ostream &stream) {
 }
 
 void Simulation::increaseIterator() {
-
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
-    iter ++;
+    iter++;
 }
 
 void Simulation::automaticSimulation(const int days, std::ostream &stream, bool exportFlag, bool ini) {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
+    REQUIRE(days >= 0, "Days can't be negative");
 
     if (iter == 0) {
         ENSURE(checkVaccins(),"Hub must have equal amount of vaccins as delivery on day zero");

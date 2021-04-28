@@ -30,6 +30,15 @@ private:
     int iter;               ///< Iterator that holds the amount of iterations in the Simulation
     Simulation *_initCheck;
 
+    /**
+     * \brief Increase iterator value
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     */
+    void increaseIterator();
+
 public:
     /**
      * \brief Default constructor for a Simulation object
@@ -228,6 +237,7 @@ public:
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
      * ENSURE(checkVaccins(),"Hub must have equal amount of vaccins as delivery on day zero")
+     * REQUIRE(days >= 0, "Days can't be negative");
      * REQUIRE(it->second->getVaccins() == 0 && it->second->getVaccinated() == 0,
                 "Amount of vaccins or amount of vaccinated in a center must be 0 at begin of the simulation")
      *
@@ -235,15 +245,6 @@ public:
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      */
     void automaticSimulation(int days, std::ostream &stream, bool exportFlag, bool ini);
-
-    /**
-     * \brief Increase iterator value
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
-     *
-     */
-    void increaseIterator();
 };
 
 #endif //TTT_SIMULATION_H

@@ -156,10 +156,10 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
      * REQUIRE(center->properlyInitialized(), "VaccinationCenter must be properly initialized");
-     * REQUIRE(fcentra.find(name) == fcentra.end() ,"VaccinationCenter must not exist yet in map");
+     * REQUIRE(!this->containsVaccinationCenter(name) ,"VaccinationCenter must not exist yet in map");
      *
      * @post
-     * ENSURE( fcentra.find(name) != fcentra.end(),"VaccinationCenter must exist in map");
+     * ENSURE(this->containsVaccinationCenter(name),"VaccinationCenter must exist in map");
      */
     void addCenter(const std::string &name, VaccinationCenter* center);
 
@@ -283,6 +283,30 @@ public:
      * @return Cartesian coordinates of Hub as string in .ini file format
      */
     std::string generateIni(std::ofstream & stream, int & counterFigures, int & counterHub) const;
+
+    /**
+     * \brief Check if centerName exist in Hub vaccinnationcenter map
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     *
+     * @param name Name of the VaccinationCenter
+     *
+     * @return bool: true = exists | false = does not exits
+     */
+    bool containsVaccinationCenter(const std::string &name) const;
+
+    /**
+     * \brief Check if Vaccin exist in Hub
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     *
+     * @param Vaccin pointer
+     *
+     * @return bool: true = exists | false = does not exits
+     */
+    bool containsVaccin(const Vaccin*);
 };
 
 #endif //TTT_HUB_H

@@ -50,18 +50,6 @@ TEST_F(VaccinDistributorDomainTests, DefaultConstructorSimulation) {
     EXPECT_TRUE(simulation.getFcentra().empty());
 }
 
-// Test iterator of Simulation object
-TEST_F(VaccinDistributorDomainTests, Iterator) {
-
-    Simulation simulation = Simulation();
-
-    EXPECT_TRUE(simulation.properlyInitialized());
-    EXPECT_EQ(0, simulation.getIter());
-
-    simulation.increaseIterator();
-    EXPECT_EQ(1, simulation.getIter());
-}
-
 // Test constructor of Hub object
 TEST_F(VaccinDistributorDomainTests, ConstructorHub) {
 
@@ -720,4 +708,49 @@ TEST_F(VaccinDistributorDomainTests, VaccinateCenter) {
     EXPECT_TRUE(FileExists(fileNameCompare));
     EXPECT_FALSE(FileIsEmpty(fileName));
     EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+}
+
+// Test createn of Hub with centra and vaccins
+TEST_F(VaccinDistributorDomainTests, Create) {
+    //Simulation test
+    Hub* h;
+    EXPECT_FALSE(h->properlyInitialized());
+
+    h = new Hub;
+    Vaccin* vaccin = new Vaccin("Vaccin 1", 15300, 1, 500, 0,  -20);
+    Vaccin* vaccin1 = new Vaccin("Vaccin 2", 30000, 2, 1000, 0,  -80);
+    Vaccin* vaccin2 = new Vaccin("Vaccin 3", 2000, 1, 500, 12,  20);
+    VaccinationCenter* center = new VaccinationCenter("Center 1", "Locatie 1", 54321, 15000);
+    VaccinationCenter* center1 = new VaccinationCenter("Center 2", "Locatie 2", 30000, 20000);
+    VaccinationCenter* center2 = new VaccinationCenter("Center 3", "Locatie 3", 20000, 19000);
+
+    EXPECT_TRUE(h->properlyInitialized());
+    EXPECT_TRUE(vaccin->properlyInitialized());
+    EXPECT_TRUE(vaccin1->properlyInitialized());
+    EXPECT_TRUE(vaccin2->properlyInitialized());
+    EXPECT_TRUE(center->properlyInitialized());
+    EXPECT_TRUE(center1->properlyInitialized());
+    EXPECT_TRUE(center2->properlyInitialized());
+
+    EXPECT_FALSE(h->containsVaccinationCenter(center->getName()));
+    EXPECT_FALSE(h->containsVaccinationCenter(center->getName()));
+    EXPECT_FALSE(h->containsVaccinationCenter(center->getName()));
+    h->addCenter(center->getName(), center);
+    h->addCenter(center1->getName(), center1);
+    h->addCenter(center2->getName(), center2);
+    EXPECT_TRUE(h->containsVaccinationCenter(center->getName()));
+    EXPECT_TRUE(h->containsVaccinationCenter(center->getName()));
+    EXPECT_TRUE(h->containsVaccinationCenter(center->getName()));
+    EXPECT_TRUE(h->getCentra().size() == 3);
+
+    EXPECT_FALSE(h->containsVaccin(vaccin));
+    EXPECT_FALSE(h->containsVaccin(vaccin1));
+    EXPECT_FALSE(h->containsVaccin(vaccin2));
+    h->addVaccin(vaccin);
+    h->addVaccin(vaccin1);
+    h->addVaccin(vaccin2);
+    EXPECT_TRUE(h->containsVaccin(vaccin));
+    EXPECT_TRUE(h->containsVaccin(vaccin1));
+    EXPECT_TRUE(h->containsVaccin(vaccin2));
+    EXPECT_TRUE(h->getVaccins().size() == 3);
 }

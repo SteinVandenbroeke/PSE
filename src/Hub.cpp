@@ -71,12 +71,12 @@ void Hub::addCenter(const std::string &name, VaccinationCenter *center) {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(center->properlyInitialized(), "VaccinationCenter must be properly initialized");
-    REQUIRE(fcentra.find(name) == fcentra.end() ,"VaccinationCenter must not exist yet in map");
+    REQUIRE(!this->containsVaccinationCenter(name) ,"VaccinationCenter must not exist yet in map");
 
     // Add center to map of Hub
     this->fcentra[name] = center;
 
-    ENSURE( fcentra.find(name) != fcentra.end(),"VaccinationCenter must exist in map");
+    ENSURE( this->containsVaccinationCenter(name),"VaccinationCenter must exist in map");
 }
 
 void Hub::updateVaccins() {
@@ -175,11 +175,11 @@ void Hub::addVaccin(Vaccin* vaccin) {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
-    REQUIRE(getVaccins().find(vaccin->getType()) == getVaccins().end(), "Vaccin can't yet exist in Hub");
+    REQUIRE(!containsVaccin(vaccin), "Vaccin can't yet exist in Hub");
 
     this->fvaccins.insert(std::make_pair(vaccin->getType(), vaccin));
 
-    ENSURE(getVaccins().find(vaccin->getType()) != getVaccins().end(), "Vaccin must be added to Hub");
+    ENSURE(containsVaccin(vaccin), "Vaccin must be added to Hub");
 }
 
 std::map<std::string, Vaccin *> &Hub::getVaccins() {
@@ -295,4 +295,12 @@ Hub::~Hub() {
         delete vaccins->second;
     }
     fvaccins.clear();
+}
+
+bool Hub::containsVaccinationCenter(const std::string &name) const {
+    return fcentra.find(name) != fcentra.end();
+}
+
+bool Hub::containsVaccin(const Vaccin* vaccin) {
+    return getVaccins().find(vaccin->getType()) != getVaccins().end();
 }
