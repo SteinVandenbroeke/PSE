@@ -295,7 +295,8 @@ TEST_F(VaccinSimulationTests, HappyDaysMultipleHubs) {
     EXPECT_TRUE(FileExists(fileName));
     EXPECT_TRUE(FileExists(fileNameCompare));
     EXPECT_FALSE(FileIsEmpty(fileName));
-    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare) || FileCompare(fileName,
+                "tests/outputTests/expectedOutput/expectedHappyDaysMultipleHubs2.txt"));
     EXPECT_TRUE(FileCompare(exportFileName,
                             "tests/outputTests/expectedOutput/expectedHappyDaysMultipleHubs_.txt"));
     EXPECT_TRUE(FileExists(exportIniName));
@@ -419,42 +420,29 @@ TEST_F(VaccinSimulationTests, notConnectedCenter) {
     EXPECT_FALSE(s.checkSimulation());
 }
 
-//// Test simulation with string as population information
-//TEST_F(VaccinSimulationTests, stringPopulationInformation) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/stringPopulationInformation.xml"));
-//
-//    testing::internal::CaptureStderr();
-//    s.importXmlFile("tests/inputTests/stringPopulationInformation.xml");
-//    std::string err = testing::internal::GetCapturedStderr();
-//    EXPECT_EQ("Can't convert string to int\nHub contains an non existing or wrong vaccination center: 'Park Spoor Oost'\n",
-//              err);
-//    EXPECT_TRUE(s.checkSimulation());
-//}
-//
-//// Test simulation with string as capacity information
-//TEST_F(VaccinSimulationTests, stringCapacityInformation) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/stringCapacityInformation.xml"));
-//
-//    testing::internal::CaptureStderr();
-//    s.importXmlFile("tests/inputTests/stringCapacityInformation.xml");
-//    std::string err = testing::internal::GetCapturedStderr();
-//    EXPECT_EQ("Can't convert string to int\nHub contains an non existing or wrong vaccination center: 'Park Spoor Oost'\n",
-//              err);
-//    EXPECT_TRUE(s.checkSimulation());
-//}
+// Test simulation with string as vaccin information
+TEST_F(VaccinSimulationTests, StringVaccinInformation) {
 
-//// Test simulation with empty vaccin information
-//TEST_F(VaccinSimulationTests, emptyCentraInformation) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/emptyCentraInformation.xml"));
-//    testing::internal::CaptureStderr();
-//    s.importXmlFile("tests/inputTests/emptyCentraInformation.xml");
-//    std::string err = testing::internal::GetCapturedStderr();
-//    EXPECT_EQ("lol", err);
-//    EXPECT_TRUE(s.checkSimulation());
-//}
+    ASSERT_TRUE(FileExists("tests/inputTests/stringVaccinInformation.xml"));
+
+    testing::internal::CaptureStderr();
+    s.importXmlFile("tests/inputTests/stringVaccinInformation.xml");
+    std::string err = testing::internal::GetCapturedStderr();
+    EXPECT_EQ("Vaccin not added: Can't convert string to int\n",err);
+    EXPECT_TRUE(s.checkSimulation());
+}
+
+// Test simulation with string as center information
+TEST_F(VaccinSimulationTests, stringCenterInformation) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/stringCenterInformation.xml"));
+
+    testing::internal::CaptureStderr();
+    s.importXmlFile("tests/inputTests/stringCenterInformation.xml");
+    std::string err = testing::internal::GetCapturedStderr();
+    EXPECT_EQ("Can't convert string to int\nCentra Flanders Expo does not exist\n", err);
+    EXPECT_TRUE(s.checkSimulation());
+}
 
 // Test simulation with empty capacity information
 TEST_F(VaccinSimulationTests, emptyCapacityInformation) {
@@ -573,5 +561,20 @@ TEST_F(VaccinSimulationTests, MissingMultipleElementsVaccin) {
 
     EXPECT_EQ("Vaccin not added: Element not found: transport\nVaccin not added: Element not found: levering\nVaccin not added: Element not found: type\n",
               err);
+    EXPECT_TRUE(s.checkSimulation());
+}
+
+// Test simulation with .xml file with a lot of exceptions
+TEST_F(VaccinSimulationTests, SadDays) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/sadDays.xml"));
+    testing::internal::CaptureStderr();
+    s.importXmlFile("tests/inputTests/sadDays.xml");
+    std::string err = testing::internal::GetCapturedStderr();
+
+    std::string errCompare = "Element not found: adres\nVaccin not added: Element not found: type\nVaccin not added: ";
+    errCompare.append("Element is empty: type\nEmpty centra name\nCentra Sint-Jozef Malle does not exist\n");
+    errCompare.append("Centra De Zoerla does not exist\nVaccin not added: Can't convert string to int\n");
+    EXPECT_EQ(errCompare, err);
     EXPECT_TRUE(s.checkSimulation());
 }

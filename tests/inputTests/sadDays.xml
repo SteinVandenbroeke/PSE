@@ -1,0 +1,69 @@
+<HUB>
+    <VACCIN>
+        <levering>93000</levering>
+        <interval>6</interval>
+        <transport>2000</transport>
+        <hernieuwing>21</hernieuwing>
+        <temperatuur>-70</temperatuur>
+    </VACCIN>
+    <VACCIN>
+        <type></type>
+        <levering>23000</levering>
+        <interval>13</interval>
+        <transport>1000</transport>
+        <hernieuwing>28</hernieuwing>
+        <temperatuur>-20</temperatuur>
+    </VACCIN>
+        <type>JohnsonAndJohnson</type>
+        <levering>23000</levering>
+        <interval>13</interval>
+        <transport>1000</transport>
+        <hernieuwing>28</hernieuwing>
+        <temperatuur>-20</temperatuur>
+    <CENTRA>
+        <centrum>Park Spoor Oost</centrum>
+        <centrum></centrum>
+        <centrum>Sint-Jozef Malle</centrum>
+        <centrum>De Zoerla</centrum>
+    </CENTRA>
+</HUB>
+<HUB>
+<VACCIN>
+    <type>Moderna</type>
+    <levering>23000</levering>
+    <interval>13</interval>
+    <transport>1000</transport>
+    <hernieuwing>28</hernieuwing>
+    <temperatuur>-20</temperatuur>
+</VACCIN>
+<VACCIN>
+    <type>AstraZeneca</type>
+    <levering>67000</levering>
+    <interval>4</interval>
+    <transport>1500</transport>
+    <hernieuwing>28</hernieuwing>
+    <temperatuur>5</temperatuur>
+</VACCIN>
+<VACCIN>
+    <type>Malboro</type>
+    <levering>fourTwentyyyyy</levering>
+    <interval>4</interval>
+    <transport>1500</transport>
+    <hernieuwing>28</hernieuwing>
+    <temperatuur>5</temperatuur>
+</VACCIN>
+<CENTRA>
+    <centrum>Park Spoor Oost</centrum>
+</CENTRA>
+</HUB>
+<VACCINATIECENTRUM>
+<naam>Park Spoor Oost</naam>
+<adres>Noordersingel 40, Antwerpen</adres>
+<inwoners>540173</inwoners>
+<capaciteit>7500</capaciteit>
+</VACCINATIECENTRUM>
+<VACCINATIECENTRUM>
+<naam>De Zoerla</naam>
+<inwoners>7000</inwoners>
+<capaciteit>1000</capaciteit>
+</VACCINATIECENTRUM>
