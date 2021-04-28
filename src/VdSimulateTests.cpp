@@ -365,37 +365,41 @@ TEST_F(VaccinSimulationTests, alreadyVaccinated) {
                  "Hub must have equal amount of vaccins as delivery on day zero");
 }
 
-//// Test simulation with low transport
-//TEST_F(VaccinSimulationTests, lowTransport) {
-//
-//    ASSERT_TRUE(FileExists("tests/inputTests/lowTransport.xml"));
-//
-//    std::string testName = "lowTransport";
-//    std::ofstream ostream;
-//    std::string fileName = "tests/outputTests/generatedOutput/generated" + testName + ".txt";
-//    std::string fileNameCompare = "tests/outputTests/expectedOutput/expected" + testName + ".txt";
-//    ostream.open(fileName.c_str());
-//
-//    s.importXmlFile("tests/inputTests/lowTransport.xml");
-//    EXPECT_TRUE(s.properlyInitialized());
-//    EXPECT_TRUE(s.checkSimulation());
-//
-//    s.automaticSimulation(12, ostream);
-//    std::string exportFileName = "tests/outputTests/generatedOutput/generatedlowTransport.txt";
-//    s.exportFile(exportFileName);
-//
-//    ostream.close();
-//    EXPECT_TRUE(FileExists(exportFileName));
-//    EXPECT_TRUE(FileExists(fileName));
-//    EXPECT_TRUE(FileExists(fileNameCompare));
-//    EXPECT_FALSE(FileIsEmpty(fileName));
-//    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
-//    EXPECT_TRUE(FileCompare(exportFileName,
-//                            "tests/outputTests/expectedOutput/expectedlowTransport.txt"));
-//}
-//
-//
-//
+// Test simulation with low transport
+TEST_F(VaccinSimulationTests, LowTransport) {
+
+    ASSERT_TRUE(FileExists("tests/inputTests/lowTransport.xml"));
+
+    std::string testName = "LowTransport";
+    std::ofstream ostream;
+    std::string fileName = "tests/outputTests/generatedOutput/generated" + testName + ".txt";
+    std::string fileNameCompare = "tests/outputTests/expectedOutput/expected" + testName + ".txt";
+    ostream.open(fileName.c_str());
+
+    s.importXmlFile("tests/inputTests/lowTransport.xml");
+    EXPECT_TRUE(s.properlyInitialized());
+    EXPECT_TRUE(s.checkSimulation());
+
+    s.automaticSimulation(33, ostream, false, false);
+    std::string exportFileName = "tests/outputTests/generatedOutput/generatedLowTransport_.txt";
+    std::string exportIniName = "tests/outputTests/generatedOutput/generatedLowTransport.ini";
+    s.exportFile(exportFileName);
+    s.exportFile(exportIniName);
+
+    ostream.close();
+    EXPECT_TRUE(FileExists(exportFileName));
+    EXPECT_TRUE(FileExists(fileName));
+    EXPECT_TRUE(FileExists(fileNameCompare));
+    EXPECT_FALSE(FileIsEmpty(fileName));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+    EXPECT_TRUE(FileCompare(exportFileName,
+                            "tests/outputTests/expectedOutput/expectedLowTransport.txt"));
+    EXPECT_TRUE(FileExists(exportIniName));
+    EXPECT_FALSE(FileIsEmpty(exportIniName));
+    EXPECT_TRUE(FileCompare(exportIniName,
+                            "tests/outputTests/expectedOutput/expectedLowTransport.ini"));
+}
+
 
 //// Test simulation with negative delivery information
 //TEST_F(VaccinSimulationTests, negativeDeliveryInformation) {

@@ -189,7 +189,6 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
         xmlHub = xmlHub->NextSiblingElement("HUB");
     }
     if(hubs.size() <= 0){
-        std::cerr << "fout te weinig hubs";
         throw Exception("0 correct Hubs found");
     }
     return hubs;

@@ -1,12 +1,20 @@
 <HUB>
-    <levering>93000</levering>
-    <interval>6</interval>
-    <CENTRA>
-        <centrum>Park Spoor Oost</centrum>
-        <centrum>AED Studios</centrum>
-        <centrum>De Zoerla</centrum>
-        <centrum>Flanders Expo</centrum>
-    </CENTRA>
+    <VACCIN>
+        <type>Pfizer</type>
+        <levering>8000</levering>
+        <interval>5</interval>
+        <transport>500</transport>
+        <hernieuwing>0</hernieuwing>
+        <temperatuur>-80</temperatuur>
+    </VACCIN>
+    <VACCIN>
+        <type>Astra zenica</type>
+        <levering>1500</levering>
+        <interval>5</interval>
+        <transport>500</transport>
+        <hernieuwing>1</hernieuwing>
+        <temperatuur>30</temperatuur>
+    </VACCIN>
 </HUB>
 <VACCINATIECENTRUM>
 <naam>Park Spoor Oost</naam>

@@ -111,6 +111,22 @@ TEST_F(VaccinDistributorDomainTests, CenterWrongValues) {
                          "Maaltekouter 1, 9051 Gent",7684, -5500), "Negative capacity");
 }
 
+// Test center with exceptional values
+TEST_F(VaccinDistributorDomainTests, ExceptionalValuesCenter) {
+
+    EXPECT_NO_THROW(VaccinationCenter v("Park Spoor Oost", "Noordersingel 40, Antwerpen", 8000, 7500));
+    EXPECT_DEATH(VaccinationCenter v("", "Noordersingel 40, Antwerpen", 8000, 7500),
+                 "Name can't be empty");
+    EXPECT_DEATH(VaccinationCenter v("Park Spoor Oost", "", 8000, 7500),
+                 "Adres can't be empty");
+    EXPECT_NO_THROW(VaccinationCenter v("Park Spoor Oost", "Noordersingel 40, Antwerpen", 0, 7500));
+    EXPECT_DEATH(VaccinationCenter v("Park Spoor Oost", "Noordersingel 40, Antwerpen", -500, 7500),
+                 "Negative population");
+    EXPECT_NO_THROW(VaccinationCenter v("Park Spoor Oost", "Noordersingel 40, Antwerpen", 8000, 0));
+    EXPECT_DEATH(VaccinationCenter v("Park Spoor Oost", "Noordersingel 40, Antwerpen", 8000, -500),
+                 "Negative capacity");
+}
+
 // Double VaccinationCenter addCenter()
 TEST_F(VaccinDistributorDomainTests, DoubleVaccinationCenter) {
 
