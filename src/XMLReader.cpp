@@ -40,7 +40,6 @@ bool XMLReader::properlyInitialized() const {
 }
 
 bool XMLReader::acceptedTags(std::ostream &errorStream, const char *knownTagsDocument) {
-
     REQUIRE(properlyInitialized(), "XMLReader object must be properly initialized");
 
     if(!FileExists(knownTagsDocument)){
@@ -172,6 +171,9 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
                 std::string name = xmlCenter->GetText();
                 if(vaccinationCentras.find(name) != vaccinationCentras.end()) {
                     newHub->addCenter(name, vaccinationCentras[name]);
+                }
+                else{
+                    errorStream << "Centra name does not exist" <<  std::endl;
                 }
                 xmlCenter = xmlCenter->NextSiblingElement("centrum");
             }
