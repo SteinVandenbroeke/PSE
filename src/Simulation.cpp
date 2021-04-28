@@ -46,7 +46,8 @@ void Simulation::importXmlFile(const char *path, const char *knownTagsPad, std::
     REQUIRE(!FileIsEmpty(path), "The file that needs to be read must not be empty");
 
     XMLReader xmlReader = XMLReader(path);
-    if(knownTagsPad != "" && knownTagsPad != NULL){
+    std::string empty = "";
+    if(knownTagsPad != empty && knownTagsPad != NULL){
         xmlReader.acceptedTags(errorStream, knownTagsPad);
     }
 
