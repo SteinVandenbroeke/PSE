@@ -218,8 +218,20 @@ const Hub::stockToSizeReturn Hub::stockToSize() const {
     }
     else {
         const double fac = static_cast<double>(ToPercent(this->getAmountVaccin(), this->getDelivery())) / 100;
-        return stockToSizeReturn(0.1125 * fac + 0.1125, 0.1575 * fac + 0.1575,
-                                 static_cast<int>(round(8 * fac)) + 8, 0.1125 * fac + 0.1125);
+
+        double cubeScale = 0.1125 * fac + 0.1125;
+        if (cubeScale > 0.3375) {
+            cubeScale = 0.3375;
+        }
+        double coneScale = 0.1575 * fac + 0.1575;
+        if (coneScale > 0.4725) {
+            coneScale = 0.4725;
+        }
+        int coneN = static_cast<int>(round(8 * fac)) + 8;
+        if (coneN > 32) {
+            coneN = 32;
+        }
+        return stockToSizeReturn(cubeScale, coneScale, coneN, cubeScale);
     }
 }
 

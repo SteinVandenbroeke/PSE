@@ -26,3 +26,4 @@ tests Windows/*
 # information for Eclipse / Flash Builder.
 /gtest/
 tests/.DS_Store
+/documentation/

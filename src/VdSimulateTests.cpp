@@ -339,7 +339,9 @@ TEST_F(VaccinSimulationTests, HappyDaysOverkillHubs) {
     EXPECT_TRUE(FileExists(fileName));
     EXPECT_TRUE(FileExists(fileNameCompare));
     EXPECT_FALSE(FileIsEmpty(fileName));
-    EXPECT_TRUE(FileCompare(fileName, fileNameCompare));
+    EXPECT_TRUE(FileExists("tests/outputTests/expectedOutput/expectedHappyDaysOverkillHubs2.txt"));
+    EXPECT_TRUE(FileCompare(fileName, fileNameCompare) || FileCompare(fileName,
+                            "tests/outputTests/expectedOutput/expectedHappyDaysOverkillHubs2.txt"));
     EXPECT_TRUE(FileCompare(exportFileName,
                             "tests/outputTests/expectedOutput/expectedHappyDaysOverKillHubs_.txt"));
     EXPECT_TRUE(FileExists(exportIniName));
@@ -385,7 +387,7 @@ TEST_F(VaccinSimulationTests, LowTransport) {
     std::string exportFileName = "tests/outputTests/generatedOutput/generatedLowTransport_.txt";
     std::string exportIniName = "tests/outputTests/generatedOutput/generatedLowTransport.ini";
     s.exportFile(exportFileName);
-    s.exportFile(exportIniName);
+    s.generateIni(exportIniName);
 
     ostream.close();
     EXPECT_TRUE(FileExists(exportFileName));

@@ -537,7 +537,7 @@ TEST_F(VaccinDistributorDomainTests, DistributeVaccinsFair) {
     EXPECT_FALSE(FileIsEmpty(fileName));
     EXPECT_TRUE(FileExists("tests/domainTests/expectedOutput/expectedDistributeVaccinsFair.txt"));
     EXPECT_TRUE(FileCompare(fileName, fileNameCompare) || FileCompare(fileName,
-                "tests/domainTests/expectedOutput/expectedDistributeVaccinsFair.txt"));
+                "tests/domainTests/expectedOutput/expectedDistributeVaccinsFair2.txt"));
 }
 
 // Test transportNonExistingVaccin() with not-existing Vaccin in Hub
