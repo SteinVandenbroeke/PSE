@@ -25,24 +25,11 @@
 //        s.simulate();
 //        s.simulate();
 //        s.simulate();
+//        s.clearSimulation(true);
+//        std::cout << s.getUndoStack().size() << std::endl;
 
 //        // TODO - bool undoSimulation()
 
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
-//        s.undoSimulation();
 ////        std::cout << "HUBS" << std::endl;
 ////        for (std::vector<Hub*>::const_iterator it = s.getHub().begin(); it != s.getHub().end(); it++) {
 ////            (*it)->printGraphical(std::cout);

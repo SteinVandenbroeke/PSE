@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    this->setWindowTitle("VaccinDistributor");
     createMenus();
     createActions();
     createModels();
@@ -19,6 +19,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::createMenus() {
 
+    // CentralWidget
     this->setCentralWidget(ui->centralwidget);
     menuBar()->setNativeMenuBar(false);
 
@@ -38,19 +39,10 @@ void MainWindow::createModels() {
 
     modelVaccins = new QStringListModel(this);
 
-
-    QStringList list;
-    list.append(tr("Astrazenica \t 3530"));
-    list.append(tr("Pfizer \t 4000923"));
-
-
-    modelVaccins->setStringList(list);
-
     // Items cannot be manually updated
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-//    ui->listViewVaccins->
-    ui->tableView->setAcceptDrops(false);
-    ui->tableView->setModel(modelVaccins);
+    ui->listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->listView->setAcceptDrops(false);
+    ui->listView->setModel(modelVaccins);
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -58,47 +50,79 @@ void MainWindow::on_actionOpen_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QString(),
                                                     tr("XML files (*.xml);;Images (*.png *.bmp *.jpeg *.gif)"));
 
-    if (!fileName.isEmpty()) {
+    QFile file(fileName);
+    if (!fileName.isEmpty() && file.open(QFile::ReadOnly)) {
         // Convert QString to const char*
        QByteArray ba = fileName.toLocal8Bit();
        s.importXmlFile(ba.data());
     }
+    // Show errMsg when file is corrupted || wrong format
     else {
-        QMessageBox::critical(this, tr("Error"), tr("Could not open file"));
+        const char* errMsg = "Could not open file, try again!";
+
+        MessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText(errMsg);
+        msg.setStyleSheet_();
+        msg.setIcon(QMessageBox::Critical);
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.autoClose = true;
+        msg.timeout = 2;
+        msg.exec();
+        return;
     }
-
-
+    file.close();
 }
 
 void MainWindow::on_buttonStart_clicked()
 {
-    // TODO - sleep / time
-
-    // TODO - meerdere keren achter elkaar een nieuw bestand invoeren?
+    // show errMsg when no .xml file was imported || simulation is not complete
     if (!s.checkSimulation() || !s.properlyInitialized()) {
         const char* errMsg = "Could not run simulation!\nTry loading a new .xml file.";
-        QMessageBox::critical(this, tr("Error"), errMsg);
+
+        MessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText(errMsg);
+        msg.setStyleSheet_();
+        msg.setIcon(QMessageBox::Critical);
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.autoClose = true;
+        msg.timeout = 2;
+        msg.exec();
         return;
     }
 
     this->runSimulation = true;
+
     MessageBox msg;
     msg.setWindowTitle("VaccinDistributor");
     msg.setText("Simulation file was successfully imported!");
     msg.setStyleSheet_();
+    msg.setStandardButtons(QMessageBox::Ok);
     msg.autoClose = true;
-    msg.timeout = 4;
+    msg.timeout = 2;
     msg.exec();
+
+    updateModels(s.getVaccinData());
 }
 
 void MainWindow::on_buttonStop_clicked()
 {
+    ui->textEdit->clear();
+    ui->labelImage->clear();
+    ui->progressBarVaccinated->setValue(0);
+    QStringList x;
+    modelVaccins->setStringList(x);
+    this->runSimulation = false;
 
-//    QFuture<void>
-
-//    QFuture<void> future = QtConcurrent::run( s.simulate,  );  // Thread 1
-
-//    this->runSimulation = false;
+    MessageBox msg;
+    msg.setWindowTitle("VaccinDistributor");
+    msg.setText("Simulation was cleared, import a new .xml file!");
+    msg.setStyleSheet_();
+    msg.setStandardButtons(QMessageBox::Ok);
+    msg.autoClose = true;
+    msg.timeout = 2;
+    msg.exec();
 }
 
 void MainWindow::on_buttoNext_clicked()
@@ -110,6 +134,7 @@ void MainWindow::on_buttoNext_clicked()
         updateTextEdit(QString::fromStdString(pairReturn.second));
         updateLabelImage(tr("export.bmp")); // TODO
         updateProgressBarVaccinated(s.getVaccinatedPercent());
+        updateModels(s.getVaccinData());
     }
 }
 
@@ -131,7 +156,17 @@ void MainWindow::updateLabelImage(const QString &fileName) {
                 ui->labelImage->setPixmap(QPixmap::fromImage(image));
             }
             else {
-                QMessageBox::critical(this, tr("Error"), tr("Could not open file"));
+                const char* errMsg = "Could not show image!";
+
+                MessageBox msg;
+                msg.setWindowTitle("Error");
+                msg.setText(errMsg);
+                msg.setStyleSheet_();
+                msg.setIcon(QMessageBox::Critical);
+                msg.setStandardButtons(QMessageBox::Ok);
+                msg.autoClose = true;
+                msg.timeout = 2;
+                msg.exec();
             }
         }
 }
@@ -148,8 +183,9 @@ void MainWindow::on_buttonPrevious_clicked()
 
         MessageBox msg;
         msg.setWindowTitle("VaccinDistributor");
-        msg.setText("Cannot go back any further!");
+        msg.setText("Can't go back any further!");
         msg.setStyleSheet_();
+        msg.setStandardButtons(QMessageBox::Ok);
         msg.autoClose = true;
         msg.timeout = 2;
         msg.exec();
@@ -157,4 +193,21 @@ void MainWindow::on_buttonPrevious_clicked()
 
     // TODO - updateLabelImage
     updateProgressBarVaccinated(s.getVaccinatedPercent());
+    updateModels(s.getVaccinData());
+}
+
+
+void MainWindow::updateModels(const std::map<const std::string, int> &vaccins) {
+
+    QStringList list;
+
+    for (std::map<const std::string, int>::const_iterator it = vaccins.begin(); it != vaccins.end(); it++) {
+
+        QString data = QString::fromStdString(it->first);
+        data.append("\t \t");
+        data.append(QString::fromStdString(ToString(it->second)));
+
+        list.append(data);
+    }
+    modelVaccins->setStringList(list);
 }

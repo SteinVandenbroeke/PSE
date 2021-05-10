@@ -18,8 +18,6 @@
 #include "messagebox.h"
 #include "Simulation.h"
 
-// TODO - nieuwe .xml file --> alles leegmaken en verwijderen --> alles update
-// TODO - stop button?
 
 namespace Ui {
 class MainWindow;
@@ -42,7 +40,6 @@ private slots:
 
     void on_buttoNext_clicked();
 
-
     void on_buttonPrevious_clicked();
 
 private:
@@ -59,6 +56,7 @@ private:
     void updateTextEdit(const QString &x);
     void updateLabelImage(const QString &fileName);
     void updateProgressBarVaccinated(const int x);
+    void updateModels(const std::map<const std::string, int> &vaccins);
 };
 
 #endif // MAINWINDOW_H

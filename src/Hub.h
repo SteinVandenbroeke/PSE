@@ -41,18 +41,18 @@ public:
     Hub();
 
     /**
-     * \brief Copy constructor for Hub object
+     * @brief copyHub Copy constructor for Hub object
      *
-     * @param h Hub object to be copied form
+     * @param h Hub object to be copied from
+     *
+     * @param centra Map with all existing centra's in Simulation
      *
      * @pre
-     * REQUIRE(properlyInitialized(), "Constructor must end in properlyInitialized state")
+     * REQUIRE(h->properlyInitialized(), "Constructor must end in properlyInitialized state")
      *
      * @post
      * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state")
      */
-    Hub(const Hub *h);
-
     void copyHub(const Hub *h, const std::map<std::string, VaccinationCenter*> &centra);
 
     /**

@@ -15,7 +15,6 @@ Simulation::Simulation() {
 }
 
 Simulation::~Simulation() {
-
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
 
     for(std::map<std::string, VaccinationCenter*>::iterator centra = fcentra.begin(); centra != fcentra.end(); centra++){
@@ -113,6 +112,12 @@ const std::vector<Hub *> &Simulation::getHub() const {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     return fhub;
+}
+
+const std::stack<Simulation *> &Simulation::getUndoStack() const {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+    return undoStack;
 }
 
 bool Simulation::checkVaccins() const {
@@ -396,10 +401,8 @@ std::pair<std::string, std::string> Simulation::simulate() {
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
     REQUIRE(this->iter >= 0, "Days can't be negative");
 
-
-    std::cout << "creating copy..." << std::endl;
+    // Create copy of current simulation and push onto the stack
     Simulation *s = new Simulation();
-
     s->iter = this->iter;
     s->undoStack = this->undoStack;
 
@@ -419,11 +422,7 @@ std::pair<std::string, std::string> Simulation::simulate() {
 
         s->fhub.push_back(h);
     }
-
     undoStack.push(s);
-    std::cout << undoStack.top()->fcentra.rbegin()->second->getVaccin(false).size() << std::endl;
-    std::cout << undoStack.top()->fcentra.rbegin()->second->getVaccin(true).size() << std::endl;
-    std::cout << "DONE - STACK SIZE --> " << undoStack.size() << std::endl;
 
     for (std::vector<Hub*>::iterator it = fhub.begin(); it != fhub.end(); it++) {
 
@@ -449,7 +448,7 @@ std::pair<std::string, std::string> Simulation::simulate() {
             it->second->updateRenewal();
         }
     }
-    generateIni("Day-" + ToString(iter) + ".ini");
+    generateIni("Day-" + ToString(iter) + ".ini"); // TODO - absoulte path?
     increaseIterator();
 
     std::string output = ostream.str();
@@ -486,7 +485,6 @@ bool Simulation::undoSimulation() {
     this->iter = undoStack.top()->iter;
 
     std::vector<Hub*> &hub = undoStack.top()->fhub;
-
     std::map<std::string, VaccinationCenter*> &centra = undoStack.top()->fcentra;
 
     this->fcentra.clear();
@@ -506,4 +504,37 @@ bool Simulation::undoSimulation() {
     undoStack.pop();
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
     return true;
+}
+
+void Simulation::clearSimulation(const bool clearStack) {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+
+    this->iter = 0;
+    this->fcentra.clear();
+    this->fhub.clear();
+    if (clearStack) {
+        this->undoStack.~stack();
+    }
+
+    ENSURE(getIter() == 0, "Iter must be zero");
+    ENSURE(getFcentra().empty(), "Centra must be empty");
+    ENSURE(getHub().empty(), "Hub must be empty");
+    if (clearStack) ENSURE(getUndoStack().empty(), "undoStack must be empty");
+}
+
+std::map<const std::string, int> Simulation::getVaccinData() const {
+
+    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
+
+    std::map<const std::string, int> vaccinsData;
+
+    for (std::vector<Hub*>::const_iterator it = fhub.begin(); it != fhub.end(); it++) {
+
+        for (std::map<std::string, Vaccin*>::const_iterator ite = (*it)->getVaccins().begin(); ite != (*it)->getVaccins().end(); ite++) {
+
+            vaccinsData[ite->first] += ite->second->getDelivered();
+        }
+    }
+    return vaccinsData;
 }

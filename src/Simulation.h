@@ -126,6 +126,16 @@ public:
     const std::vector<Hub *> &getHub() const;
 
     /**
+     * \brief Get undoStack
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @return Stack containing all the previous Simulations
+     */
+    const std::stack<Simulation *> &getUndoStack() const;
+
+    /**
      * \brief Imports a vaccin distribution simulation from a .xml file
      *
      * @param path The path to the .xml file that needs to read from
@@ -279,9 +289,7 @@ public:
     void automaticSimulation(int days, std::ostream &stream, bool exportFlag, bool ini);
 
     /**
-     * \brief Simulate till given bool is false
-     * @param stream Output-stream
-     * @param flag Simulate will run when this bool is true
+     * \brief Simulate for one day and generate .ini file
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
@@ -290,6 +298,8 @@ public:
      *
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @return Pair of strings <Name of .ini file, output stream>
      */
     std::pair<std::string, std::string> simulate();
 
@@ -316,8 +326,36 @@ public:
      *
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @return False if undoStack is empty, true if undo is success
      */
     bool undoSimulation();
+
+    /**
+     * \brief Clear simulation
+     *
+     * @param clearStack Clear undoStack with previous versions
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @post
+     * ENSURE(getIter() == 0, "Iter must be zero")
+     * ENSURE(getFcentra().empty(), "Centra must be empty")
+     * ENSURE(getHub().empty(), "Hub must be empty")
+     * if (clearStack) ENSURE(getUndoStack().empty(), "undoStack must be empty")
+     */
+    void clearSimulation(const bool clearStack);
+
+    /**
+     * \brief Get for each Vaccin in simulation total amount delivered Vaccins
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @return Map containing data
+     */
+    std::map<const std::string, int> getVaccinData() const;
 };
 
 #endif //TTT_SIMULATION_H
