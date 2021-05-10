@@ -15,6 +15,59 @@ Hub::Hub(){
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
 }
 
+Hub::Hub(const Hub *h) {
+
+    REQUIRE(h->properlyInitialized(), "Hub must be properly initialized");
+
+    std::cout << "COPY HUB..." << std::endl;
+
+    // TODO - juist
+    for (std::map<std::string, Vaccin*>::const_iterator it = h->getVaccins().begin(); it != h->getVaccins().end(); it++) {
+
+        if (this->fvaccins.find(it->first) != this->fvaccins.end()) {
+
+            this->fvaccins[it->first] = it->second;
+            continue;
+        }
+        this->fvaccins[it->first] = it->second;
+    }
+
+    for (std::map<std::string, VaccinationCenter*>::const_iterator it = h->getCentra().begin(); it != h->getCentra().end(); it++) {
+
+        if (this->fcentra.find(it->first) != this->fcentra.end()) {
+
+            this->fcentra[it->first] = it->second;
+            continue;
+        }
+        this->fcentra[it->first] = it->second;
+    }
+    this->_initCheck = this;
+    ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state");
+}
+
+void Hub::copyHub(const Hub *h, const std::map<std::string, VaccinationCenter*> &centra) {
+
+    REQUIRE(h->properlyInitialized(), "Hub must be properly initialized");
+
+
+    // TODO - juist
+    for (std::map<std::string, Vaccin*>::const_iterator it = h->getVaccins().begin(); it != h->getVaccins().end(); it++) {
+
+        Vaccin *v = new Vaccin();
+
+        v->copyVaccin(it->second);
+
+        this->fvaccins.insert(std::make_pair(v->getType(), v));
+    }
+
+    for (std::map<std::string, VaccinationCenter*>::const_iterator it = h->getCentra().begin(); it != h->getCentra().end(); it++) {
+
+        this->fcentra.insert(std::make_pair(it->first, centra.find(it->first)->second));
+    }
+    this->_initCheck = this;
+    ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state");
+}
+
 bool Hub::properlyInitialized() const {
 
     return Hub::_initCheck == this;
@@ -59,6 +112,12 @@ int Hub::getAmountVaccin() const {
         totalVaccins += (*it).second->getVaccin();
     }
     return totalVaccins;
+}
+
+const std::map<std::string, VaccinationCenter*> &Hub::getCentra() const {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    return fcentra;
 }
 
 std::map<std::string, VaccinationCenter *> &Hub::getCentra() {
@@ -180,6 +239,12 @@ void Hub::addVaccin(Vaccin* vaccin) {
     this->fvaccins.insert(std::make_pair(vaccin->getType(), vaccin));
 
     ENSURE(containsVaccin(vaccin), "Vaccin must be added to Hub");
+}
+
+const std::map<std::string, Vaccin*> &Hub::getVaccins() const {
+
+    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
+    return fvaccins;
 }
 
 std::map<std::string, Vaccin *> &Hub::getVaccins() {

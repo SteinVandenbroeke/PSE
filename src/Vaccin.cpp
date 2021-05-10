@@ -33,6 +33,29 @@ Vaccin::Vaccin(std::string type, const int delivery, const int interval, const i
     ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state");
 }
 
+void Vaccin::copyVaccin(const Vaccin *v) {
+
+
+    REQUIRE(v->properlyInitialized(), "Vaccin must be properly initialized");
+
+    REQUIRE(v->getType() != "", "type can't be empty");
+    REQUIRE(v->getDelivery() >= 0, "Delivery can't be negative");
+    REQUIRE(v->getInterval() >= 0, "Interval can't be negative");
+    REQUIRE(v->getTransport() >= 0, "Transport can't be negative");
+    REQUIRE(v->getRenewal() >= 0, "Renewal can't be negative");
+
+    this->ftype = v->getType();
+    this->fdelivery = v->getDelivery();
+    this->finterval = v->getInterval();
+    this->ftransport = v->getTransport();
+    this->frenewal = v->getRenewal();
+    this->ftemperature = v->getTemperature();
+    this->fvaccin = v->getVaccin();
+    this->_initCheck = this;
+
+    ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state");
+}
+
 int Vaccin::getDelivery() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");

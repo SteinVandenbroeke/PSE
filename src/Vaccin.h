@@ -54,6 +54,29 @@ public:
     Vaccin(std::string type, const int delivery, const int interval, const int transport, const int renewal,
            const int temp);
 
+    Vaccin() {
+
+        this->_initCheck = this;
+    }
+
+    /**
+     * @\rief Copy constructor for Vaccin object
+     *
+     * @param v Object to be copied from
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     * REQUIRE(v.getType() != "", "type can't be empty")
+     * REQUIRE(v.getDelivery() >= 0, "Delivery can't be negative")
+     * REQUIRE(v.getInterval() >= 0, "Interval can't be negative")
+     * REQUIRE(v.getTransport() >= 0, "Transport can't be negative")
+     * REQUIRE(v.getRenewal() >= 0, "Renewal can't be negative")
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
+     */
+    void copyVaccin(const Vaccin *v);
+
     /**
      * \brief Check whether the Vaccin object is properly initialised
      *

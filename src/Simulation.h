@@ -9,10 +9,13 @@
 #define TTT_SIMULATION_H
 
 #include <map>
+#include <stack>
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <ctime>
+#include <unistd.h>
 #include "XMLReader.h"
 #include "DesignByContract.h"
 #include "Utils.h"
@@ -28,6 +31,7 @@ private:
     std::map<std::string, VaccinationCenter*> fcentra; ///< vector with pointers to VaccinationCenter
     std::vector<Hub*> fhub; ///< Vector containing pointers to Hub object
     int iter;               ///< Iterator that holds the amount of iterations in the Simulation
+    std::stack<Simulation*> undoStack; ///< Stack that holds the previous simulations
     Simulation *_initCheck;
 
     /**
@@ -55,6 +59,34 @@ public:
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      */
     ~Simulation();
+
+    /**
+     * \brief "Copy constructor" for a Simulation object
+     *
+     * @param s Object to be copied from
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state")
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     */
+    Simulation(const Simulation &s);
+
+    /**
+     * \brief "Copy constructor" for a Simulation object
+     *
+     * @param s Object to be copied from
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state")
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     */
+    void copySimulation(const Simulation *s);
 
     /**
      * \brief Check whether the Simulation object is properly initialised
@@ -245,6 +277,47 @@ public:
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      */
     void automaticSimulation(int days, std::ostream &stream, bool exportFlag, bool ini);
+
+    /**
+     * \brief Simulate till given bool is false
+     * @param stream Output-stream
+     * @param flag Simulate will run when this bool is true
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+     * REQUIRE(this->iter >= 0, "Days can't be negative")
+     *
+     * @post
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     */
+    std::pair<std::string, std::string> simulate();
+
+    /**
+     * /brief Get total amount of persons vaccinated of all centra
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @post
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+     *
+     * @return total in percent
+     */
+    int getVaccinatedPercent() const;
+
+    /**
+     * \brief Undo the simulation one day
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @post
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     */
+    bool undoSimulation();
 };
 
 #endif //TTT_SIMULATION_H
