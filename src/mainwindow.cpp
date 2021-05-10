@@ -199,8 +199,7 @@ void MainWindow::on_buttonPrevious_clicked()
         msg.exec();
     }
 
-    // TODO - updateLabelImage
-    std::string imageName = "Day-" + std::to_string(s.getIter()) + ".bmp";
+    std::string imageName = "Day-" + std::to_string(s.getIter() - 1) + ".bmp";
     updateLabelImage(tr(imageName.c_str()));
     updateProgressBarVaccinated(s.getVaccinatedPercent());
     updateModels(s.getVaccinData());
