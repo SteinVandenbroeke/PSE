@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("VaccinDistributor");
+
     createMenus();
     createActions();
     createModels();
@@ -54,7 +55,21 @@ void MainWindow::on_actionOpen_triggered()
     if (!fileName.isEmpty() && file.open(QFile::ReadOnly)) {
         // Convert QString to const char*
        QByteArray ba = fileName.toLocal8Bit();
-       s.importXmlFile(ba.data());
+        try {
+            s.importXmlFile(ba.data());
+        }
+        catch (Exception ex) {
+            MessageBox msg;
+            msg.setWindowTitle("Error");
+            msg.setText(ex.value().c_str());
+            msg.setStyleSheet_();
+            msg.setIcon(QMessageBox::Critical);
+            msg.setStandardButtons(QMessageBox::Ok);
+            msg.autoClose = true;
+            msg.timeout = 2;
+            msg.exec();
+            return;
+        }
     }
     // Show errMsg when file is corrupted || wrong format
     else {
