@@ -1,3 +1,10 @@
+/**
+ * @file MessageBox.cpp
+ * @brief This file contains the definitions of the members of the MessageBox class
+ * @author Pablo Deputter
+ * @date 09/05/2021
+ */
+
 #include "messagebox.h"
 
 void MessageBox::showEvent(QShowEvent *event)  {

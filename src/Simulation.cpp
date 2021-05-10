@@ -541,6 +541,7 @@ std::map<const std::string, int> Simulation::getVaccinData() const {
 }
 
 std::string Simulation::generateBmp(const std::string &path) const {
+
     REQUIRE(FileExists(path), ("Ini file not found: " + path).c_str());
     REQUIRE(FileExists("./engine"), "engine not found");
 
