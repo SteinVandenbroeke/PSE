@@ -24,6 +24,38 @@ VaccinationCenter::VaccinationCenter(const std::string &fname, const std::string
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
 }
 
+void VaccinationCenter::copyVaccinationCenter(const VaccinationCenter *v) {
+
+    REQUIRE(v->properlyInitialized(), "VaccinationCenter must be properly initialized");
+
+    REQUIRE(v->getName().length() > 0, "Name can't be empty");
+    REQUIRE(v->getAddress().length() > 0, "Adres can't be empty");
+    REQUIRE(v->getPopulation() >= 0, "Negative population");
+    REQUIRE(v->getCapacity() >= 0, "Negative capacity");
+    REQUIRE(v->getVaccinated() >= 0, "Negative vaccinated");
+    REQUIRE(v->getVaccins() >=0, "Negative vaccins");
+
+    this->fname = v->getName();
+    this->faddress = v->getAddress();
+    this->fpopulation = v->getPopulation();
+    this->fcapacity = v->getCapacity();
+    this->fvaccinated = v->getVaccinated();
+
+    std::map<const std::string, VaccinationCenter::vaccinType*> vaccins = v->getVaccin(true);
+    std::map<const std::string, VaccinationCenter::vaccinType*> notZeroVaccins = v->getVaccin(false);
+    vaccins.insert(notZeroVaccins.begin(), notZeroVaccins.end());
+
+    for (std::map<const std::string, VaccinationCenter::vaccinType*>::const_iterator it = vaccins.begin(); it != vaccins.end(); it++) {
+
+        vaccinType *vt = new vaccinType();
+
+        vt->copyVaccinType(it->second);
+        this->fvaccinsType.insert(std::make_pair(vt->getVaccinType(), vt));
+    }
+    this->_initCheck = this;
+    ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state");
+}
+
 bool VaccinationCenter::properlyInitialized() const {
 
     return VaccinationCenter::_initCheck == this;
@@ -422,7 +454,6 @@ int VaccinationCenter::requiredAmountVaccin(VaccinationCenter::vaccinType *vacci
 VaccinationCenter::~VaccinationCenter() {
 
     ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
-
     for (std::map<const std::string, VaccinationCenter::vaccinType*>::iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
         delete it->second;
     }

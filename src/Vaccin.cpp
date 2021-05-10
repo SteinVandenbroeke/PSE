@@ -27,9 +27,34 @@ Vaccin::Vaccin(std::string type, const int delivery, const int interval, const i
     this->ftransport = transport;
     this->frenewal = renewal;
     this->ftemperature = temp;
+    this->fdelivered = 0;
     this->fvaccin = this->fdelivery; //amount of vaccins = delivery on day "zero" of simulation
     _initCheck = this;
 
+    ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state");
+}
+
+void Vaccin::copyVaccin(const Vaccin *v) {
+
+    REQUIRE(v->properlyInitialized(), "Vaccin must be properly initialized");
+
+    REQUIRE(v->getType() != "", "Type must not be negative");
+    REQUIRE(v->getDelivery() >= 0, "Delivery must not be negative");
+    REQUIRE(v->getInterval() >= 0, "Interval must not be negative");
+    REQUIRE(v->getTransport() >= 0, "Transport must not be negative");
+    REQUIRE(v->getRenewal() >= 0, "Renewal must not be negative");
+//    REQUIRE(v->getVaccin() >= 0, "Amount of vaccins must not be negative");
+
+    this->ftype = v->getType();
+    this->fdelivery = v->getDelivery();
+    this->finterval = v->getInterval();
+    this->ftransport = v->getTransport();
+    this->frenewal = v->getRenewal();
+    this->ftemperature = v->getTemperature();
+    this->fvaccin = v->getVaccin();
+    this->fdelivered = v->getDelivered();
+
+    this->_initCheck = this;
     ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state");
 }
 
@@ -57,6 +82,12 @@ int Vaccin::getVaccin() const {
     return fvaccin;
 }
 
+int Vaccin::getDelivered() const {
+
+    REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+    return fdelivered;
+}
+
 void Vaccin::updateVaccins() {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
@@ -70,6 +101,7 @@ void Vaccin::updateVaccinsTransport(int transportAmount) {
 
     // Update amount of vaccins in Hub and Center
     fvaccin -= transportAmount;
+    fdelivered += transportAmount;
 }
 
 const std::string &Vaccin::getType() const {

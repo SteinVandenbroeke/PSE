@@ -229,13 +229,13 @@ std::map<std::string, VaccinationCenter *> XMLReader::readVaccinationCenters(std
     return VaccinationCentera;
 }
 
-XMLReader::XMLReader(const char *filePad) {
+XMLReader::XMLReader(const char *path) {
 
-    REQUIRE(FileExists(filePad), "File must exist on path");
+    REQUIRE(FileExists(path), "File must exist on path");
     doc = NULL;
     doc = new TiXmlDocument();
 
-    if(!doc->LoadFile(filePad)) {
+    if(!doc->LoadFile(path)) {
         throw Exception(doc->ErrorDesc());
     }
     _initCheck = this;

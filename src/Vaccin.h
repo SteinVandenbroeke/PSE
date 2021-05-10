@@ -28,6 +28,7 @@ private:
     int fvaccin; ///< Amount of vaccins from this type currently in the hub
     int frenewal; ///< Amount of time between the first shot and second shot to aquire max. immunity, 0 = std
     int ftemperature; ///< Temperature where the vaccin should be stored
+    int fdelivered; ///< Total delivered amount of vaccins
     Vaccin *_initCheck;
 
 public:
@@ -53,6 +54,36 @@ public:
      */
     Vaccin(std::string type, const int delivery, const int interval, const int transport, const int renewal,
            const int temp);
+
+    /**
+     * @brief Default constructor for Vaccin type object
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
+     */
+    Vaccin() {
+        this->_initCheck = this;
+        ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state");
+    }
+
+    /**
+     * @\brief Copy constructor for Vaccin object
+     *
+     * @param v Vaccin object to be copied from
+     *
+     * @pre
+     * REQUIRE(v->properlyInitialized(), "Vaccin must be properly initialized")
+     * REQUIRE(v->getType() != "", "Type must not be negative")
+     * REQUIRE(v->getDelivery() >= 0, "Delivery must not be negative")
+     * REQUIRE(v->getInterval() >= 0, "Interval must not be negative")
+     * REQUIRE(v->getTransport() >= 0, "Transport must not be negative")
+     * REQUIRE(v->getRenewal() >= 0, "Renewal must not be negative")
+     * REQUIRE(v->getVaccin() >= 0, "Amount of vaccins must not be negative")
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state")
+     */
+    void copyVaccin(const Vaccin *v);
 
     /**
      * \brief Check whether the Vaccin object is properly initialised
@@ -130,6 +161,16 @@ public:
      * @return Amount of vaccins as int
      */
     int getVaccin() const;
+
+    /**
+     * \brief Get total amount of delivered vaccins
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
+     * @return Amount of delivered vaccins as int
+     */
+    int getDelivered() const;
 
     /**
      * \brief Update the amount of vaccins with delivery amount

@@ -35,17 +35,65 @@ struct vaccinType {
 
 public:
     /**
-     * \brief Constructor
+     * \brief Constructor for vaccinType object
      *
      * @param vaccinType Name / type of the Vaccin as string
      * @param vaccinTemperature Temperature of Vaccin as int
      * @param vaccinRenewal Renewal time of Vaccin as int
      * @param vaccinAmount Amount of vaccins stored as int
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
     vaccinType(const std::string &vaccinType, int vaccinTemperature, int vaccinRenewal, int vaccinAmount)
             : fvaccinType(vaccinType), fvaccinTemperature(vaccinTemperature), fvaccinRenewal(vaccinRenewal),
               fvaccinAmount(vaccinAmount) {
         this->_initCheck = this;
+        ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
+    }
+
+    /**
+     * \brief Constructor for vaccinType object
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
+     */
+    vaccinType() {
+        this->_initCheck = this;
+        ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
+    }
+
+    /**
+     * @brief Copy constructor for VaccinType object
+     *
+     * @param v VaccinType object to be copied from
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     * REQUIRE(v->fvaccinType != "", "Vaccin type must not be empty")
+     * REQUIRE(v->fvaccinAmount >= 0, "Vaccin must not be negative")
+     * REQUIRE(v->fvaccinRenewal >= 0, "Vaccin renewal must not be negative")
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state")
+     *
+     */
+    void copyVaccinType(const vaccinType *v) {
+
+        REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+        REQUIRE(v->fvaccinType != "", "Vaccin type must not be empty");
+        REQUIRE(v->fvaccinAmount >= 0, "Vaccin must not be negative");
+        REQUIRE(v->fvaccinRenewal >= 0, "Vaccin renewal must not be negative");
+
+        this->fvaccinType = v->getVaccinType();
+        this->fvaccinTemperature = v->getVaccinTemperature();
+        this->fvaccinAmount = v->getVaccinAmount();
+        this->fvaccinRenewal = v->getVaccinRenewal();
+        this->ftracker = v->getTracker();
+
+        this->_initCheck = this;
+        ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state");
     }
 
     /**
@@ -129,6 +177,20 @@ public:
 
         ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
         return fvaccinAmount;
+    }
+
+    /**
+     * \brief Get vaccinType tracker (const)
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     *
+     * @return <days left of renewal, amount vaccinated> as std::map<int, int>
+     */
+    const std::map<int, int> &getTracker() const {
+
+        ENSURE(properlyInitialized(), "Vaccin must be properly initialized");
+        return ftracker;
     }
 
     /**
@@ -260,6 +322,36 @@ public:
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
     VaccinationCenter(const std::string &name, const std::string &address, int population, int capacity);
+
+    /**
+     * \brief Default constructor for a VaccinationCenter object
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
+     */
+    VaccinationCenter() {
+
+        _initCheck = this;
+        ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
+    }
+    /**
+     * @brief Copy constructor for a VaccinationCenter object
+     *
+     * @param v VaccinationCenter object top be copied from
+     *
+     * @pre
+     * REQUIRE(v->properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(v->getName().length() > 0, "Name can't be empty")
+     * REQUIRE(v->getAddress().length() > 0, "Adres can't be empty")
+     * REQUIRE(v->getPopulation() >= 0, "Negative population")
+     * REQUIRE(v->getCapacity() >= 0, "Negative capacity")
+     * REQUIRE(v->getVaccinated() >= 0, "Negative vaccinated")
+     * REQUIRE(v->getVaccins() >=0, "Negative vaccins")
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state")
+     */
+    void copyVaccinationCenter( const VaccinationCenter *v);
 
     /**
     * \brief Check whether the VaccinationCenter object is properly initialised

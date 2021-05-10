@@ -9,10 +9,13 @@
 #define TTT_SIMULATION_H
 
 #include <map>
+#include <stack>
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <ctime>
+#include <unistd.h>
 #include "XMLReader.h"
 #include "DesignByContract.h"
 #include "Utils.h"
@@ -28,6 +31,7 @@ private:
     std::map<std::string, VaccinationCenter*> fcentra; ///< vector with pointers to VaccinationCenter
     std::vector<Hub*> fhub; ///< Vector containing pointers to Hub object
     int iter;               ///< Iterator that holds the amount of iterations in the Simulation
+    std::stack<Simulation*> undoStack; ///< Stack that holds the previous simulations
     Simulation *_initCheck;
 
     /**
@@ -55,6 +59,34 @@ public:
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      */
     ~Simulation();
+
+    /**
+     * \brief "Copy constructor" for a Simulation object
+     *
+     * @param s Object to be copied from
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state")
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     */
+    Simulation(const Simulation &s);
+
+    /**
+     * \brief "Copy constructor" for a Simulation object
+     *
+     * @param s Object to be copied from
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @post
+     * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state")
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     */
+    void copySimulation(const Simulation *s);
 
     /**
      * \brief Check whether the Simulation object is properly initialised
@@ -92,6 +124,16 @@ public:
      * @return Vector containing pointers to Hub object
      */
     const std::vector<Hub *> &getHub() const;
+
+    /**
+     * \brief Get undoStack
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @return Stack containing all the previous Simulations
+     */
+    const std::stack<Simulation *> &getUndoStack() const;
 
     /**
      * \brief Imports a vaccin distribution simulation from a .xml file
@@ -197,6 +239,21 @@ public:
     void generateIni(const std::string & path) const;
 
     /**
+     * \brief Generate a .bmp file of the given ini file unsing a grapic engine
+     *
+     * @param path The path of the ini file
+     *
+     * @return path of bmp file
+     *
+     * @pre
+     * REQUIRE(FileExists(path), "Ini file not found")
+     *
+     * @post
+     * ENSURE(FileExists(), "File that has been written to must exist")
+     */
+    std::string generateBmp(const std::string & path) const;
+
+    /**
      * \brief Simulate transport of vaccins between Hub and centra
      *
      * @param stream Output-stream
@@ -245,6 +302,75 @@ public:
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
      */
     void automaticSimulation(int days, std::ostream &stream, bool exportFlag, bool ini);
+
+    /**
+     * \brief Simulate for one day and generate .ini file
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+     * REQUIRE(this->iter >= 0, "Days can't be negative")
+     *
+     * @post
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @return Pair of strings <Name of .ini file, output stream>
+     */
+    std::pair<std::string, std::string> simulate();
+
+    /**
+     * /brief Get total amount of persons vaccinated of all centra
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @post
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+     *
+     * @return total in percent
+     */
+    int getVaccinatedPercent() const;
+
+    /**
+     * \brief Undo the simulation one day
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @post
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @return False if undoStack is empty, true if undo is success
+     */
+    bool undoSimulation();
+
+    /**
+     * \brief Clear simulation
+     *
+     * @param clearStack Clear undoStack with previous versions
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @post
+     * ENSURE(getIter() == 0, "Iter must be zero")
+     * ENSURE(getFcentra().empty(), "Centra must be empty")
+     * ENSURE(getHub().empty(), "Hub must be empty")
+     * if (clearStack) ENSURE(getUndoStack().empty(), "undoStack must be empty")
+     */
+    void clearSimulation(const bool clearStack);
+
+    /**
+     * \brief Get for each Vaccin in simulation total amount delivered Vaccins
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @return Map containing data
+     */
+    std::map<const std::string, int> getVaccinData() const;
 };
 
 #endif //TTT_SIMULATION_H
