@@ -37,6 +37,8 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+    bool pauseSimulation = false;
+    bool autoSimulation = false;
 public:
     /**
      * @brief Default constructor for MainWindow object
@@ -119,6 +121,23 @@ private slots:
      * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
      */
     void on_action_bmp_triggered();
+
+    /**
+     * @brief buttonAutoSimulation click / start auto simulation with element 'Days' days and element 'Delay' time between days
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
+     */
+    void on_buttonAutoSimulation_clicked();
+
+    /**
+    * @brief buttonAutoSimulationPausePlay  click pause/un pause the auto simulation
+    *
+    * @pre
+    * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
+    */
+    void on_buttonAutoSimulationPausePlay_clicked();
+
 private:
     Ui::MainWindow *ui;
     QStringListModel *modelVaccins; ///< Hold the vaccinData

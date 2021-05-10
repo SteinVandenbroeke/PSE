@@ -47,6 +47,7 @@ void MainWindow::createMenus() {
 
     // progressBarVaccinated
     ui->progressBarVaccinated->setValue(0);
+    ui->buttonAutoSimulationPausePlay->setVisible(false);
 }
 
 void MainWindow::createActions() {
@@ -285,4 +286,57 @@ void MainWindow::on_action_bmp_triggered()
 {
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     std::system("rm *.bmp");
+}
+
+void MainWindow::on_buttonAutoSimulation_clicked() {
+    if(!autoSimulation){
+        ui->buttonAutoSimulationPausePlay->setVisible(true);
+        ui->buttonAutoSimulation->setText("Stop");
+        ui->buttonAutoSimulation->setStyleSheet("border-style: solid;\nborder-top-color: transparent;\nborder-right-color: transparent;\nborder-left-color: transparent;\nborder-bottom-width: 1px;\nborder-bottom-color: rgb(212, 60, 136);\nborder-style: solid;\ncolor: #a9b7c6;\npadding: 2px;\nbackground-color: #1e1d23;");
+        autoSimulation = true;
+        int days = ui->Days->value();
+        int delay = ui->Delay->value();
+        if (this->runSimulation && s.checkSimulation() && s.properlyInitialized()) {
+            for (int i = 0; i < days && autoSimulation; i++) {
+                ui->currentDay->setText(("Current day: " + std::to_string(s.getIter())).c_str());
+                std::pair<std::string, std::string> pairReturn = s.simulate();
+
+                updateTextEdit(QString::fromStdString(pairReturn.second));
+
+                std::string imageName = s.generateBmp(pairReturn.first);
+                updateLabelImage(tr(imageName.c_str()));
+
+                updateProgressBarVaccinated(s.getVaccinatedPercent());
+                updateModels(s.getVaccinData());
+
+                QTime dieTime = QTime::currentTime().addSecs(delay);
+                while (QTime::currentTime() < dieTime || pauseSimulation)
+                    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            }
+        }
+        else{
+            MessageBox msg;
+            msg.setWindowTitle("No simulation");
+            msg.setText("Open an simulation file");
+            msg.setStyleSheet_();
+            msg.setStandardButtons(QMessageBox::Ok);
+            msg.autoClose = true;
+            msg.timeout = 2;
+            msg.exec();
+        }
+    }
+    ui->buttonAutoSimulation->setText("Start");
+    ui->buttonAutoSimulation->setStyleSheet("border-style: solid;\nborder-top-color: transparent;\nborder-right-color: transparent;\nborder-left-color: transparent;\nborder-bottom-width: 1px;\nborder-bottom-color: #04b97f;\nborder-style: solid;\ncolor: #a9b7c6;\npadding: 2px;\nbackground-color: #1e1d23;");
+    ui->buttonAutoSimulationPausePlay->setVisible(false);
+    autoSimulation = false;
+}
+
+void MainWindow::on_buttonAutoSimulationPausePlay_clicked() {
+    if(pauseSimulation){
+        ui->buttonAutoSimulationPausePlay->setText("||");
+    }
+    else{
+        ui->buttonAutoSimulationPausePlay->setText("▶");
+    }
+    pauseSimulation = !pauseSimulation;
 }
