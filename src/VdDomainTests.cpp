@@ -213,7 +213,7 @@ TEST_F(VaccinDistributorDomainTests, CenterIni) {
     EXPECT_EQ(0, center->getVaccins());
     EXPECT_EQ(0, center->getVaccinated());
 
-    Vaccin* vaccin = new Vaccin("Pfizer", 45000, 12, 2000, 0, -15);
+    VaccinInHub* vaccin = new VaccinInHub("Pfizer", 45000, 12, 2000, 0, -15);
 
     EXPECT_TRUE(vaccin->properlyInitialized());
     EXPECT_EQ("Pfizer", vaccin->getType());
@@ -246,22 +246,22 @@ TEST_F(VaccinDistributorDomainTests, CenterIni) {
 
 // Test vaccin with exceptional values
 TEST_F(VaccinDistributorDomainTests, VaccinExceptionalValues) {
-    Vaccin v("Naam", 1, 10, 1, 2, 20);
+    VaccinInHub v("Naam", 1, 10, 1, 2, 20);
     EXPECT_TRUE(v.properlyInitialized());
 
-    Vaccin v1("Naam", 1, 10, 1, 2, -20);
+    VaccinInHub v1("Naam", 1, 10, 1, 2, -20);
     EXPECT_TRUE(v.properlyInitialized());
 
-    EXPECT_DEATH(Vaccin("Naam", 1, -10, 1, 2, 20),
+    EXPECT_DEATH(VaccinInHub("Naam", 1, -10, 1, 2, 20),
                  "Interval can't be negative");
 
-    EXPECT_DEATH(Vaccin("", 1, 10, 1, 2, 20),
+    EXPECT_DEATH(VaccinInHub("", 1, 10, 1, 2, 20),
                  "type can't be empty");
 
-    EXPECT_DEATH(Vaccin("Naam", 1, 10, -1, 2, 20),
+    EXPECT_DEATH(VaccinInHub("Naam", 1, 10, -1, 2, 20),
                  "Transport can't be negative");
 
-    EXPECT_DEATH(Vaccin("Naam", 1, -10, 1, -2, 20),
+    EXPECT_DEATH(VaccinInHub("Naam", 1, -10, 1, -2, 20),
                  "Interval can't be negative");
 }
 
@@ -284,7 +284,7 @@ TEST_F(VaccinDistributorDomainTests, VaccinType) {
     EXPECT_EQ(0, center->getVaccins());
     EXPECT_EQ(0, center->getVaccinated());
 
-    Vaccin* vaccin = new Vaccin("Pfizer", 45000, 12, 2000, 4, -15);
+    VaccinInHub* vaccin = new VaccinInHub("Pfizer", 45000, 12, 2000, 4, -15);
 
     EXPECT_TRUE(vaccin->properlyInitialized());
     EXPECT_EQ("Pfizer", vaccin->getType());
@@ -311,7 +311,7 @@ TEST_F(VaccinDistributorDomainTests, VaccinType) {
     EXPECT_TRUE(center->getVaccin(true).begin()->second->isRenewal());
     EXPECT_EQ(0, center->getVaccin(true).begin()->second->totalFirstVaccination());
 
-    Vaccin* vaccin1 = new Vaccin("Atrazenica", 20000, 12, 4000, 0, 11);
+    VaccinInHub* vaccin1 = new VaccinInHub("Atrazenica", 20000, 12, 4000, 0, 11);
 
     EXPECT_TRUE(vaccin1->properlyInitialized());
     EXPECT_EQ("Atrazenica", vaccin1->getType());
@@ -395,7 +395,7 @@ TEST_F(VaccinDistributorDomainTests, AddVaccin) {
     EXPECT_TRUE(hub.getCentra().empty());
     EXPECT_TRUE(hub.properlyInitialized());
 
-    Vaccin* vaccin = new Vaccin("Pfizer", 45000,
+    VaccinInHub* vaccin = new VaccinInHub("Pfizer", 45000,
                                 12, 2000, 4, -15);
 
     EXPECT_TRUE(vaccin->properlyInitialized());
@@ -423,11 +423,11 @@ TEST_F(VaccinDistributorDomainTests, AddVaccin) {
 // Test Vaccin constructor with wrong values
 TEST_F(VaccinDistributorDomainTests, VaccinWrongValues) {
 
-    EXPECT_DEATH(Vaccin* vaccin = new Vaccin("", 45000, 12, 2000, 4, -15), "type can't be empty");
-    EXPECT_DEATH(Vaccin* vaccin = new Vaccin("Pfizer", -45000, 12, 2000, 4, -15), "Delivery can't be negative");
-    EXPECT_DEATH(Vaccin* vaccin = new Vaccin("Pfizer", 45000, -12, 2000, 4, -15), "Interval can't be negative");
-    EXPECT_DEATH(Vaccin* vaccin = new Vaccin("Pfizer", 45000, 12, -2000, 4, -15), "Transport can't be negative");
-    EXPECT_DEATH(Vaccin* vaccin = new Vaccin("Pfizer", 45000, 12, 2000, -4, -15), "Renewal can't be negative");
+    EXPECT_DEATH(VaccinInHub* vaccin = new VaccinInHub("", 45000, 12, 2000, 4, -15), "type can't be empty");
+    EXPECT_DEATH(VaccinInHub* vaccin = new VaccinInHub("Pfizer", -45000, 12, 2000, 4, -15), "Delivery can't be negative");
+    EXPECT_DEATH(VaccinInHub* vaccin = new VaccinInHub("Pfizer", 45000, -12, 2000, 4, -15), "Interval can't be negative");
+    EXPECT_DEATH(VaccinInHub* vaccin = new VaccinInHub("Pfizer", 45000, 12, -2000, 4, -15), "Transport can't be negative");
+    EXPECT_DEATH(VaccinInHub* vaccin = new VaccinInHub("Pfizer", 45000, 12, 2000, -4, -15), "Renewal can't be negative");
 }
 
 // Double Vaccin addVaccin()
@@ -439,7 +439,7 @@ TEST_F(VaccinDistributorDomainTests, DoubleAddVaccin) {
     EXPECT_TRUE(hub.getCentra().empty());
     EXPECT_TRUE(hub.properlyInitialized());
 
-    Vaccin* vaccin = new Vaccin("Pfizer", 45000,
+    VaccinInHub* vaccin = new VaccinInHub("Pfizer", 45000,
                                 12, 2000, 4, -15);
 
     EXPECT_TRUE(vaccin->properlyInitialized());
@@ -463,7 +463,7 @@ TEST_F(VaccinDistributorDomainTests, DoubleAddVaccin) {
     EXPECT_EQ("Pfizer", hub.getVaccins().find("Pfizer")->first);
     EXPECT_EQ(vaccin, hub.getVaccins().find("Pfizer")->second);
 
-    Vaccin* vaccin1 = new Vaccin("Pfizer", 20000, 12, 1000, 2, 82);
+    VaccinInHub* vaccin1 = new VaccinInHub("Pfizer", 20000, 12, 1000, 2, 82);
     EXPECT_FALSE(vaccin1->checkUnderZero());
     EXPECT_DEATH(hub.addVaccin(vaccin1), "Vaccin can't yet exist in Hub");
 }
@@ -489,7 +489,7 @@ TEST_F(VaccinDistributorDomainTests, DistributeVaccinsFair) {
     hub.addCenter(center->getName(), center);
     hub.addCenter(center1->getName(), center1);
 
-    Vaccin* vaccin = new Vaccin("Pfizer", 15300, 1, 500, 0,  20);
+    VaccinInHub* vaccin = new VaccinInHub("Pfizer", 15300, 1, 500, 0,  20);
     EXPECT_TRUE(vaccin->properlyInitialized());
     hub.addVaccin(vaccin);
 
@@ -547,7 +547,7 @@ TEST_F(VaccinDistributorDomainTests, TransportNonExistingVaccin) {
     EXPECT_TRUE(hub.properlyInitialized());
     std::ofstream ostream;
 
-    Vaccin* vaccin = new Vaccin("Pfizer", 15300, 1, 500, 0,  20);
+    VaccinInHub* vaccin = new VaccinInHub("Pfizer", 15300, 1, 500, 0,  20);
     EXPECT_TRUE(vaccin->properlyInitialized());
 
     EXPECT_DEATH(hub.distributeVaccinsFair(vaccin, 0, ostream), "Given vaccin must exist");
@@ -614,7 +614,7 @@ TEST_F(VaccinDistributorDomainTests, AddVaccinDeath) {
 
     VaccinationCenter center = VaccinationCenter("Park Spoor Oost", "Noordersingel 28/30, 2140 Antwerpen"
             , 54321, 7500);
-    Vaccin* vaccin = new Vaccin("Pfizer", 15300, 1, 500, 0,  20);
+    VaccinInHub* vaccin = new VaccinInHub("Pfizer", 15300, 1, 500, 0,  20);
     EXPECT_TRUE(vaccin->properlyInitialized());
     EXPECT_TRUE(center.properlyInitialized());
     EXPECT_DEATH(center.addVaccins(15001,vaccin), "Amount of vaccins must not exceed capacity of Center");
@@ -630,7 +630,7 @@ TEST_F(VaccinDistributorDomainTests, CalculateVaccin) {
     std::string fileNameCompare = "tests/domainTests/expectedOutput/expected" + testName + ".txt";
     ostream.open(fileName.c_str());
 
-    Vaccin* vaccin = new Vaccin("Pfizer", 15300, 1, 500, 0,  20);
+    VaccinInHub* vaccin = new VaccinInHub("Pfizer", 15300, 1, 500, 0,  20);
 
     VaccinationCenter center = VaccinationCenter("Park Spoor Oost", "Noordersingel 28/30, 2140 Antwerpen"
             , 54321, 70000);
@@ -667,7 +667,7 @@ TEST_F(VaccinDistributorDomainTests, CalculateVaccin) {
 // Tests calculateVaccinationAmount() and vaccinateCenter()
 TEST_F(VaccinDistributorDomainTests, VaccinateCenter) {
 
-    Vaccin* vaccin = new Vaccin("Pfizer", 15300, 1, 500, 0,  20);
+    VaccinInHub* vaccin = new VaccinInHub("Pfizer", 15300, 1, 500, 0,  20);
     std::string testName = "VaccinateCenter";
     std::ofstream ostream;
     std::string fileName = "tests/domainTests/generatedOutput/generated" + testName + ".txt";
@@ -716,9 +716,9 @@ TEST_F(VaccinDistributorDomainTests, VaccinateCenter) {
 TEST_F(VaccinDistributorDomainTests, Create) {
     //Simulation test
     Hub* h = new Hub;
-    Vaccin* vaccin = new Vaccin("Vaccin 1", 15300, 1, 500, 0,  -20);
-    Vaccin* vaccin1 = new Vaccin("Vaccin 2", 30000, 2, 1000, 0,  -80);
-    Vaccin* vaccin2 = new Vaccin("Vaccin 3", 2000, 1, 500, 12,  20);
+    VaccinInHub* vaccin = new VaccinInHub("Vaccin 1", 15300, 1, 500, 0,  -20);
+    VaccinInHub* vaccin1 = new VaccinInHub("Vaccin 2", 30000, 2, 1000, 0,  -80);
+    VaccinInHub* vaccin2 = new VaccinInHub("Vaccin 3", 2000, 1, 500, 12,  20);
     VaccinationCenter* center = new VaccinationCenter("Center 1", "Locatie 1", 54321, 15000);
     VaccinationCenter* center1 = new VaccinationCenter("Center 2", "Locatie 2", 30000, 20000);
     VaccinationCenter* center2 = new VaccinationCenter("Center 3", "Locatie 3", 20000, 19000);

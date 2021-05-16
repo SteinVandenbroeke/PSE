@@ -152,6 +152,7 @@ private:
      * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
      */
     void createMenus();
+
     /**
      * @brief Create action
      *
@@ -159,6 +160,7 @@ private:
      * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
      */
     void createActions();
+
     /**
      * @brief Create models
      *
@@ -166,6 +168,7 @@ private:
      * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
      */
     void createModels();
+
     /**
      * @brief Update textEdit box
      *
@@ -175,6 +178,7 @@ private:
      * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
      */
     void updateTextEdit(const QString &x);
+
     /**
      * @brief Update labelImage
      *
@@ -184,6 +188,7 @@ private:
      * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
      */
     void updateLabelImage(const QString &fileName);
+
     /**
      * @brief Update progressBarVaccinated
      *
@@ -193,6 +198,7 @@ private:
      * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
      */
     void updateProgressBarVaccinated(const int x);
+
     /**
      * @brief Update models
      *

@@ -19,9 +19,9 @@ void Hub::copyHub(const Hub *h, const std::map<std::string, VaccinationCenter*> 
 
     REQUIRE(h->properlyInitialized(), "Hub must be properly initialized");
 
-    for (std::map<std::string, Vaccin*>::const_iterator it = h->getVaccins().begin(); it != h->getVaccins().end(); it++) {
+    for (std::map<std::string, VaccinInHub*>::const_iterator it = h->getVaccins().begin(); it != h->getVaccins().end(); it++) {
 
-        Vaccin *v = new Vaccin();
+        VaccinInHub *v = new VaccinInHub();
         v->copyVaccin(it->second);
 
         this->fvaccins.insert(std::make_pair(v->getType(), v));
@@ -44,7 +44,7 @@ int Hub::getDelivery() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalDelivery = 0;
-    for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
+    for(std::map<std::string, VaccinInHub*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
         totalDelivery += (*it).second->getDelivery();
     }
     return totalDelivery;
@@ -54,7 +54,7 @@ int Hub::getInterval() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalInterval = 0;
-    for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
+    for(std::map<std::string, VaccinInHub*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
         totalInterval += (*it).second->getInterval();
     }
     return totalInterval;
@@ -64,7 +64,7 @@ int Hub::getTransport() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalTransport = 0;
-    for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
+    for(std::map<std::string, VaccinInHub*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
         totalTransport += (*it).second->getTransport();
     }
     return totalTransport;
@@ -75,7 +75,7 @@ int Hub::getAmountVaccin() const {
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     int totalVaccins = 0;
 
-    for (std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++) {
+    for (std::map<std::string, VaccinInHub*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++) {
         totalVaccins += (*it).second->getVaccin();
     }
     return totalVaccins;
@@ -108,7 +108,7 @@ void Hub::addCenter(const std::string &name, VaccinationCenter *center) {
 void Hub::updateVaccins() {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-    for(std::map<std::string, Vaccin*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
+    for(std::map<std::string, VaccinInHub*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
         (*it).second->updateVaccins();
     }
 }
@@ -127,7 +127,7 @@ void Hub::distributeRequiredVaccins(VaccinationCenter* vaccinationCenter, std::o
 
         if(fvaccins.find(it->first) != fvaccins.end()){
 
-            Vaccin* vaccin = fvaccins[it->first];
+            VaccinInHub* vaccin = fvaccins[it->first];
             int vaccinsNeeded = it->second;
 
             int cargo = ceil((double)(vaccinsNeeded) / (double)(vaccin->getTransport()));
@@ -150,7 +150,7 @@ void Hub::distributeRequiredVaccins(VaccinationCenter* vaccinationCenter, std::o
     }
 }
 
-void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &stream) {
+void Hub::distributeVaccinsFair(VaccinInHub* vaccin, int currentDay, std::ostream &stream) {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(currentDay >= 0, "currentDay cannot be negative");
@@ -197,7 +197,7 @@ void Hub::distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &st
     }
 }
 
-void Hub::addVaccin(Vaccin* vaccin) {
+void Hub::addVaccin(VaccinInHub* vaccin) {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
@@ -208,13 +208,13 @@ void Hub::addVaccin(Vaccin* vaccin) {
     ENSURE(containsVaccin(vaccin), "Vaccin must be added to Hub");
 }
 
-const std::map<std::string, Vaccin*> &Hub::getVaccins() const {
+const std::map<std::string, VaccinInHub*> &Hub::getVaccins() const {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return fvaccins;
 }
 
-std::map<std::string, Vaccin *> &Hub::getVaccins() {
+std::map<std::string, VaccinInHub *> &Hub::getVaccins() {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return fvaccins;
@@ -308,7 +308,7 @@ std::string Hub::generateIni(std::ofstream &stream, int & counterFigures, int & 
     return "(" + ToString(positionX) + ", 0, 0)\n";
 }
 
-VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin) {
+VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, VaccinInHub* vaccin) {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
@@ -334,7 +334,7 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, Vaccin* v
 }
 
 Hub::~Hub() {
-    for(std::map<std::string, Vaccin*>::iterator vaccins = fvaccins.begin(); vaccins != fvaccins.end(); vaccins++){
+    for(std::map<std::string, VaccinInHub*>::iterator vaccins = fvaccins.begin(); vaccins != fvaccins.end(); vaccins++){
         delete vaccins->second;
     }
     fvaccins.clear();
@@ -345,7 +345,7 @@ bool Hub::containsVaccinationCenter(const std::string &name) const {
     return fcentra.find(name) != fcentra.end();
 }
 
-bool Hub::containsVaccin(const Vaccin* vaccin) {
+bool Hub::containsVaccin(const VaccinInHub* vaccin) {
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     return getVaccins().find(vaccin->getType()) != getVaccins().end();
 }

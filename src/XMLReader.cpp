@@ -134,7 +134,7 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
                 int intRenewal = 0;
                 int intTemp = 420;
 
-                Vaccin* newVaccin = new Vaccin(type, intDelivery, intInterval, intTransport,
+                VaccinInHub* newVaccin = new VaccinInHub(type, intDelivery, intInterval, intTransport,
                                                intRenewal, intTemp);
                 newHub->addVaccin(newVaccin);
             }
@@ -154,7 +154,7 @@ std::vector<Hub*> XMLReader::readHubs(std::map<std::string, VaccinationCenter *>
                         int intRenewal = ToInt(renewal);
                         int intTemp = ToInt(temp);
 
-                        Vaccin* newVaccin = new Vaccin(type, intDelivery, intInterval, intTransport,
+                        VaccinInHub* newVaccin = new VaccinInHub(type, intDelivery, intInterval, intTransport,
                                                        intRenewal, intTemp);
                         newHub->addVaccin(newVaccin);
                     }

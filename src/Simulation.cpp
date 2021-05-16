@@ -313,8 +313,8 @@ void Simulation::simulateTransport(int currentDay, std::ostream &stream) {
     }
 
     for (std::vector<Hub*>::iterator ite = this->fhub.begin(); ite != this->fhub.end(); ite++) {
-        std::map<std::string, Vaccin *> vaccins = (*ite)->getVaccins();
-        for (std::map<std::string, Vaccin *>::iterator it = vaccins.begin(); it != vaccins.end(); it++) {
+        std::map<std::string, VaccinInHub*> vaccins = (*ite)->getVaccins();
+        for (std::map<std::string, VaccinInHub*>::iterator it = vaccins.begin(); it != vaccins.end(); it++) {
             (*ite)->distributeVaccinsFair(it->second,currentDay, stream);
         }
     }
@@ -362,7 +362,7 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream, bool 
 
             Hub* currentHub = (*it);
 
-            for (std::map<std::string, Vaccin*>::iterator ite = currentHub->getVaccins().begin();
+            for (std::map<std::string, VaccinInHub*>::iterator ite = currentHub->getVaccins().begin();
                     ite != currentHub->getVaccins().end(); ite++) {
 
                 // Interval between deliveries is over
@@ -428,7 +428,7 @@ std::pair<std::string, std::string> Simulation::simulate() {
 
         Hub* currentHub = (*it);
 
-        for (std::map<std::string, Vaccin*>::iterator ite = currentHub->getVaccins().begin();
+        for (std::map<std::string, VaccinInHub*>::iterator ite = currentHub->getVaccins().begin();
                 ite != currentHub->getVaccins().end(); ite++) {
 
             // Interval between deliveries is over
@@ -532,7 +532,7 @@ std::map<const std::string, int> Simulation::getVaccinData() const {
 
     for (std::vector<Hub*>::const_iterator it = fhub.begin(); it != fhub.end(); it++) {
 
-        for (std::map<std::string, Vaccin*>::const_iterator ite = (*it)->getVaccins().begin(); ite != (*it)->getVaccins().end(); ite++) {
+        for (std::map<std::string, VaccinInHub*>::const_iterator ite = (*it)->getVaccins().begin(); ite != (*it)->getVaccins().end(); ite++) {
 
             vaccinsData[ite->first] += ite->second->getDelivered();
         }

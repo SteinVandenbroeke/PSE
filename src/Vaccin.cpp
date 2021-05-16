@@ -7,12 +7,12 @@
 
 #include "Vaccin.h"
 
-bool Vaccin::properlyInitialized() const {
+bool VaccinInHub::properlyInitialized() const {
 
-    return Vaccin::_initCheck == this;
+    return VaccinInHub::_initCheck == this;
 }
 
-Vaccin::Vaccin(std::string type, const int delivery, const int interval, const int transport, const int renewal,
+VaccinInHub::VaccinInHub(std::string type, const int delivery, const int interval, const int transport, const int renewal,
                const int temp) {
 
     REQUIRE(type != "", "type can't be empty");
@@ -25,16 +25,16 @@ Vaccin::Vaccin(std::string type, const int delivery, const int interval, const i
     this->fdelivery = delivery;
     this->finterval = interval;
     this->ftransport = transport;
-    this->frenewal = renewal;
-    this->ftemperature = temp;
+    this->fvaccinRenewal = renewal;
+    this->fvaccinTemperature = temp;
     this->fdelivered = 0;
-    this->fvaccin = this->fdelivery; //amount of vaccins = delivery on day "zero" of simulation
+    this->fvaccinAmount = this->fdelivery; //amount of vaccins = delivery on day "zero" of simulation
     _initCheck = this;
 
     ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state");
 }
 
-void Vaccin::copyVaccin(const Vaccin *v) {
+void VaccinInHub::copyVaccin(const VaccinInHub *v) {
 
     REQUIRE(v->properlyInitialized(), "Vaccin must be properly initialized");
 
@@ -49,80 +49,80 @@ void Vaccin::copyVaccin(const Vaccin *v) {
     this->fdelivery = v->getDelivery();
     this->finterval = v->getInterval();
     this->ftransport = v->getTransport();
-    this->frenewal = v->getRenewal();
-    this->ftemperature = v->getTemperature();
-    this->fvaccin = v->getVaccin();
+    this->fvaccinRenewal = v->getRenewal();
+    this->fvaccinTemperature = v->getTemperature();
+    this->fvaccinAmount = v->getVaccin();
     this->fdelivered = v->getDelivered();
 
     this->_initCheck = this;
     ENSURE(properlyInitialized(), "Vaccin must end in properlyInitialized state");
 }
 
-int Vaccin::getDelivery() const {
+int VaccinInHub::getDelivery() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return fdelivery;
 }
 
-int Vaccin::getInterval() const {
+int VaccinInHub::getInterval() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return finterval;
 }
 
-int Vaccin::getTransport() const {
+int VaccinInHub::getTransport() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return ftransport;
 }
 
-int Vaccin::getVaccin() const {
+int VaccinInHub::getVaccin() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
-    return fvaccin;
+    return fvaccinAmount;
 }
 
-int Vaccin::getDelivered() const {
+int VaccinInHub::getDelivered() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return fdelivered;
 }
 
-void Vaccin::updateVaccins() {
+void VaccinInHub::updateVaccins() {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
-    fvaccin += fdelivery;
+    fvaccinAmount += fdelivery;
 }
 
-void Vaccin::updateVaccinsTransport(int transportAmount) {
+void VaccinInHub::updateVaccinsTransport(int transportAmount) {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     REQUIRE(transportAmount % this->getTransport() == 0, "Wrong transport amount, Cargo amount must be a int");
 
     // Update amount of vaccins in Hub and Center
-    fvaccin -= transportAmount;
+    fvaccinAmount -= transportAmount;
     fdelivered += transportAmount;
 }
 
-const std::string &Vaccin::getType() const {
+const std::string &VaccinInHub::getType() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return ftype;
 }
 
-int Vaccin::getRenewal() const {
+int VaccinInHub::getRenewal() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
-    return frenewal;
+    return fvaccinRenewal;
 }
 
-int Vaccin::getTemperature() const {
+int VaccinInHub::getTemperature() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
-    return ftemperature;
+    return fvaccinTemperature;
 }
 
-bool Vaccin::checkUnderZero() {
+bool VaccinInHub::checkUnderZero() {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return getTemperature() < 0;

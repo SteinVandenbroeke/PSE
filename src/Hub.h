@@ -21,7 +21,7 @@
 class Hub {
 
 private:
-    std::map<std::string, Vaccin*> fvaccins; ///< Map with pointers to Vaccins of hub
+    std::map<std::string, VaccinInHub*> fvaccins; ///< Map with pointers to Vaccins of hub
     std::map<std::string, VaccinationCenter*> fcentra ; ///< Map with the connected VaccinationCenters
     Hub *_initCheck;
 public:
@@ -115,7 +115,7 @@ public:
      *
      * @return Map with name of Vaccin as key and pointer to Vaccin object as value
      */
-    const std::map<std::string, Vaccin *> &getVaccins() const;
+    const std::map<std::string, VaccinInHub*> &getVaccins() const;
 
     /**
      * \brief Get vaccins of Hub object
@@ -125,7 +125,7 @@ public:
      *
      * @return Map with name of Vaccin as key and pointer to Vaccin object as value
      */
-    std::map<std::string, Vaccin *> &getVaccins();
+    std::map<std::string, VaccinInHub*> &getVaccins();
 
     /**
      * \brief Add vaccin to Hub object
@@ -140,7 +140,7 @@ public:
      * @post
      * ENSURE(getVaccins().find(vaccin->getType()) != getVaccins().end(), "Vaccin must be added to Hub")
      */
-    void addVaccin(Vaccin* Vaccin);
+    void addVaccin(VaccinInHub* Vaccin);
 
     /**
      * \brief Get map with connected VaccinationCenters to Hub
@@ -200,7 +200,7 @@ public:
     * REQUIRE(containsVaccin(vaccin), "Given vaccin must exist");
     *
     */
-    void distributeVaccinsFair(Vaccin* vaccin, int currentDay, std::ostream &stream);
+    void distributeVaccinsFair(VaccinInHub* vaccin, int currentDay, std::ostream &stream);
 
     /**
     * \brief Distribute required vaccins over an vaccinationCenter
@@ -228,7 +228,7 @@ public:
     * REQUIRE(vaccinCount >= 0, "vaccinCount cannot be negative");
     * REQUIRE(getVaccins().find(vaccin->getType()) == getVaccins().end(), "Vaccin can't yet exist in Hub");
     */
-    VaccinationCenter* mostSuitableVaccinationCenter(int vaccinCount, Vaccin* vaccin);
+    VaccinationCenter* mostSuitableVaccinationCenter(int vaccinCount, VaccinInHub* vaccin);
 
     /**
      * \brief Print out data of Hub
@@ -321,7 +321,7 @@ public:
      *
      * @return bool: true = exists | false = does not exits
      */
-    bool containsVaccin(const Vaccin*);
+    bool containsVaccin(const VaccinInHub*);
 };
 
 #endif //TTT_HUB_H
