@@ -55,7 +55,10 @@ set(RELEASE_SOURCE_FILES
         src/MainWindow.cpp
         src/MainWindow.ui
         src/MessageBox.h
-        src/MessageBox.cpp)
+        src/MessageBox.cpp
+        src/Dialog.cpp
+        src/Dialog.h
+        src/Dialog.ui)
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES

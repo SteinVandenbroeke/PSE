@@ -22,6 +22,7 @@
 #include <ostream>
 #include "messagebox.h"
 #include "Simulation.h"
+#include "Dialog.h"
 
 /**
  * @brief Namespace Ui holding forwward declaration of MainWindow class
@@ -137,6 +138,8 @@ private slots:
     * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
     */
     void on_buttonAutoSimulationPausePlay_clicked();
+
+    void on_centraButton_clicked();
 
 private:
     Ui::MainWindow *ui;

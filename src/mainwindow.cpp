@@ -289,6 +289,8 @@ void MainWindow::on_action_bmp_triggered()
 }
 
 void MainWindow::on_buttonAutoSimulation_clicked() {
+
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     if(!autoSimulation){
         ui->buttonAutoSimulationPausePlay->setVisible(true);
         ui->buttonAutoSimulation->setText("Stop");
@@ -332,6 +334,8 @@ void MainWindow::on_buttonAutoSimulation_clicked() {
 }
 
 void MainWindow::on_buttonAutoSimulationPausePlay_clicked() {
+
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     if(pauseSimulation){
         ui->buttonAutoSimulationPausePlay->setText("||");
     }
@@ -339,4 +343,33 @@ void MainWindow::on_buttonAutoSimulationPausePlay_clicked() {
         ui->buttonAutoSimulationPausePlay->setText("▶");
     }
     pauseSimulation = !pauseSimulation;
+}
+
+void MainWindow::on_centraButton_clicked() {
+
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
+
+    // show errMsg when no .xml file was imported || simulation is not complete
+    if (!s.checkSimulation() || !s.properlyInitialized()) {
+        const char* errMsg = "Could not show centra!\nTry loading a new .xml file.";
+
+        MessageBox msg;
+        msg.setWindowTitle("Error");
+        msg.setText(errMsg);
+        msg.setStyleSheet_();
+        msg.setIcon(QMessageBox::Critical);
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.autoClose = true;
+        msg.timeout = 2;
+        msg.exec();
+        return;
+    }
+
+    // TODO - Selecteren van item om te veranden
+    // TODO - Simulatie op pauze zetten bij het veranderen bij het openen van een nieuw scherm
+
+    Dialog dialog;
+    dialog.setModal(true);
+    dialog.createModels(s.getFcentra(), s.getHub());
+    dialog.exec();
 }

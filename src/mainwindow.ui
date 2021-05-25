@@ -69,7 +69,7 @@
        <x>40</x>
        <y>20</y>
        <width>441</width>
-       <height>31</height>
+       <height>35</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -269,71 +269,6 @@ background-color: #1e1d23;</string>
      </layout>
     </widget>
    </widget>
-   <widget class="QPushButton" name="buttonStart">
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>0</y>
-      <width>358</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>358</width>
-      <height>16777215</height>
-     </size>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">	border-style: solid;
-	border-top-color: transparent;
-	border-right-color: transparent;
-	border-left-color: transparent;
-	border-bottom-color: #04b97f;
-	border-bottom-width: 1px;
-	border-style: solid;
-	color: #a9b7c6;
-	padding: 2px;
-	background-color: #1e1d23;</string>
-    </property>
-    <property name="text">
-     <string>Start</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonStop">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>28</y>
-      <width>358</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>false</bool>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">	border-style: solid;
-	border-top-color: transparent;
-	border-right-color: transparent;
-	border-left-color: transparent;
-	border-bottom-color: #ff0040;
-	border-bottom-width: 1px;
-	border-style: solid;
-	color: #a9b7c6;
-	padding: 2px;
-	background-color: #1e1d23;</string>
-    </property>
-    <property name="text">
-     <string>Stop</string>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
@@ -515,6 +450,84 @@ background-color: #1e1d23;</string>
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_4">
+    <property name="geometry">
+     <rect>
+      <x>549</x>
+      <y>0</y>
+      <width>521</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QPushButton" name="centraButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+  color: #ff4081;
+  background-color: #1e1d23;
+  border: 2px solid #ff4081;
+  border-radius: 4px;
+  padding: 8px 16px ;
+  height: 18px;
+}</string>
+       </property>
+       <property name="text">
+        <string>View Centra</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonStart">
+       <property name="maximumSize">
+        <size>
+         <width>358</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+  color: #04b97f;
+  background-color: #1e1d23;
+  border: 2px solid #04b97f;
+  border-radius: 4px;
+  padding: 8px 16px ;
+  height: 18px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Start</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonStop">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+  color: #ff0040;
+  background-color: #1e1d23;
+  border: 2px solid #ff0040;
+  border-radius: 4px;
+  padding: 8px 16px ;
+  height: 18px;
+}</string>
+       </property>
+       <property name="text">
+        <string>Stop</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -522,7 +535,7 @@ background-color: #1e1d23;</string>
      <x>0</x>
      <y>0</y>
      <width>1080</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="styleSheet">
