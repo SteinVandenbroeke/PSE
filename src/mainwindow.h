@@ -66,6 +66,13 @@ public:
      */
     bool properlyInitialized() const;
 
+    /**
+     * @brief Function to change enable/disable state of buttons
+     *
+     * @param state: state to change to
+     */
+    void changeStateButtons(bool state);
+
 private slots:
     /**
      * @brief on_actionOpen_triggered Open file with asked format to import Simulation
@@ -74,6 +81,14 @@ private slots:
      * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
      */
     void on_actionOpen_triggered();
+
+    /**
+     * @brief on_actionExport_as_mp4_triggerer export mp4 of simulation to chosen pad
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
+     */
+    void on_actionExport_as_mp4_triggered();
 
     /**
      * @brief on_buttonStart_clicked Start / import Simulation
@@ -211,6 +226,18 @@ private:
      * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
      */
     void updateModels(const std::map<const std::string, int> &vaccins);
+
+    /**
+     * @brief PLay/Pause the simulation
+     *
+     * @param state:
+     *          state = true --> play
+     *          state = false --> stop
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
+     */
+    void changePauseState(bool state);
 };
 
 #endif // MAINWINDOW_H

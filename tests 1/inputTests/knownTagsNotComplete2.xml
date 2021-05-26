@@ -1,0 +1,18 @@
+<HUB>
+    <VACCIN>
+        <type></type>
+        <levering></levering>
+        <interval></interval>
+        <transport></transport>
+        <temperatuur></temperatuur>
+    </VACCIN>
+    <CENTRA>
+        <centrum></centrum>
+    </CENTRA>
+</HUB>
+<VACCINATIECENTRUM>
+<naam></naam>
+<adres></adres>
+<inwoners></inwoners>
+<capaciteit></capaciteit>
+</VACCINATIECENTRUM>

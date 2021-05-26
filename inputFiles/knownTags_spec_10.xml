@@ -1,14 +1,19 @@
 <HUB>
+<VACCIN>
+    <type></type>
     <levering></levering>
     <interval></interval>
     <transport></transport>
-    <CENTRA>
-        <centrum></centrum>
-    </CENTRA>
+    <hernieuwing></hernieuwing>
+    <temperatuur></temperatuur>
+</VACCIN>
+<CENTRA>
+    <centrum></centrum>
+</CENTRA>
 </HUB>
 <VACCINATIECENTRUM>
-    <naam></naam>
-    <adres></adres>
-    <inwoners></inwoners>
-    <capaciteit></capaciteit>
+<naam>Park Spoor Oost</naam>
+<adres>Noordersingel 40, Antwerpen</adres>
+<inwoners>540173</inwoners>
+<capaciteit>7500</capaciteit>
 </VACCINATIECENTRUM>

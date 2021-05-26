@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1080</width>
-    <height>632</height>
+    <height>708</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,12 +18,15 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="labelImage">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
       <width>531</width>
-      <height>601</height>
+      <height>671</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -126,6 +129,9 @@
         </property>
         <item>
          <widget class="QPushButton" name="buttonAutoSimulation">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="maximumSize">
            <size>
             <width>358</width>
@@ -136,7 +142,22 @@
            <bool>false</bool>
           </property>
           <property name="styleSheet">
-           <string notr="true">	border-style: solid;
+           <string notr="true">QPushButton{
+  border-style: solid;
+	border-top-color: transparent;
+	border-right-color: transparent;
+	border-left-color: transparent;
+	border-bottom-color: #5c5c5c;
+	border-bottom-width: 1px;
+	border-style: solid;
+	color: #5c5c5c;
+	padding: 2px;
+	background-color: #1e1d23;
+}
+
+
+:enabled {
+    border-style: solid;
 	border-top-color: transparent;
 	border-right-color: transparent;
 	border-left-color: transparent;
@@ -145,7 +166,8 @@
 	border-style: solid;
 	color: #a9b7c6;
 	padding: 2px;
-	background-color: #1e1d23;</string>
+	background-color: #1e1d23;
+}</string>
           </property>
           <property name="text">
            <string>Start</string>
@@ -167,7 +189,22 @@
            <bool>false</bool>
           </property>
           <property name="styleSheet">
-           <string notr="true">	border-style: solid;
+           <string notr="true">QPushButton{
+  border-style: solid;
+	border-top-color: transparent;
+	border-right-color: transparent;
+	border-left-color: transparent;
+	border-bottom-color: #5c5c5c;
+	border-bottom-width: 1px;
+	border-style: solid;
+	color: #5c5c5c;
+	padding: 2px;
+	background-color: #1e1d23;
+}
+
+
+:enabled {
+    	border-style: solid;
 	border-top-color: transparent;
 	border-right-color: transparent;
 	border-left-color: transparent;
@@ -176,7 +213,8 @@
 	border-style: solid;
 	color: #a9b7c6;
 	padding: 2px;
-	background-color: #1e1d23;</string>
+	background-color: #1e1d23;
+}</string>
           </property>
           <property name="text">
            <string>||</string>
@@ -225,7 +263,22 @@
          <bool>false</bool>
         </property>
         <property name="styleSheet">
-         <string notr="true">	border-style: solid;
+         <string notr="true">QPushButton{
+  border-style: solid;
+	border-top-color: transparent;
+	border-right-color: transparent;
+	border-left-color: transparent;
+	border-bottom-width: 1px;
+	border-bottom-color: rgb(92, 92, 92);
+	border-style: solid;
+	color: #5c5c5c;
+	padding: 2px;
+	background-color: #1e1d23;
+}
+
+
+:enabled {
+    border-style: solid;
 	border-top-color: transparent;
 	border-right-color: transparent;
 	border-left-color: transparent;
@@ -234,7 +287,8 @@
 	border-style: solid;
 	color: #a9b7c6;
 	padding: 2px;
-	background-color: #1e1d23;</string>
+	background-color: #1e1d23;
+}</string>
         </property>
         <property name="text">
          <string>Previous</string>
@@ -250,16 +304,32 @@
          <bool>false</bool>
         </property>
         <property name="styleSheet">
-         <string notr="true">border-style: solid;
-border-top-color: transparent;
-border-right-color: transparent;
-border-left-color: transparent;
-border-bottom-width: 1px;
-border-bottom-color: rgb(212, 60, 136);
-border-style: solid;
-color: #a9b7c6;
-padding: 2px;
-background-color: #1e1d23;</string>
+         <string notr="true">QPushButton{
+  border-style: solid;
+	border-top-color: transparent;
+	border-right-color: transparent;
+	border-left-color: transparent;
+	border-bottom-width: 1px;
+	border-bottom-color: rgb(92, 92, 92);
+	border-style: solid;
+	color: #5c5c5c;
+	padding: 2px;
+	background-color: #1e1d23;
+}
+
+
+:enabled {
+    border-style: solid;
+	border-top-color: transparent;
+	border-right-color: transparent;
+	border-left-color: transparent;
+	border-bottom-width: 1px;
+	border-bottom-color: rgb(212, 60, 136);
+	border-style: solid;
+	color: #a9b7c6;
+	padding: 2px;
+	background-color: #1e1d23;
+}</string>
         </property>
         <property name="text">
          <string>Next</string>
@@ -275,7 +345,7 @@ background-color: #1e1d23;</string>
       <x>550</x>
       <y>180</y>
       <width>521</width>
-      <height>421</height>
+      <height>501</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -304,7 +374,7 @@ background-color: #1e1d23;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>40</y>
+       <y>110</y>
        <width>501</width>
        <height>41</height>
       </rect>
@@ -387,7 +457,7 @@ background-color: #1e1d23;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>90</y>
+       <y>170</y>
        <width>501</width>
        <height>131</height>
       </rect>
@@ -433,7 +503,7 @@ background-color: #1e1d23;</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>230</y>
+       <y>310</y>
        <width>501</width>
        <height>181</height>
       </rect>
@@ -462,8 +532,21 @@ background-color: #1e1d23;</string>
     <layout class="QHBoxLayout" name="horizontalLayout_8">
      <item>
       <widget class="QPushButton" name="centraButton">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton {
+        <string notr="true">QPushButton{
+  color: #5c5c5c;
+  background-color: #1e1d23;
+  border: 1px solid #5c5c5c;
+  border-radius: 4px;
+  padding: 8px 16px ;
+  height: 18px;
+}
+
+
+:enabled {
   color: #ff4081;
   background-color: #1e1d23;
   border: 2px solid #ff4081;
@@ -479,6 +562,9 @@ background-color: #1e1d23;</string>
      </item>
      <item>
       <widget class="QPushButton" name="buttonStart">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="maximumSize">
         <size>
          <width>358</width>
@@ -490,6 +576,16 @@ background-color: #1e1d23;</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
+  color: #5c5c5c;
+  background-color: #1e1d23;
+  border: 1px solid #5c5c5c;
+  border-radius: 4px;
+  padding: 8px 16px ;
+  height: 18px;
+}
+
+
+:enabled{
   color: #04b97f;
   background-color: #1e1d23;
   border: 2px solid #04b97f;
@@ -512,7 +608,17 @@ background-color: #1e1d23;</string>
         <bool>false</bool>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton {
+        <string notr="true">QPushButton{
+  color: #5c5c5c;
+  background-color: #1e1d23;
+  border: 1px solid #5c5c5c;
+  border-radius: 4px;
+  padding: 8px 16px ;
+  height: 18px;
+}
+
+
+:enabled {
   color: #ff0040;
   background-color: #1e1d23;
   border: 2px solid #ff0040;
@@ -535,7 +641,7 @@ background-color: #1e1d23;</string>
      <x>0</x>
      <y>0</y>
      <width>1080</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="styleSheet">

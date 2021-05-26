@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
     createMenus();
     createActions();
     createModels();
+
+    changeStateButtons(false);
+
     ENSURE(properlyInitialized(), "MainWindow object must be properly initialized");
 }
 
@@ -81,6 +84,7 @@ void MainWindow::on_actionOpen_triggered()
        QByteArray ba = fileName.toLocal8Bit();
         try {
             s.importXmlFile(ba.data());
+            ui->buttonStart->setEnabled(true);
         }
         catch (Exception ex) {
             MessageBox msg;
@@ -134,6 +138,8 @@ void MainWindow::on_buttonStart_clicked()
     }
 
     this->runSimulation = true;
+    changeStateButtons(true);
+    ui->buttonPrevious->setEnabled(false);
 
     MessageBox msg;
     msg.setWindowTitle("VaccinDistributor");
@@ -160,6 +166,7 @@ void MainWindow::on_buttonStop_clicked()
     on_action_bmp_triggered();
     on_action_ini_triggered();
     this->runSimulation = false;
+    changeStateButtons(false);
 
     MessageBox msg;
     msg.setWindowTitle("VaccinDistributor");
@@ -187,6 +194,7 @@ void MainWindow::on_buttoNext_clicked()
         updateProgressBarVaccinated(s.getVaccinatedPercent());
         updateModels(s.getVaccinData());
     }
+    ui->buttonPrevious->setEnabled(true);
 }
 
 void MainWindow::updateTextEdit(const QString &x) {
@@ -238,8 +246,7 @@ void MainWindow::updateProgressBarVaccinated(const int x) {
     ui->progressBarVaccinated->setValue(x);
 }
 
-void MainWindow::on_buttonPrevious_clicked()
-{
+void MainWindow::on_buttonPrevious_clicked() {
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
 
     if (!s.undoSimulation()) {
@@ -253,10 +260,13 @@ void MainWindow::on_buttonPrevious_clicked()
         msg.timeout = 2;
         msg.exec();
     }
-    std::string imageName = "Day-" + std::to_string(s.getIter()) + ".bmp";
+    std::string imageName = "Day-" + std::to_string(s.getIter() - 1) + ".bmp";
     updateLabelImage(tr(imageName.c_str()));
     updateProgressBarVaccinated(s.getVaccinatedPercent());
     updateModels(s.getVaccinData());
+    if (!s.undoSimulation()) {
+        ui->buttonPrevious->setEnabled(false);
+    }
 }
 
 void MainWindow::updateModels(const std::map<const std::string, int> &vaccins) {
@@ -336,13 +346,13 @@ void MainWindow::on_buttonAutoSimulation_clicked() {
 void MainWindow::on_buttonAutoSimulationPausePlay_clicked() {
 
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
-    if(pauseSimulation){
-        ui->buttonAutoSimulationPausePlay->setText("||");
-    }
-    else{
-        ui->buttonAutoSimulationPausePlay->setText("▶");
-    }
-    pauseSimulation = !pauseSimulation;
+    changePauseState(pauseSimulation);
+}
+
+void MainWindow::on_actionExport_as_mp4_triggered() {
+    QString pad = QFileDialog::getSaveFileName(nullptr, "Export as mp4", ".", "Movie (*.mp4)");
+    std::system(("rm '" + pad.toStdString() + "'").c_str());
+    std::system(("ffmpeg -framerate 1 -i Day-%1d.bmp '" + pad.toStdString() + "'").c_str());
 }
 
 void MainWindow::on_centraButton_clicked() {
@@ -366,10 +376,31 @@ void MainWindow::on_centraButton_clicked() {
     }
 
     // TODO - Selecteren van item om te veranden
-    // TODO - Simulatie op pauze zetten bij het veranderen bij het openen van een nieuw scherm
+    changePauseState(false);
 
     Dialog dialog;
     dialog.setModal(true);
     dialog.createModels(s.getFcentra(), s.getHub());
     dialog.exec();
+}
+
+void MainWindow::changeStateButtons(bool state) {
+    ui->centraButton->setEnabled(state);
+    ui->buttonStart->setEnabled(state);
+    ui->buttonStop->setEnabled(state);
+    ui->buttonPrevious->setEnabled(state);
+    ui->buttoNext->setEnabled(state);
+    ui->buttonAutoSimulationPausePlay->setEnabled(state);
+    ui->buttonAutoSimulation->setEnabled(state);
+}
+
+void MainWindow::changePauseState(bool state) {
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
+    pauseSimulation = !state;
+    if(!pauseSimulation){
+        ui->buttonAutoSimulationPausePlay->setText("||");
+    }
+    else{
+        ui->buttonAutoSimulationPausePlay->setText("▶");
+    }
 }

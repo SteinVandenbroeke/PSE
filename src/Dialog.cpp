@@ -123,9 +123,32 @@ void Dialog::on_listView_doubleClicked(const QModelIndex &index) {
 
     QString msg;
     msg.append(QString::fromStdString(centraIndex[(unsigned int) index.row()]->getName()));
-    int newCapacity = QInputDialog::getInt(this, msg, tr("New Capacity: "));
+    int newCapacity = QInputDialog::getInt(this, msg, tr("New Capacity: "), centraIndex[(unsigned int) index.row()]->getCapacity());
+    int minNeededCapacity = centraIndex[(unsigned int) index.row()]->getVaccins()/2;
 
-    if (newCapacity && newCapacity >= 0) {
+    bool change = true;
+    if(newCapacity <= minNeededCapacity){
+        QMessageBox::StandardButton warn;
+        warn = QMessageBox::warning(this, "Capacity to small"
+                                      , "Capacity is smaller then amount of vaccins current in centra. Do you want to vaccinate until there is no more overstock?"
+                                      ,QMessageBox::Yes|QMessageBox::No);
+        if(warn == QMessageBox::No){
+            change = false;
+        }
+        else if(warn == QMessageBox::Yes){
+            int peapleVaccinated = centraIndex[(unsigned int) index.row()]->getVaccinated();
+            while(newCapacity <= minNeededCapacity){
+                std::stringstream ostream;
+                centraIndex[(unsigned int) index.row()]->vaccinateCenter(ostream);
+                minNeededCapacity = centraIndex[(unsigned int) index.row()]->getVaccins()/2;
+            }
+            peapleVaccinated = centraIndex[(unsigned int) index.row()]->getVaccinated() - peapleVaccinated;
+            std::string messageBoxText =  "There are " + std::to_string(peapleVaccinated) + "peaple vaccinated";
+            QMessageBox::information(this, "Capacity change", messageBoxText.c_str());
+        }
+    }
+
+    if (newCapacity && newCapacity >= 0 && change) {
         centraIndex[(unsigned int) index.row()]->setCapacity(newCapacity);
         createCentra(centra);
         return;
@@ -189,4 +212,56 @@ void Dialog::on_listView_2_doubleClicked(const QModelIndex &index) {
 
 void Dialog::on_buttonStop_clicked() {
     this->close();
+}
+
+void Dialog::on_buttonCreateTransport_clicked() {
+    std::string titel = "Create transport";
+    Hub* hub = selectHub(hubs, titel);
+    VaccinInHub* vaccin = selectVaccin(hub, titel);
+    VaccinationCenter* centra = selectCenter(hub, titel);
+    int transport = QInputDialog::getInt(this, titel.c_str(), "Vaccin amount:",centra->getOpenVaccinStorage(vaccin), 0, centra->getOpenVaccinStorage(vaccin));
+    //transport
+    int roundedToTransport = std::floor(transport/vaccin->getTransport());
+    transport = vaccin->getTransport() * roundedToTransport;
+    vaccin->updateVaccinsTransport(transport);
+    centra->addVaccins(transport, vaccin);
+    return;
+}
+
+Hub *Dialog::selectHub(std::vector<Hub *> hubs, std::string& titel) {
+    QStringList items;
+    for(int i = 0; i < hubs.size(); i++){
+        items << tr(std::string("Hub-" + std::to_string(i)).c_str());
+    }
+    bool ok;
+    QString item = QInputDialog::getItem(this, titel.c_str(), tr("Select hub: "), items, 0, false, &ok);
+    item.remove(0,4);
+    std::istringstream convert(item.toStdString());
+    int hubIndex;
+    convert >> hubIndex;
+    return hubs[hubIndex];
+}
+
+VaccinInHub* Dialog::selectVaccin(Hub* hub, std::string& titel) {
+    QStringList items;
+    std::map<std::string, VaccinInHub *> vaccins = hub->getVaccins();
+    for(std::map<std::string, VaccinInHub *>::iterator it = vaccins.begin();
+        it != vaccins.end(); it++){
+        items << tr(std::string((*it).first).c_str());
+    }
+    bool ok;
+    QString item = QInputDialog::getItem(this, titel.c_str(), tr("Select a vaccin: "), items, 0, false, &ok);
+    return vaccins[item.toStdString()];
+}
+
+VaccinationCenter *Dialog::selectCenter(Hub* hub, std::string &titel) {
+    QStringList items;
+    std::map<std::string, VaccinationCenter *> centra = hub->getCentra();
+    for(std::map<std::string, VaccinationCenter *>::iterator it = centra.begin();
+        it != centra.end(); it++){
+        items << tr(std::string((*it).first).c_str());
+    }
+    bool ok;
+    QString item = QInputDialog::getItem(this, titel.c_str(), tr("Select an center: "), items, 0, false, &ok);
+    return centra[item.toStdString()];
 }

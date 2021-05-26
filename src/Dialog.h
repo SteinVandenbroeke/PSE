@@ -38,6 +38,8 @@ private slots:
 
     void on_buttonStop_clicked();
 
+    void on_buttonCreateTransport_clicked();
+
 private:
     Ui::Dialog *ui;
     QStringListModel *modelCentra; ///< Hold the centraData
@@ -45,10 +47,14 @@ private:
     std::vector<Hub*> hubs; ///< Hubs
     std::map<std::string, VaccinationCenter*> centra; ///< Centra
     std::vector<VaccinationCenter*> centraIndex; ///< Hold the centra Index
-    std::vector<std::pair<int, VaccinInHub*> > hubsIndex; ///< Hold the hubs Index
+    std::vector<std::pair<int, VaccinInHub*>> hubsIndex; ///< Hold the hubs Index
 
     void createCentra(const std::map<std::string, VaccinationCenter*> &centra);
     void createHubs(const std::vector<Hub*> &hubs);
+
+    Hub* selectHub(std::vector<Hub*>, std::string& titel);
+    VaccinInHub* selectVaccin(Hub*, std::string& titel);
+    VaccinationCenter* selectCenter(Hub*, std::string& titel);
 };
 
 #endif // DIALOG_H

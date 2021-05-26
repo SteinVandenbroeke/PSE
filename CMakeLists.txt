@@ -9,19 +9,20 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
+set( Qt5Core_DIR "/home/stein/Qt5.12.10/5.12.10/gcc_64/lib/cmake/Qt5Core")
+set( Qt5Widgets_DIR "/home/stein/Qt5.12.10/5.12.10/gcc_64/lib/cmake/Qt5Widgets")
+set( Qt5Gui_DIR "/home/stein/Qt5.12.10/5.12.10/gcc_64/lib/cmake/Qt5Gui")
+set( Qt5Multimedia_DIR "/home/stein/Qt5.12.10/5.12.10/gcc_64/lib/cmake/Qt5Multimedia")
+
+find_package( Qt5Core REQUIRED )
+find_package( Qt5Widgets REQUIRED )
+find_package( Qt5Gui REQUIRED )
 
 # Set include dir
 include_directories(src/gtest/include)
 
 # Set Library dir
 link_directories(src/gtest/lib)
-
-#=====================================================
-# Mac
-#=====================================================
-set(Qt5Core_DIR "~/Qt/5.15.2/clang_64/lib/cmake/Qt5Core")
-set(Qt5Widgets_DIR "~/Qt/5.15.2/clang_64/lib/cmake/Qt5Widgets")
-set(Qt5Gui_DIR "~/Qt/5.15.2/clang_64/lib/cmake/Qt5Gui")
 
 # Set source files for RELEASE target
 set(RELEASE_SOURCE_FILES
@@ -93,10 +94,6 @@ set(DEBUG_SOURCE_FILES
         src/Vaccin.cpp
         src/Vaccin.h
         engine)
-
-find_package( Qt5Core REQUIRED )
-find_package( Qt5Widgets REQUIRED )
-find_package( Qt5Gui REQUIRED )
 
 # Create RELEASE target
 add_executable(VaccinDistributor ${RELEASE_SOURCE_FILES})

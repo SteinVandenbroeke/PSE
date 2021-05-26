@@ -395,8 +395,6 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream, bool 
 }
 
 std::pair<std::string, std::string> Simulation::simulate() {
-
-
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     REQUIRE(checkSimulation(), "The simulation must be valid/consistent");
     REQUIRE(this->iter >= 0, "Days can't be negative");
