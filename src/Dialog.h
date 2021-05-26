@@ -32,10 +32,20 @@ public:
                       const std::vector<Hub*> &hubs);
 private slots:
 
+    void on_listView_doubleClicked(const QModelIndex &index);
+
+    void on_listView_2_doubleClicked(const QModelIndex &index);
+
+    void on_buttonStop_clicked();
+
 private:
     Ui::Dialog *ui;
     QStringListModel *modelCentra; ///< Hold the centraData
     QStringListModel *modelHubs; ///< Hold the hubData
+    std::vector<Hub*> hubs; ///< Hubs
+    std::map<std::string, VaccinationCenter*> centra; ///< Centra
+    std::vector<VaccinationCenter*> centraIndex; ///< Hold the centra Index
+    std::vector<std::pair<int, VaccinInHub*> > hubsIndex; ///< Hold the hubs Index
 
     void createCentra(const std::map<std::string, VaccinationCenter*> &centra);
     void createHubs(const std::vector<Hub*> &hubs);

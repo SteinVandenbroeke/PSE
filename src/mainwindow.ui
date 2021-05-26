@@ -473,7 +473,7 @@ background-color: #1e1d23;</string>
 }</string>
        </property>
        <property name="text">
-        <string>View Centra</string>
+        <string>Data</string>
        </property>
       </widget>
      </item>

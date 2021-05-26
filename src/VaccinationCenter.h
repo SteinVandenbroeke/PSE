@@ -135,6 +135,17 @@ public:
     int getCapacity() const;
 
     /**
+     * \brief Set capacity of VaccinationCenter
+     *
+     * @param newCapacity New capacity value as int
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     * REQUIRE(v->getCapacity() >= 0, "Negative capacity")
+     */
+    void setCapacity(const int &newCapacity);
+
+    /**
      * \brief Get amount of vaccins of the VaccinationCenter
      *
      * @pre

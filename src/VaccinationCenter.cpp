@@ -85,6 +85,13 @@ int VaccinationCenter::getCapacity() const {
     return this->fcapacity;
 }
 
+void VaccinationCenter::setCapacity(const int &newCapacity) {
+
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(newCapacity >= 0, "Negative capacity");
+    this->fcapacity = newCapacity;
+}
+
 int VaccinationCenter::getVaccins() const {
 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");

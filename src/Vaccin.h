@@ -117,6 +117,17 @@ public:
     int getDelivery() const;
 
     /**
+     * \brief Set amount of vaccins delivered
+     *
+     * @param newDelivery New amount of vaccins delivered as int
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     * REQUIRE(newDelivery >= 0, "Delivery must not be negative")
+     */
+    void setDelivery(const int &newDelivery);
+
+    /**
      * \brief Get interval between deliveries
      *
      * @pre
@@ -127,6 +138,17 @@ public:
     int getInterval() const;
 
     /**
+     * \brief Set interval between deliveries
+     *
+     * @param newInterval New interval between deliveries as int
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     * REQUIRE(newInterval >= 0, "newInterval must not be negative")
+     */
+    void setInterval(const int &newInterval);
+
+    /**
      * \brief Get renewal between Vaccin shots
      *
      * @pre
@@ -135,6 +157,17 @@ public:
      * @return Renewal as int
      */
     int getRenewal() const;
+
+    /**
+     * \brief Set renewal between Vaccin shots
+     *
+     * @param newRenewal new Renewal time as int
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     * REQUIRE(newRenewal >= 0, "newRenewal must not be negative")
+     */
+    void setRenewal(const int &newRenewal);
 
     /**
      * \brief Get temperature of Vaccin to be stored
@@ -155,6 +188,17 @@ public:
      * @return Amount of vaccins delivered to VaccinationCenters as int
      */
     int getTransport() const;
+
+    /**
+     * \brief Set amount of vaccins delivered to VaccinationCenters
+     *
+     * @param newTransport Amount of vaccins delivered to Center as int
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Vaccin must be properly initialized")
+     * REQUIRE(newTransport >= 0, "newTransport must not be negative")
+     */
+    void setTransport(const int &newTransport);
 
     /**
      * \brief Get amount of vaccins currently of this type

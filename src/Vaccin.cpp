@@ -64,16 +64,37 @@ int VaccinInHub::getDelivery() const {
     return fdelivery;
 }
 
+void VaccinInHub::setDelivery(const int &newDelivery) {
+
+    REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+    REQUIRE(newDelivery >= 0, "Delivery must not be negative");
+    this->fdelivery = newDelivery;
+}
+
 int VaccinInHub::getInterval() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return finterval;
 }
 
+void VaccinInHub::setInterval(const int &newInterval) {
+
+    REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+    REQUIRE(newInterval >= 0, "Interval must not be negative");
+    this->finterval = newInterval;
+}
+
 int VaccinInHub::getTransport() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return ftransport;
+}
+
+void VaccinInHub::setTransport(const int &newTransport) {
+
+    REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+    REQUIRE(newTransport >= 0, "Transport must not be negative");
+    this->ftransport = newTransport;
 }
 
 int VaccinInHub::getVaccin() const {
@@ -114,6 +135,13 @@ int VaccinInHub::getRenewal() const {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     return fvaccinRenewal;
+}
+
+void VaccinInHub::setRenewal(const int &newRenewal) {
+
+    REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
+    REQUIRE(newRenewal >= 0, "Interval must not be negative");
+    this->fvaccinRenewal = newRenewal;
 }
 
 int VaccinInHub::getTemperature() const {
