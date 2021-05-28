@@ -374,7 +374,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>110</y>
+       <y>40</y>
        <width>501</width>
        <height>41</height>
       </rect>
@@ -457,7 +457,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>170</y>
+       <y>90</y>
        <width>501</width>
        <height>131</height>
       </rect>
@@ -518,6 +518,17 @@
 	border-bottom-color: transparent;
 	color: #a9b7c6;</string>
      </property>
+    </widget>
+    <widget class="QWidget" name="verticalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>220</y>
+       <width>501</width>
+       <height>271</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="chartPlace"/>
     </widget>
    </widget>
    <widget class="QWidget" name="horizontalLayoutWidget_4">

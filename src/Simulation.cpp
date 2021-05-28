@@ -133,7 +133,6 @@ bool Simulation::checkVaccins() const {
     return true;
 }
 
-
 bool Simulation::checkHub() const {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
@@ -334,6 +333,9 @@ void Simulation::simulateVaccination(std::ostream &stream) {
         it->second->vaccinateCenter(stream);
     }
 
+    DayVaccinated[iter] = this->getVaccinated();
+
+    ENSURE(getDayVaccinated().find(getIter()) != getDayVaccinated().end(), "Day is not added to days/vaccinated data");
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
 }
 
@@ -455,6 +457,16 @@ std::pair<std::string, std::string> Simulation::simulate() {
     return std::make_pair("Day-" + ToString((iter-1)) + ".ini", output);
 }
 
+int Simulation::getVaccinated() const {
+    int vaccinated = 0;
+
+    for (std::map<std::string, VaccinationCenter*>::const_iterator it = fcentra.begin(); it != fcentra.end(); it++) {
+        vaccinated += it->second->getVaccinated();
+    }
+
+    return vaccinated;
+}
+
 int Simulation::getVaccinatedPercent() const {
 
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
@@ -468,8 +480,8 @@ int Simulation::getVaccinatedPercent() const {
         population += it->second->getPopulation();
     }
 
-    return ToPercent(vaccinated, population);
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+    return ToPercent(vaccinated, population);
 }
 
 bool Simulation::undoSimulation() {
@@ -547,4 +559,8 @@ std::string Simulation::generateBmp(const std::string &path) const {
     std::string fileName = path.substr(0,  path.find("."));
     ENSURE(FileExists(fileName + ".bmp"), "BMP was not generated");
     return fileName + ".bmp";
+}
+
+const std::map<int, int> Simulation::getDayVaccinated() const {
+    return DayVaccinated;
 }

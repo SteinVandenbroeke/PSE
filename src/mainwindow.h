@@ -23,6 +23,33 @@
 #include "messagebox.h"
 #include "Simulation.h"
 #include "Dialog.h"
+#include <QChart>
+#include <QLineSeries>
+#include <QChartView>
+#include <QtCharts>
+
+/*
+ * Graphs
+ */
+class Graph {
+protected:
+    QtCharts::QLineSeries* series = nullptr;
+    QtCharts::QChartView *chartView = nullptr;
+    QtCharts::QValueAxis *axisX = nullptr;
+    QtCharts::QLogValueAxis *axisY = nullptr;
+};
+
+class BarGraph: public Graph{
+
+};
+
+class LineGraph: public Graph{
+public:
+    LineGraph();
+    void updateData(const std::map<int, int>& dayAmount);
+};
+
+
 
 /**
  * @brief Namespace Ui holding forwward declaration of MainWindow class
@@ -162,6 +189,8 @@ private:
     bool runSimulation; ///< Can the simulation be started
     Simulation s; ///< Simulation object
     MainWindow *_initCheck;
+    Graph* typeDelivery = nullptr;
+    LineGraph* vacinCount = nullptr;
 
     /**
      * @brief Create menu's

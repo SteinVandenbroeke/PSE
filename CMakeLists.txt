@@ -13,10 +13,12 @@ set( Qt5Core_DIR "/home/stein/Qt5.12.10/5.12.10/gcc_64/lib/cmake/Qt5Core")
 set( Qt5Widgets_DIR "/home/stein/Qt5.12.10/5.12.10/gcc_64/lib/cmake/Qt5Widgets")
 set( Qt5Gui_DIR "/home/stein/Qt5.12.10/5.12.10/gcc_64/lib/cmake/Qt5Gui")
 set( Qt5Multimedia_DIR "/home/stein/Qt5.12.10/5.12.10/gcc_64/lib/cmake/Qt5Multimedia")
+set( Qt5Charts_DIR "/home/stein/Qt5.12.10/5.12.10/gcc_64/lib/cmake/Qt5Charts")
 
 find_package( Qt5Core REQUIRED )
 find_package( Qt5Widgets REQUIRED )
 find_package( Qt5Gui REQUIRED )
+find_package( Qt5Charts REQUIRED )
 
 # Set include dir
 include_directories(src/gtest/include)
@@ -93,7 +95,7 @@ set(DEBUG_SOURCE_FILES
         src/Utils.h
         src/Vaccin.cpp
         src/Vaccin.h
-        engine)
+        engine src/Graph.cpp src/Graph.h)
 
 # Create RELEASE target
 add_executable(VaccinDistributor ${RELEASE_SOURCE_FILES})
@@ -104,4 +106,4 @@ add_executable(VaccinDistributor_debug ${DEBUG_SOURCE_FILES})
 # Link library
 target_link_libraries(VaccinDistributor_debug gtest)
 
-qt5_use_modules(VaccinDistributor Core Widgets Gui)
+qt5_use_modules(VaccinDistributor Core Widgets Gui Charts)

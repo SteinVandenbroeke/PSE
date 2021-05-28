@@ -33,6 +33,7 @@ private:
     int iter;               ///< Iterator that holds the amount of iterations in the Simulation
     std::stack<Simulation*> undoStack; ///< Stack that holds the previous simulations
     Simulation *_initCheck;
+    std::map<int, int> DayVaccinated;
 
     /**
      * \brief Increase iterator value
@@ -269,7 +270,7 @@ public:
     void simulateTransport(int currentDay, std::ostream &stream);
 
     /**
-    * \brief Simulate vaccination in centra
+    * \brief Simulate vaccination in centra, and update day numbers
     *
     * @param stream Output-stream
     *
@@ -328,6 +329,20 @@ public:
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent");
      *
+     * @return total
+     * */
+    int getVaccinated() const;
+
+    /**
+     * /brief Get total amount of persons vaccinated of all centra
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
+     *
+     * @post
+     * ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+     *
      * @return total in percent
      */
     int getVaccinatedPercent() const;
@@ -371,6 +386,16 @@ public:
      * @return Map containing data
      */
     std::map<const std::string, int> getVaccinData() const;
+
+    /**
+     * \brief Gives a map with the total vaccinationcount/day
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
+     *
+     * @return Map containing data
+     */
+    const std::map<int, int> getDayVaccinated() const;
 };
 
 #endif //TTT_SIMULATION_H

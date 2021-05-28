@@ -19,6 +19,20 @@ MainWindow::MainWindow(QWidget *parent) :
     createMenus();
     createActions();
     createModels();
+/*
+    QtCharts::QChart* chart = new QtCharts::QChart();
+    chart->setTitle("Gevaccineerd");
+    chart->*/
+
+
+    /*  chartView->chart()->removeAllSeries();
+    series = new QtCharts::QLineSeries();
+    series->append(0, 6);
+    series->append(1,3);
+    series->append(2, 4);
+    chartView->chart()->addSeries(series);
+     */
+  //  chartView->show();
 
     changeStateButtons(false);
 
@@ -119,9 +133,13 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_buttonStart_clicked()
 {
-    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
+    if(vacinCount != nullptr)
+        delete vacinCount;
+    vacinCount = new LineGraph();
 
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     // show errMsg when no .xml file was imported || simulation is not complete
+
     if (!s.checkSimulation() || !s.properlyInitialized()) {
         const char* errMsg = "Could not run simulation!\nTry loading a new .xml file.";
 
@@ -193,6 +211,7 @@ void MainWindow::on_buttoNext_clicked()
 
         updateProgressBarVaccinated(s.getVaccinatedPercent());
         updateModels(s.getVaccinData());
+        vacinCount->updateData(s.getDayVaccinated());
     }
     ui->buttonPrevious->setEnabled(true);
 }
@@ -403,4 +422,61 @@ void MainWindow::changePauseState(bool state) {
     else{
         ui->buttonAutoSimulationPausePlay->setText("▶");
     }
+}
+
+LineGraph::LineGraph() {
+    this->chartView = new QtCharts::QChartView();
+
+
+    this->axisX = new QtCharts::QValueAxis();
+    this->axisX->setTitleText("Data point");
+    this->axisX->setLabelFormat("%i");
+    this->axisX->setRange(0, 10);
+    this->chartView->chart()->setAxisX(axisX);
+
+    this->axisY = new QtCharts::QLogValueAxis();
+    this->axisY->setTitleText("Values");
+    this->axisY->setLabelFormat("%g");
+    this->axisY->setRange(0, 10000);
+    this->chartView->chart()->setAxisY(axisY);
+
+
+    chartView->setRenderHint(QPainter::Antialiasing);
+    this->series = new QtCharts::QLineSeries();
+    this->series->append(0, 0);
+    this->series->setColor(QColor("#ff4081"));
+    this->series->setBrush(QColor("#ff4081"));
+    this->series->setPointLabelsColor(QColor("#FFFFFF"));
+    std::cout << "test3" << std::endl;
+
+    this->chartView->chart()->addSeries(this->series);
+    this->chartView->chart()->createDefaultAxes();
+    this->chartView->chart()->setBackgroundBrush(QColor("#1E1D23"));
+    this->chartView->chart()->setTitleBrush(QColor("#FFFFFF"));
+    this->chartView->chart()->setTitle("Delivery/type");
+    this->chartView->setBackgroundBrush(QColor("#1E1D23"));
+    this->chartView->show();
+    std::cout << "test4" << std::endl;
+/*
+    this->series->append(0, 6);
+    this->series->append(2, 4);
+    */
+}
+
+void LineGraph::updateData(const std::map<int, int> &dayAmount) {
+    delete this->series;
+    this->series = new QtCharts::QLineSeries();
+
+    this->series->setColor(QColor("#ff4081"));
+    this->series->setBrush(QColor("#ff4081"));
+    this->series->setPointLabelsColor(QColor("#FFFFFF"));
+    for(std::map<int, int>::const_iterator it = dayAmount.begin();
+        it != dayAmount.end(); it++)
+    {
+        std::cout << (it)->first << ": " << it->second << std::endl;
+        this->series->append((it)->first, it->second);
+    }
+    this->chartView->chart()->addSeries(this->series);
+    this->series->attachAxis(axisY);
+    this->series->attachAxis(axisX);
 }
