@@ -133,9 +133,8 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_buttonStart_clicked()
 {
-    if(vacinCount != nullptr)
-        delete vacinCount;
-    vacinCount = new LineGraph();
+    vacinCount = new LineGraph(ui->graph1);
+    typeDelivery = new BarGraph(ui->graph2);
 
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     // show errMsg when no .xml file was imported || simulation is not complete
@@ -185,6 +184,7 @@ void MainWindow::on_buttonStop_clicked()
     on_action_ini_triggered();
     this->runSimulation = false;
     changeStateButtons(false);
+    s.clearSimulation(false);
 
     MessageBox msg;
     msg.setWindowTitle("VaccinDistributor");
@@ -194,9 +194,12 @@ void MainWindow::on_buttonStop_clicked()
     msg.autoClose = true;
     msg.timeout = 2;
     msg.exec();
+
+    delete vacinCount;
+    delete typeDelivery;
 }
 
-void MainWindow::on_buttoNext_clicked()
+void MainWindow::on_buttonNext_clicked()
 {
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
 
@@ -212,6 +215,8 @@ void MainWindow::on_buttoNext_clicked()
         updateProgressBarVaccinated(s.getVaccinatedPercent());
         updateModels(s.getVaccinData());
         vacinCount->updateData(s.getDayVaccinated());
+        typeDelivery->updateData(s.getVaccinData());
+        ui->currentDay->setText(("Current day: " + std::to_string(s.getIter())).c_str());
     }
     ui->buttonPrevious->setEnabled(true);
 }
@@ -329,7 +334,7 @@ void MainWindow::on_buttonAutoSimulation_clicked() {
         int delay = ui->Delay->value();
         if (this->runSimulation && s.checkSimulation() && s.properlyInitialized()) {
             for (int i = 0; i < days && autoSimulation; i++) {
-                ui->currentDay->setText(("Current day: " + std::to_string(s.getIter())).c_str());
+                ui->currentDay->setText(("Current day: " + std::to_string(s.getIter() + 1)).c_str());
                 std::pair<std::string, std::string> pairReturn = s.simulate();
 
                 updateTextEdit(QString::fromStdString(pairReturn.second));
@@ -339,7 +344,8 @@ void MainWindow::on_buttonAutoSimulation_clicked() {
 
                 updateProgressBarVaccinated(s.getVaccinatedPercent());
                 updateModels(s.getVaccinData());
-
+                vacinCount->updateData(s.getDayVaccinated());
+                typeDelivery->updateData(s.getVaccinData());
                 QTime dieTime = QTime::currentTime().addSecs(delay);
                 while (QTime::currentTime() < dieTime || pauseSimulation)
                     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
@@ -408,7 +414,7 @@ void MainWindow::changeStateButtons(bool state) {
     ui->buttonStart->setEnabled(state);
     ui->buttonStop->setEnabled(state);
     ui->buttonPrevious->setEnabled(state);
-    ui->buttoNext->setEnabled(state);
+    ui->buttonNext->setEnabled(state);
     ui->buttonAutoSimulationPausePlay->setEnabled(state);
     ui->buttonAutoSimulation->setEnabled(state);
 }
@@ -424,59 +430,85 @@ void MainWindow::changePauseState(bool state) {
     }
 }
 
-LineGraph::LineGraph() {
+LineGraph::LineGraph(QLayout* location) {
     this->chartView = new QtCharts::QChartView();
-
-
-    this->axisX = new QtCharts::QValueAxis();
-    this->axisX->setTitleText("Data point");
-    this->axisX->setLabelFormat("%i");
-    this->axisX->setRange(0, 10);
-    this->chartView->chart()->setAxisX(axisX);
-
-    this->axisY = new QtCharts::QLogValueAxis();
-    this->axisY->setTitleText("Values");
-    this->axisY->setLabelFormat("%g");
-    this->axisY->setRange(0, 10000);
-    this->chartView->chart()->setAxisY(axisY);
-
-
+    this->layout = location;
     chartView->setRenderHint(QPainter::Antialiasing);
     this->series = new QtCharts::QLineSeries();
     this->series->append(0, 0);
     this->series->setColor(QColor("#ff4081"));
     this->series->setBrush(QColor("#ff4081"));
     this->series->setPointLabelsColor(QColor("#FFFFFF"));
-    std::cout << "test3" << std::endl;
 
-    this->chartView->chart()->addSeries(this->series);
     this->chartView->chart()->createDefaultAxes();
     this->chartView->chart()->setBackgroundBrush(QColor("#1E1D23"));
     this->chartView->chart()->setTitleBrush(QColor("#FFFFFF"));
-    this->chartView->chart()->setTitle("Delivery/type");
+    this->chartView->chart()->setTitle("Vaccinated");
     this->chartView->setBackgroundBrush(QColor("#1E1D23"));
-    this->chartView->show();
-    std::cout << "test4" << std::endl;
-/*
-    this->series->append(0, 6);
-    this->series->append(2, 4);
-    */
+    location->addWidget(chartView);
+    //this->chartView->show();
 }
 
 void LineGraph::updateData(const std::map<int, int> &dayAmount) {
+
     delete this->series;
     this->series = new QtCharts::QLineSeries();
 
     this->series->setColor(QColor("#ff4081"));
     this->series->setBrush(QColor("#ff4081"));
     this->series->setPointLabelsColor(QColor("#FFFFFF"));
+    this->series->append(0, 0);
     for(std::map<int, int>::const_iterator it = dayAmount.begin();
         it != dayAmount.end(); it++)
     {
-        std::cout << (it)->first << ": " << it->second << std::endl;
-        this->series->append((it)->first, it->second);
+        this->series->append((it)->first + 1, it->second);
     }
     this->chartView->chart()->addSeries(this->series);
-    this->series->attachAxis(axisY);
-    this->series->attachAxis(axisX);
+    this->chartView->chart()->createDefaultAxes();
+}
+
+LineGraph::~LineGraph() {
+    delete this->series;
+}
+
+BarGraph::BarGraph(QLayout* location) {
+    this->layout = location;
+    this->series = new QtCharts::QBarSeries();
+    this->chartView = new QtCharts::QChartView();
+    chartView->setRenderHint(QPainter::Antialiasing);
+    this->chartView->chart()->setBackgroundBrush(QColor("#1E1D23"));
+    this->chartView->chart()->setTitleBrush(QColor("#FFFFFF"));
+    this->chartView->chart()->setTitle("Delivery/type");
+    this->chartView->setBackgroundBrush(QColor("#1E1D23"));
+    location->addWidget(chartView);
+}
+
+BarGraph::~BarGraph() {
+    delete this->series;
+}
+
+void BarGraph::updateData(const std::map<const std::string, int> &centerAmount) {
+    std::cout << "test3" << std::endl;
+    this->chartView->chart()->removeAllSeries();
+
+    this->series = new QtCharts::QBarSeries();
+    std::cout << "test4" << std::endl;
+    for(std::map<const std::string, int>::const_iterator it = centerAmount.begin();
+        it != centerAmount.end(); it++)
+    {
+        std::cout << it->first.c_str() << ": "  << it->second<< std::endl;
+        QBarSet* barSet = new QBarSet(it->first.c_str());
+        barSet->append(it->second);
+        this->series->append(barSet);
+        std::cout << "added" << std::endl;
+    }
+    std::cout << "test5" << std::endl;
+    this->chartView->chart()->addSeries(this->series);
+    std::cout << "test6" << std::endl;
+    this->chartView->chart()->createDefaultAxes();
+    std::cout << "test7" << std::endl;
+}
+
+Graph::~Graph() {
+    delete this->chartView;
 }

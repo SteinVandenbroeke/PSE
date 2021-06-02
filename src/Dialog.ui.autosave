@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">	background-color:#1e1d23;</string>
+  </property>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>40</y>
+     <width>801</width>
+     <height>361</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QListView" name="listView">
+      <property name="styleSheet">
+       <string notr="true">QListView {
+  color: #ffffff;
+  background-color: #232629;
+  border: 1px solid unset;
+  border-radius: unset;
+  padding: unset;
+  padding-left: unset;
+  height: unset;
+  border-width: unset;
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
+}</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QListView" name="listView_2">
+      <property name="styleSheet">
+       <string notr="true">QListView {
+  color: #ffffff;
+  background-color: #232629;
+  border: 1px solid unset;
+  border-radius: unset;
+  padding: unset;
+  padding-left: unset;
+  height: unset;
+  border-width: unset;
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
+}</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>311</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+  color: #ff4081;
+  background-color: #31363b;
+  border: 2px solid #ff4081;
+  border-radius: 4px;
+  padding: 8px 16px ;
+  height: 18px;
+}</string>
+   </property>
+   <property name="text">
+    <string>Double-click on the Centra's or Hubs to change a value</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buttonStop">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>548</x>
+     <y>0</y>
+     <width>251</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+  color: #ff0040;
+  background-color: #1e1d23;
+  border: 2px solid #ff0040;
+  border-radius: 4px;
+  padding: 8px 16px ;
+  height: 18px;
+}</string>
+   </property>
+   <property name="text">
+    <string>Done</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buttonCreateTransport">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>0</y>
+     <width>221</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+  color: #ff0040;
+  background-color: #1e1d23;
+  border: 2px solid #ff0040;
+  border-radius: 4px;
+  padding: 8px 16px ;
+  height: 18px;
+}</string>
+   </property>
+   <property name="text">
+    <string>Done</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

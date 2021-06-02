@@ -524,6 +524,7 @@ void Simulation::clearSimulation(const bool clearStack) {
     this->iter = 0;
     this->fcentra.clear();
     this->fhub.clear();
+    this->DayVaccinated.clear();
     if (clearStack) {
         this->undoStack.~stack();
     }

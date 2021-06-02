@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1080</width>
+    <width>1456</width>
     <height>708</height>
    </rect>
   </property>
@@ -25,7 +25,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>531</width>
+      <width>461</width>
       <height>671</height>
      </rect>
     </property>
@@ -51,7 +51,7 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>550</x>
+      <x>470</x>
       <y>110</y>
       <width>521</width>
       <height>61</height>
@@ -232,8 +232,8 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>59</y>
+      <x>470</x>
+      <y>60</y>
       <width>521</width>
       <height>51</height>
      </rect>
@@ -296,7 +296,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="buttoNext">
+       <widget class="QPushButton" name="buttonNext">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -342,7 +342,7 @@
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>550</x>
+      <x>470</x>
       <y>180</y>
       <width>521</width>
       <height>501</height>
@@ -503,9 +503,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>310</y>
+       <y>270</y>
        <width>501</width>
-       <height>181</height>
+       <height>221</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -519,22 +519,11 @@
 	color: #a9b7c6;</string>
      </property>
     </widget>
-    <widget class="QWidget" name="verticalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>220</y>
-       <width>501</width>
-       <height>271</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="chartPlace"/>
-    </widget>
    </widget>
    <widget class="QWidget" name="horizontalLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>549</x>
+      <x>470</x>
       <y>0</y>
       <width>521</width>
       <height>51</height>
@@ -645,14 +634,58 @@
      </item>
     </layout>
    </widget>
+   <widget class="QGroupBox" name="Graphs">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>0</y>
+      <width>441</width>
+      <height>681</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #a9b7c6;</string>
+    </property>
+    <property name="title">
+     <string>Graphs</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <widget class="QWidget" name="layoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>411</width>
+       <height>271</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="graph1"/>
+    </widget>
+    <widget class="QWidget" name="layoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>300</y>
+       <width>411</width>
+       <height>271</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="graph2"/>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1080</width>
-     <height>21</height>
+     <width>1456</width>
+     <height>26</height>
     </rect>
    </property>
    <property name="styleSheet">

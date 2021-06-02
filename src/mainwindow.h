@@ -32,20 +32,28 @@
  * Graphs
  */
 class Graph {
+public:
+    ~Graph();
+    QLayout* layout;
 protected:
-    QtCharts::QLineSeries* series = nullptr;
     QtCharts::QChartView *chartView = nullptr;
-    QtCharts::QValueAxis *axisX = nullptr;
-    QtCharts::QLogValueAxis *axisY = nullptr;
 };
 
 class BarGraph: public Graph{
-
+protected:
+    QtCharts::QBarSeries* series = nullptr;
+public:
+    BarGraph(QLayout* location);
+    ~BarGraph();
+    void updateData(const std::map<const std::string, int>& centerAmount);
 };
 
 class LineGraph: public Graph{
+protected:
+    QtCharts::QLineSeries* series = nullptr;
 public:
-    LineGraph();
+    LineGraph(QLayout* location);
+    ~LineGraph();
     void updateData(const std::map<int, int>& dayAmount);
 };
 
@@ -139,7 +147,7 @@ private slots:
      * @pre
      * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
      */
-    void on_buttoNext_clicked();
+    void on_buttonNext_clicked();
 
     /**
      * @brief on_buttonPrevious_clicked Go to previous Simulation
@@ -189,7 +197,7 @@ private:
     bool runSimulation; ///< Can the simulation be started
     Simulation s; ///< Simulation object
     MainWindow *_initCheck;
-    Graph* typeDelivery = nullptr;
+    BarGraph* typeDelivery = nullptr;
     LineGraph* vacinCount = nullptr;
 
     /**
