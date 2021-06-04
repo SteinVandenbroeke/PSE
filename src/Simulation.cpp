@@ -513,9 +513,11 @@ void Simulation::clearSimulation(const bool clearStack) {
     this->fhub.clear();
     this->DayVaccinated.clear();
     if (clearStack) {
-        this->undoStack.~stack();
+        while(!undoStack.empty()){
+            delete undoStack.top();
+            undoStack.pop();
+        }
     }
-    std::cout << "clear" << std::endl;
     ENSURE(getIter() == 0, "Iter must be zero");
     ENSURE(getFcentra().empty(), "Centra must be empty");
     ENSURE(getHub().empty(), "Hub must be empty");

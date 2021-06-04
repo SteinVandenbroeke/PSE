@@ -54,6 +54,12 @@ public:
      *
      * @post
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
+     * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
+     * ENSURE(this->getName() == fname, "Value of fname not set");
+     * ENSURE(this->getAddress() == faddress, "Value of faddress not set");
+     * ENSURE(this->getPopulation() == fpopulation, "Value of fpopulation not set");
+     * ENSURE(this->getCapacity() == fcapacity, "Value of fcapacity not set");
+     * ENSURE(this->getVaccinated() == 0, "fvaccinated is not 0");
      */
     VaccinationCenter(const std::string &name, const std::string &address, int population, int capacity);
 
@@ -63,10 +69,7 @@ public:
      * @post
      * ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state")
      */
-    VaccinationCenter() {
-        _initCheck = this;
-        ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
-    }
+    VaccinationCenter();
 
     /**
      * @brief Copy constructor for a VaccinationCenter object
@@ -84,6 +87,12 @@ public:
      *
      * @post
      * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state")
+     * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state");
+     * ENSURE(this->getName() == v->getName(), "Name is not the same");
+     * ENSURE(this->getAddress() == v->getAddress(), "Adress is not the same");
+     * ENSURE(this->getPopulation() == v->getPopulation(), "Population is not the same");
+     * ENSURE(this->getCapacity() == v->getCapacity(), "Capacity is not the same");
+     * ENSURE(this->getVaccinated() == v->getVaccinated(), "Vaccinated is not the same");
      */
     void copyVaccinationCenter( const VaccinationCenter *v);
 
@@ -187,10 +196,29 @@ public:
      *
      * @post
      * ENSURE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity of Center");
+     * ENSURE(vaccinsType().find(vaccin->getType())->second->getVaccinAmount() >= amount, "Amount of vaccins must be bigger then the added amount (+= amount)");
      */
     void addVaccins(const int amount, const VaccinInHub* vaccin);
 
 
+    /**
+     * \brief  gives map with name of vaccin type and pointer to vaccinType
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return map with name of vaccin type and pointer to vaccinType
+     */
+    const std::map<const std::string, VaccinInCenter*> vaccinsType() const;
+
+    /**
+     * \brief  gives amount of people that need an vaccin
+     *
+     * @pre
+     * REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized")
+     *
+     * @return amount of people that need an vaccin
+     */
     int calculateVaccinationAmount() const;
 
     /**
@@ -205,6 +233,7 @@ public:
      * @return Amount of people that can be vaccinated as int
      */
     int calculateVaccinationAmount(const VaccinInCenter* vaccin, int vaccinsUsed) const;
+
 
     /**
      * \brief Calculate amount of people that need a 2nd shot from the specified Vaccin, this function will also check

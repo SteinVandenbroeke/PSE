@@ -169,7 +169,7 @@ void MainWindow::on_buttonStop_clicked()
     on_action_ini_triggered();
     this->runSimulation = false;
     changeStateButtons(false);
-    s.clearSimulation(false);
+    s.clearSimulation(true);
     ui->buttonStart->setEnabled(true);
 
     MessageBox msg;

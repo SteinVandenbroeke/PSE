@@ -22,6 +22,11 @@ VaccinationCenter::VaccinationCenter(const std::string &fname, const std::string
     fvaccinsType.clear();
 
     ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
+    ENSURE(this->getName() == fname, "Value of fname not set");
+    ENSURE(this->getAddress() == faddress, "Value of faddress not set");
+    ENSURE(this->getPopulation() == fpopulation, "Value of fpopulation not set");
+    ENSURE(this->getCapacity() == fcapacity, "Value of fcapacity not set");
+    ENSURE(this->getVaccinated() == 0, "fvaccinated is not 0");
 }
 
 void VaccinationCenter::copyVaccinationCenter(const VaccinationCenter *v) {
@@ -54,6 +59,11 @@ void VaccinationCenter::copyVaccinationCenter(const VaccinationCenter *v) {
     }
     this->_initCheck = this;
     ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state");
+    ENSURE(this->getName() == v->getName(), "Name is not the same");
+    ENSURE(this->getAddress() == v->getAddress(), "Adress is not the same");
+    ENSURE(this->getPopulation() == v->getPopulation(), "Population is not the same");
+    ENSURE(this->getCapacity() == v->getCapacity(), "Capacity is not the same");
+    ENSURE(this->getVaccinated() == v->getVaccinated(), "Vaccinated is not the same");
 }
 
 bool VaccinationCenter::properlyInitialized() const {
@@ -136,10 +146,11 @@ void VaccinationCenter::addVaccins(const int amount, const VaccinInHub* vaccin) 
     this->fvaccinsType.find(vaccin->getType())->second->getVaccinAmount() += amount;
 
     ENSURE(checkAmountVaccins(), "Amount of vaccins must not exceed capacity of Center");
+    ENSURE(vaccinsType().find(vaccin->getType())->second->getVaccinAmount() >= amount, "Amount of vaccins must be bigger then the added amount (+= amount)");
 }
 
 int VaccinationCenter::calculateVaccinationAmount() const {
-
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
     int notVaccinated = this->fpopulation - (this->fvaccinated + totalWaitingForSeccondPrik());
     int smallest = std::min(this->getVaccins(), this->getCapacity());
     return std::min(smallest, notVaccinated);
@@ -467,11 +478,21 @@ VaccinationCenter::~VaccinationCenter() {
 
 int VaccinationCenter::totalWaitingForSeccondPrik() const {
 
-    ENSURE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
     int total = 0;
     for(std::map<const std::string, VaccinInCenter*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
         total += it->second->totalFirstVaccination();
     }
     return total;
+}
+
+VaccinationCenter::VaccinationCenter() {
+    _initCheck = this;
+    ENSURE(properlyInitialized(), "Constructor must end in properlyInitialized state");
+}
+
+const std::map<const std::string, VaccinInCenter *> VaccinationCenter::vaccinsType() const {
+    REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
+    return fvaccinsType;
 }
