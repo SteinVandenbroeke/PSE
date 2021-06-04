@@ -405,6 +405,7 @@ std::pair<std::string, std::string> Simulation::simulate() {
     Simulation *s = new Simulation();
     s->iter = this->iter;
     s->undoStack = this->undoStack;
+    s->DayVaccinated = this->getDayVaccinated();
 
     for (std::map<std::string, VaccinationCenter*>::const_iterator it = this->getFcentra().begin(); it != this->getFcentra().end(); it++) {
 
@@ -512,6 +513,7 @@ bool Simulation::undoSimulation() {
         h->copyHub((*it), this->fcentra);
         this->fhub.push_back(h);
     }
+    this->DayVaccinated = undoStack.top()->getDayVaccinated();
     undoStack.pop();
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
     return true;

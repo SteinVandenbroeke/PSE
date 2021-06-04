@@ -531,7 +531,7 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_8">
      <item>
-      <widget class="QPushButton" name="centraButton">
+      <widget class="QPushButton" name="dataButton">
        <property name="enabled">
         <bool>true</bool>
        </property>

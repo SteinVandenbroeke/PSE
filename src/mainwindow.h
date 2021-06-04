@@ -186,10 +186,19 @@ private slots:
     *
     * @pre
     * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
+    *
+    * @post
+    * ENSURE(state == !pauseSimulation, "Did not change pause state");
     */
     void on_buttonAutoSimulationPausePlay_clicked();
 
-    void on_centraButton_clicked();
+    /**
+    * @brief Opens new data venster
+    *
+    * @pre
+    * REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized")
+    */
+    void on_dataButton_clicked();
 
 private:
     Ui::MainWindow *ui;

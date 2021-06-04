@@ -19,21 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     createMenus();
     createActions();
     createModels();
-/*
-    QtCharts::QChart* chart = new QtCharts::QChart();
-    chart->setTitle("Gevaccineerd");
-    chart->*/
-
-
-    /*  chartView->chart()->removeAllSeries();
-    series = new QtCharts::QLineSeries();
-    series->append(0, 6);
-    series->append(1,3);
-    series->append(2, 4);
-    chartView->chart()->addSeries(series);
-     */
-  //  chartView->show();
-
     changeStateButtons(false);
 
     ENSURE(properlyInitialized(), "MainWindow object must be properly initialized");
@@ -42,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
-
     delete ui;
 }
 
@@ -221,6 +205,38 @@ void MainWindow::on_buttonNext_clicked()
     ui->buttonPrevious->setEnabled(true);
 }
 
+void MainWindow::on_buttonPrevious_clicked() {
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
+
+    if (!s.undoSimulation()) {
+
+        MessageBox msg;
+        msg.setWindowTitle("VaccinDistributor");
+        msg.setText("Can't go back any further!");
+        msg.setStyleSheet_();
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.autoClose = true;
+        msg.timeout = 2;
+        msg.exec();
+    }
+
+
+    std::string imageName = "Day-" + std::to_string(s.getIter()) + ".bmp";
+    updateLabelImage(tr(imageName.c_str()));
+    updateProgressBarVaccinated(s.getVaccinatedPercent());
+    updateModels(s.getVaccinData());
+    vacinCount->updateData(s.getDayVaccinated());
+    typeDelivery->updateData(s.getVaccinData());
+    ui->currentDay->setText(("Current day: " + std::to_string(s.getIter())).c_str());
+
+    std::pair<std::string, std::string> pairReturn = s.simulate();
+    updateTextEdit(QString::fromStdString(pairReturn.second));
+
+    if (!s.undoSimulation()) {
+        ui->buttonPrevious->setEnabled(false);
+    }
+}
+
 void MainWindow::updateTextEdit(const QString &x) {
 
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
@@ -270,29 +286,6 @@ void MainWindow::updateProgressBarVaccinated(const int x) {
     ui->progressBarVaccinated->setValue(x);
 }
 
-void MainWindow::on_buttonPrevious_clicked() {
-    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
-
-    if (!s.undoSimulation()) {
-
-        MessageBox msg;
-        msg.setWindowTitle("VaccinDistributor");
-        msg.setText("Can't go back any further!");
-        msg.setStyleSheet_();
-        msg.setStandardButtons(QMessageBox::Ok);
-        msg.autoClose = true;
-        msg.timeout = 2;
-        msg.exec();
-    }
-    std::string imageName = "Day-" + std::to_string(s.getIter() - 1) + ".bmp";
-    updateLabelImage(tr(imageName.c_str()));
-    updateProgressBarVaccinated(s.getVaccinatedPercent());
-    updateModels(s.getVaccinData());
-    if (!s.undoSimulation()) {
-        ui->buttonPrevious->setEnabled(false);
-    }
-}
-
 void MainWindow::updateModels(const std::map<const std::string, int> &vaccins) {
 
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
@@ -323,7 +316,6 @@ void MainWindow::on_action_bmp_triggered()
 }
 
 void MainWindow::on_buttonAutoSimulation_clicked() {
-
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     if(!autoSimulation){
         ui->buttonAutoSimulationPausePlay->setVisible(true);
@@ -369,7 +361,6 @@ void MainWindow::on_buttonAutoSimulation_clicked() {
 }
 
 void MainWindow::on_buttonAutoSimulationPausePlay_clicked() {
-
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     changePauseState(pauseSimulation);
 }
@@ -380,8 +371,7 @@ void MainWindow::on_actionExport_as_mp4_triggered() {
     std::system(("ffmpeg -framerate 1 -i Day-%1d.bmp '" + pad.toStdString() + "'").c_str());
 }
 
-void MainWindow::on_centraButton_clicked() {
-
+void MainWindow::on_dataButton_clicked() {
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
 
     // show errMsg when no .xml file was imported || simulation is not complete
@@ -400,17 +390,15 @@ void MainWindow::on_centraButton_clicked() {
         return;
     }
 
-    // TODO - Selecteren van item om te veranden
     changePauseState(false);
 
     Dialog dialog;
     dialog.setModal(true);
     dialog.createModels(s.getFcentra(), s.getHub());
-    dialog.exec();
 }
 
 void MainWindow::changeStateButtons(bool state) {
-    ui->centraButton->setEnabled(state);
+    ui->dataButton->setEnabled(state);
     ui->buttonStart->setEnabled(state);
     ui->buttonStop->setEnabled(state);
     ui->buttonPrevious->setEnabled(state);
@@ -428,6 +416,7 @@ void MainWindow::changePauseState(bool state) {
     else{
         ui->buttonAutoSimulationPausePlay->setText("▶");
     }
+    ENSURE(state == !pauseSimulation, "Did not change pause state");
 }
 
 LineGraph::LineGraph(QLayout* location) {
@@ -488,25 +477,18 @@ BarGraph::~BarGraph() {
 }
 
 void BarGraph::updateData(const std::map<const std::string, int> &centerAmount) {
-    std::cout << "test3" << std::endl;
     this->chartView->chart()->removeAllSeries();
 
     this->series = new QtCharts::QBarSeries();
-    std::cout << "test4" << std::endl;
     for(std::map<const std::string, int>::const_iterator it = centerAmount.begin();
         it != centerAmount.end(); it++)
     {
-        std::cout << it->first.c_str() << ": "  << it->second<< std::endl;
         QBarSet* barSet = new QBarSet(it->first.c_str());
         barSet->append(it->second);
         this->series->append(barSet);
-        std::cout << "added" << std::endl;
     }
-    std::cout << "test5" << std::endl;
     this->chartView->chart()->addSeries(this->series);
-    std::cout << "test6" << std::endl;
     this->chartView->chart()->createDefaultAxes();
-    std::cout << "test7" << std::endl;
 }
 
 Graph::~Graph() {
