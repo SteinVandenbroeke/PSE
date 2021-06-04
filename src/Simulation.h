@@ -41,6 +41,8 @@ private:
      * @pre
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      *
+     * @post
+     * ENSURE(this->getIter() > 0, "Iterator must be possitive");
      */
     void increaseIterator();
 
@@ -72,22 +74,9 @@ public:
      * @post
      * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state")
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     * ENSURE(this->getIter() == s.getIter(), "Iter must be the same");
      */
     Simulation(const Simulation &s);
-
-    /**
-     * \brief "Copy constructor" for a Simulation object
-     *
-     * @param s Object to be copied from
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
-     *
-     * @post
-     * ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state")
-     * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
-     */
-    void copySimulation(const Simulation *s);
 
     /**
      * \brief Check whether the Simulation object is properly initialised
@@ -279,7 +268,8 @@ public:
     * REQUIRE(checkSimulation(), "The simulation must be valid/consistent")
     *
     * @post
-    * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+    * ENSURE(getDayVaccinated().find(getIter()) != getDayVaccinated().end(), "Day is not added to days/vaccinated data");
+    * ENSURE(checkSimulation(), "The simulation must be valid/consistent");
     */
     void simulateVaccination(std::ostream &stream);
 
@@ -301,6 +291,7 @@ public:
      *
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     * ENSURE(this->getIter() >= days, "Total day can not be smaller then the simulated days!");
      */
     void automaticSimulation(int days, std::ostream &stream, bool exportFlag, bool ini);
 
@@ -314,6 +305,8 @@ public:
      *
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     * ENSURE(FileExists(path), "No ini file created");
+     * ENSURE(undoStack.size() == iter, "Wrong history size");
      *
      * @return Pair of strings <Name of .ini file, output stream>
      */
@@ -356,6 +349,7 @@ public:
      *
      * @post
      * ENSURE(checkSimulation(), "The simulation must be valid/consistent")
+     * ENSURE(undoStack.size() == iter, "Wrong history size");
      *
      * @return False if undoStack is empty, true if undo is success
      */
@@ -370,10 +364,11 @@ public:
      * REQUIRE(properlyInitialized(), "Simulation object must be properly initialized")
      *
      * @post
-     * ENSURE(getIter() == 0, "Iter must be zero")
-     * ENSURE(getFcentra().empty(), "Centra must be empty")
-     * ENSURE(getHub().empty(), "Hub must be empty")
-     * if (clearStack) ENSURE(getUndoStack().empty(), "undoStack must be empty")
+     * ENSURE(getIter() == 0, "Iter must be zero");
+     * ENSURE(getFcentra().empty(), "Centra must be empty");
+     * ENSURE(getHub().empty(), "Hub must be empty");
+     * ENSURE(getDayVaccinated().empty(), "Day/Vaccinated must be empty");
+     * ENSURE(!clearStack || getUndoStack().empty(), "undoStack must be empty");
      */
     void clearSimulation(const bool clearStack);
 

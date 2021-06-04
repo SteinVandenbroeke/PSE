@@ -43,28 +43,7 @@ Simulation::Simulation(const Simulation &s) {
     this->_initCheck = this;
     ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state");
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
-}
-
-void Simulation::copySimulation(const Simulation *s) {
-
-    REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
-
-    // TODO
-    this->fhub = s->getHub();
-
-    for (std::map<std::string, VaccinationCenter*>::const_iterator it = s->getFcentra().begin(); it != s->getFcentra().end(); it++) {
-
-        if (this->fcentra.find(it->first) != this->fcentra.end()) {
-
-            this->fcentra[it->first] = it->second;
-            continue;
-        }
-        this->fcentra[it->first] = it->second;
-    }
-    this->iter = s->getIter();
-    this->_initCheck = this;
-    ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state");
-    ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+    ENSURE(this->getIter() == s.getIter(), "Iter must be the same");
 }
 
 bool Simulation::properlyInitialized() const {
@@ -342,6 +321,7 @@ void Simulation::simulateVaccination(std::ostream &stream) {
 void Simulation::increaseIterator() {
     REQUIRE(properlyInitialized(), "Simulation object must be properly initialized");
     iter++;
+    ENSURE(this->getIter() > 0, "Iterator must be possitive");
 }
 
 void Simulation::automaticSimulation(const int days, std::ostream &stream, bool exportFlag, bool ini) {
@@ -394,6 +374,7 @@ void Simulation::automaticSimulation(const int days, std::ostream &stream, bool 
         increaseIterator();
     }
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+    ENSURE(this->getIter() >= days, "Total day can not be smaller then the simulated days!");
 }
 
 std::pair<std::string, std::string> Simulation::simulate() {
@@ -449,12 +430,15 @@ std::pair<std::string, std::string> Simulation::simulate() {
             it->second->updateRenewal();
         }
     }
-    generateIni("Day-" + ToString(iter) + ".ini"); // TODO - absoulte path?
+    std::string path = "Day-" + ToString(iter) + ".ini";
+    generateIni(path);
 
     increaseIterator();
 
     std::string output = ostream.str();
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+    ENSURE(FileExists(path), "No ini file created");
+    ENSURE(undoStack.size() == iter, "Wrong history size");
     return std::make_pair("Day-" + ToString((iter-1)) + ".ini", output);
 }
 
@@ -516,6 +500,7 @@ bool Simulation::undoSimulation() {
     this->DayVaccinated = undoStack.top()->getDayVaccinated();
     undoStack.pop();
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
+    ENSURE(undoStack.size() == iter, "Wrong history size");
     return true;
 }
 
@@ -530,11 +515,12 @@ void Simulation::clearSimulation(const bool clearStack) {
     if (clearStack) {
         this->undoStack.~stack();
     }
-
+    std::cout << "clear" << std::endl;
     ENSURE(getIter() == 0, "Iter must be zero");
     ENSURE(getFcentra().empty(), "Centra must be empty");
     ENSURE(getHub().empty(), "Hub must be empty");
-    if (clearStack) ENSURE(getUndoStack().empty(), "undoStack must be empty");
+    ENSURE(getDayVaccinated().empty(), "Day/Vaccinated must be empty");
+    ENSURE(!clearStack || getUndoStack().empty(), "undoStack must be empty");
 }
 
 std::map<const std::string, int> Simulation::getVaccinData() const {

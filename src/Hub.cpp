@@ -87,12 +87,6 @@ const std::map<std::string, VaccinationCenter*> &Hub::getCentra() const {
     return fcentra;
 }
 
-std::map<std::string, VaccinationCenter *> &Hub::getCentra() {
-
-    REQUIRE(properlyInitialized(), "Hub must be properly initialized");
-    return fcentra;
-}
-
 void Hub::addCenter(const std::string &name, VaccinationCenter *center) {
 
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
@@ -106,7 +100,6 @@ void Hub::addCenter(const std::string &name, VaccinationCenter *center) {
 }
 
 void Hub::updateVaccins() {
-
     REQUIRE(properlyInitialized(), "Hub must be properly initialized");
     for(std::map<std::string, VaccinInHub*>::const_iterator it = fvaccins.begin(); it != fvaccins.end(); it++){
         (*it).second->updateVaccins();
@@ -304,6 +297,7 @@ std::string Hub::generateIni(std::ofstream &stream, int & counterFigures, int & 
 
     x.append("\n");
 
+    ENSURE(x != "", "ini file can not be empty!");
     stream << x;
     return "(" + ToString(positionX) + ", 0, 0)\n";
 }
@@ -317,7 +311,7 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, VaccinInH
 
     VaccinationCenter* center = this->getCentra().begin()->second;
     bool centerReached = false;
-    for (std::map<std::string, VaccinationCenter *>::iterator it = this->getCentra().begin(); it != this->getCentra().end(); it++) {
+    for (std::map<std::string, VaccinationCenter *>::const_iterator it = this->getCentra().begin(); it != this->getCentra().end(); it++) {
         //selecteer het centrum met het miste vaccins tov de capaciteit
 
         if(((((double)(it->second->getVaccinated()) + (double)(it->second->getVaccins()))/(double)(it->second->getPopulation()) <= ((double)(center->getVaccinated())+ (double)(center->getVaccins()))/(double)(center->getPopulation()))
@@ -330,7 +324,6 @@ VaccinationCenter *Hub::mostSuitableVaccinationCenter(int vaccinCount, VaccinInH
         return center;
     }
     return NULL;
-//    return new VaccinationCenter();
 }
 
 Hub::~Hub() {

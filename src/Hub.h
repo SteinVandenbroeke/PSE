@@ -135,10 +135,10 @@ public:
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized");
      * REQUIRE(vaccin->properlyInitialized(), "Vaccin must be properly initialized");
-     * REQUIRE(getVaccins().find(vaccin->getType()) == getVaccins().end(), "Vaccin can't yet exist in Hub");
+     * REQUIRE(!containsVaccin(vaccin), "Vaccin can't yet exist in Hub");
      *
      * @post
-     * ENSURE(getVaccins().find(vaccin->getType()) != getVaccins().end(), "Vaccin must be added to Hub")
+     * ENSURE(containsVaccin(vaccin), "Vaccin must be added to Hub");
      */
     void addVaccin(VaccinInHub* Vaccin);
 
@@ -151,16 +151,6 @@ public:
      * @return Map with connected VaccinationCenters to Hub
      */
     const std::map<std::string, VaccinationCenter *> &getCentra() const;
-
-    /**
-     * \brief Get map with connected VaccinationCenters to Hub
-     *
-     * @pre
-     * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
-     *
-     * @return Map with connected VaccinationCenters to Hub
-     */
-    std::map<std::string, VaccinationCenter *> &getCentra();
 
     /**
      * \brief Add VaccinationCenter to map with connections of Hub
@@ -290,6 +280,9 @@ public:
      *
      * @pre
      * REQUIRE(properlyInitialized(), "Hub must be properly initialized")
+     *
+     * @post
+     * ENSURE(x != "", "ini file can not be empty!");
      *
      * @param stream Output stream
      * @param counterFigures Current number of figures already in the .ini file

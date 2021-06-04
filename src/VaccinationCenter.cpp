@@ -50,7 +50,7 @@ void VaccinationCenter::copyVaccinationCenter(const VaccinationCenter *v) {
         VaccinInCenter *vt = new VaccinInCenter();
 
         vt->copyVaccin(it->second);
-        this->fvaccinsType.insert(std::make_pair(vt->getVaccinType(), vt));
+        this->fvaccinsType.insert(std::make_pair(vt->getType(), vt));
     }
     this->_initCheck = this;
     ENSURE(properlyInitialized(), "Copy constructor must end in properlyInitialized state");
@@ -131,7 +131,7 @@ void VaccinationCenter::addVaccins(const int amount, const VaccinInHub* vaccin) 
         VaccinInCenter* vaccinStruct = new VaccinInCenter(vaccin->getType(),vaccin->getTemperature(),
                                                           vaccin->getRenewal(), 0);
 
-        this->fvaccinsType.insert(std::make_pair(vaccinStruct->getVaccinType(), vaccinStruct));
+        this->fvaccinsType.insert(std::make_pair(vaccinStruct->getType(), vaccinStruct));
     }
     this->fvaccinsType.find(vaccin->getType())->second->getVaccinAmount() += amount;
 
@@ -150,7 +150,7 @@ int VaccinationCenter::calculateVaccinationAmount(const VaccinInCenter* vaccin, 
     REQUIRE(properlyInitialized(), "VaccinationCenter must be properly initialized");
 
     int notVaccinated = this->fpopulation - (this->fvaccinated + totalWaitingForSeccondPrik());
-    int smallest = std::min(vaccin->getVaccinAmount(), this->getCapacity() - vaccinsUsed);
+    int smallest = std::min(vaccin->getVaccin(), this->getCapacity() - vaccinsUsed);
     return std::min(smallest, notVaccinated);
 }
 
@@ -183,7 +183,7 @@ int VaccinationCenter::calculateVaccinationAmountSecondShot(VaccinInCenter* vacc
             newFirstShot = std::min(newFirstShot, this->fcapacity - vaccinsUsed);
 
             if (newFirstShot != 0) {
-                vaccin->insertRequiredDay(vaccin->getVaccinRenewal() * (-1), newFirstShot);
+                vaccin->insertRequiredDay(vaccin->getRenewal() * (-1), newFirstShot);
             }
             vaccin->getVaccinAmount();
             vaccinsUsed += newFirstShot;
@@ -208,7 +208,7 @@ std::map<const std::string, VaccinInCenter*> VaccinationCenter::getVaccin(bool z
     std::map<const std::string, VaccinInCenter*> zeroVaccins;
 
     for (std::map<const std::string, VaccinInCenter*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++) {
-        if((it->second->getVaccinTemperature() < 0 && zeroVaccin) || (it->second->getVaccinTemperature() > 0 && !zeroVaccin)) {
+        if((it->second->getTemperature() < 0 && zeroVaccin) || (it->second->getTemperature() > 0 && !zeroVaccin)) {
             zeroVaccins.insert(std::make_pair(it->first, it->second));
         }
     }
@@ -232,7 +232,7 @@ void VaccinationCenter::vaccinateCenter(std::map<const std::string, VaccinInCent
                 vaccinsUsed += vaccinAmount;
                 it->second->getVaccinAmount() -= vaccinAmount;
                 // Insert in tracker-map
-                it->second->insertRequiredDay(it->second->getVaccinRenewal() * (-1), vaccinAmount);
+                it->second->insertRequiredDay(it->second->getRenewal() * (-1), vaccinAmount);
             }
 
             // Population has already recieved a first Vaccins shot
@@ -399,7 +399,7 @@ void VaccinationCenter::vaccinateCenter(std::ostream &stream) {
         it != fvaccinsType.end(); it++) {
             if (it->second->totalFirstVaccination() <= 0 && it->second->getVaccinAmount() > 0) {
 
-                stream << "Er werden " << it->second->getVaccinAmount() << " onodige vaccins van " << it->second->getVaccinType();
+                stream << "Er werden " << it->second->getVaccinAmount() << " onodige vaccins van " << it->second->getType();
                 stream << " verwijderd." << std::endl;
                 it->second->removeVaccin();
             }
@@ -435,7 +435,7 @@ int VaccinationCenter::getOpenVaccinStorage(VaccinInHub* vaccin) {
     }
 
     for (std::map<const std::string, VaccinInCenter*>::const_iterator it = fvaccinsType.begin(); it != fvaccinsType.end(); it++){
-        if((it->second->getVaccinTemperature() < 0 && vaccin->checkUnderZero()) || (it->second->getVaccinTemperature() > 0 && !vaccin->checkUnderZero())) {
+        if((it->second->getTemperature() < 0 && vaccin->checkUnderZero()) || (it->second->getTemperature() > 0 && !vaccin->checkUnderZero())) {
             openVaccinStorage -= it->second->getVaccinAmount();
         }
         openVaccinStorageTotal -= it->second->getVaccinAmount();
