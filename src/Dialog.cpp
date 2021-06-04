@@ -7,16 +7,19 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("VaccinDistributor");
+    _initCheck = this;
+    ENSURE(properlyInitialized(), "MainWindow object must be properly initialized");
 }
 
 Dialog::~Dialog()
 {
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     delete ui;
 }
 
 void Dialog::createModels(const std::map<std::string, VaccinationCenter*> &center,
                           const std::vector<Hub*> &hub) {
-
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     modelCentra = new QStringListModel(this);
 
     // Items cannot be manually updated
@@ -37,7 +40,7 @@ void Dialog::createModels(const std::map<std::string, VaccinationCenter*> &cente
 }
 
 void Dialog::createCentra(const std::map<std::string, VaccinationCenter*> &centra) {
-
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     QStringList list;
     for (std::map<std::string, VaccinationCenter*>::const_iterator it = centra.begin(); it != centra.end(); it++) {
         centraIndex.emplace_back(it->second);
@@ -80,7 +83,7 @@ void Dialog::createCentra(const std::map<std::string, VaccinationCenter*> &centr
 }
 
 void Dialog::createHubs(const std::vector<Hub*> &hubs) {
-
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     QStringList list;
     int counter = 0;
     for (std::vector<Hub*>::const_iterator it = hubs.begin(); it != hubs.end(); it++) {
@@ -120,7 +123,7 @@ void Dialog::createHubs(const std::vector<Hub*> &hubs) {
 }
 
 void Dialog::on_listView_doubleClicked(const QModelIndex &index) {
-
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     QString msg;
     msg.append(QString::fromStdString(centraIndex[(unsigned int) index.row()]->getName()));
     int newCapacity = QInputDialog::getInt(this, msg, tr("New Capacity: "), centraIndex[(unsigned int) index.row()]->getCapacity());
@@ -170,7 +173,7 @@ void Dialog::on_listView_doubleClicked(const QModelIndex &index) {
 }
 
 void Dialog::on_listView_2_doubleClicked(const QModelIndex &index) {
-
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     QString msg = tr("Hub-");
     msg.append(QString::fromStdString(ToString(hubsIndex[(unsigned int) index.row()].first)));
     msg.append(tr(" "));
@@ -211,10 +214,12 @@ void Dialog::on_listView_2_doubleClicked(const QModelIndex &index) {
 }
 
 void Dialog::on_buttonStop_clicked() {
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     this->close();
 }
 
 void Dialog::on_buttonCreateTransport_clicked() {
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     std::string titel = "Create transport";
     Hub* hub = selectHub(hubs, titel);
     VaccinInHub* vaccin = selectVaccin(hub, titel);
@@ -229,6 +234,7 @@ void Dialog::on_buttonCreateTransport_clicked() {
 }
 
 Hub *Dialog::selectHub(std::vector<Hub *> hubs, std::string& titel) {
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     QStringList items;
     for(int i = 0; i < hubs.size(); i++){
         items << tr(std::string("Hub-" + std::to_string(i)).c_str());
@@ -243,6 +249,7 @@ Hub *Dialog::selectHub(std::vector<Hub *> hubs, std::string& titel) {
 }
 
 VaccinInHub* Dialog::selectVaccin(Hub* hub, std::string& titel) {
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     QStringList items;
     std::map<std::string, VaccinInHub *> vaccins = hub->getVaccins();
     for(std::map<std::string, VaccinInHub *>::iterator it = vaccins.begin();
@@ -255,6 +262,7 @@ VaccinInHub* Dialog::selectVaccin(Hub* hub, std::string& titel) {
 }
 
 VaccinationCenter *Dialog::selectCenter(Hub* hub, std::string &titel) {
+    REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     QStringList items;
     std::map<std::string, VaccinationCenter *> centra = hub->getCentra();
     for(std::map<std::string, VaccinationCenter *>::iterator it = centra.begin();
@@ -264,4 +272,8 @@ VaccinationCenter *Dialog::selectCenter(Hub* hub, std::string &titel) {
     bool ok;
     QString item = QInputDialog::getItem(this, titel.c_str(), tr("Select an center: "), items, 0, false, &ok);
     return centra[item.toStdString()];
+}
+
+bool Dialog::properlyInitialized() const {
+    return _initCheck == this;
 }
