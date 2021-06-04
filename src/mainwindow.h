@@ -203,7 +203,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QStringListModel *modelVaccins; ///< Hold the vaccinData
-    bool runSimulation; ///< Can the simulation be started
+    bool runSimulation = false; ///< Can the simulation be started
     Simulation s; ///< Simulation object
     MainWindow *_initCheck;
     BarGraph* typeDelivery = nullptr;

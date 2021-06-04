@@ -434,7 +434,6 @@ std::pair<std::string, std::string> Simulation::simulate() {
     generateIni(path);
 
     increaseIterator();
-
     std::string output = ostream.str();
     ENSURE(checkSimulation(), "The simulation must be valid/consistent");
     ENSURE(FileExists(path), "No ini file created");

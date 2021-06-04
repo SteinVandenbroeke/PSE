@@ -73,6 +73,17 @@ void MainWindow::on_actionOpen_triggered()
 {
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
 
+    if(runSimulation){
+        MessageBox msg;
+        msg.setWindowTitle("Information");
+        msg.setText("Stop the current simulation first");
+        msg.setStyleSheet_();
+        msg.setIcon(QMessageBox::Information);
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.autoClose = true;
+        msg.exec();
+        return;
+    }
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QString(),
                                                     tr("XML files (*.xml);;Images (*.png *.bmp *.jpeg *.gif)"));
 
@@ -221,22 +232,15 @@ void MainWindow::on_buttonPrevious_clicked() {
         msg.timeout = 2;
         msg.exec();
     }
+    std::cout << "back" << std::endl;
 
-
-    std::string imageName = "Day-" + std::to_string(s.getIter()) + ".bmp";
+    std::string imageName = "Day-" + std::to_string(s.getIter() - 1) + ".bmp";
     updateLabelImage(tr(imageName.c_str()));
     updateProgressBarVaccinated(s.getVaccinatedPercent());
     updateModels(s.getVaccinData());
     vacinCount->updateData(s.getDayVaccinated());
     typeDelivery->updateData(s.getVaccinData());
     ui->currentDay->setText(("Current day: " + std::to_string(s.getIter())).c_str());
-
-    std::pair<std::string, std::string> pairReturn = s.simulate();
-    updateTextEdit(QString::fromStdString(pairReturn.second));
-
-    if (!s.undoSimulation()) {
-        ui->buttonPrevious->setEnabled(false);
-    }
 }
 
 void MainWindow::updateTextEdit(const QString &x) {
