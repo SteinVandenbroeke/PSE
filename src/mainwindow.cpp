@@ -141,6 +141,7 @@ void MainWindow::on_buttonStart_clicked()
     this->runSimulation = true;
     changeStateButtons(true);
     ui->buttonPrevious->setEnabled(false);
+    ui->buttonStart->setEnabled(false);
 
     MessageBox msg;
     msg.setWindowTitle("VaccinDistributor");
@@ -169,6 +170,7 @@ void MainWindow::on_buttonStop_clicked()
     this->runSimulation = false;
     changeStateButtons(false);
     s.clearSimulation(false);
+    ui->buttonStart->setEnabled(true);
 
     MessageBox msg;
     msg.setWindowTitle("VaccinDistributor");
@@ -373,7 +375,6 @@ void MainWindow::on_actionExport_as_mp4_triggered() {
 
 void MainWindow::on_dataButton_clicked() {
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
-
     // show errMsg when no .xml file was imported || simulation is not complete
     if (!s.checkSimulation() || !s.properlyInitialized()) {
         const char* errMsg = "Could not show centra!\nTry loading a new .xml file.";
@@ -395,6 +396,7 @@ void MainWindow::on_dataButton_clicked() {
     Dialog dialog;
     dialog.setModal(true);
     dialog.createModels(s.getFcentra(), s.getHub());
+    dialog.exec();
 }
 
 void MainWindow::changeStateButtons(bool state) {

@@ -21,7 +21,6 @@ void Dialog::createModels(const std::map<std::string, VaccinationCenter*> &cente
                           const std::vector<Hub*> &hub) {
     REQUIRE(properlyInitialized(), "MainWindow object must be properly initialized");
     modelCentra = new QStringListModel(this);
-
     // Items cannot be manually updated
     ui->listView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->listView->setAcceptDrops(false);
