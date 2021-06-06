@@ -143,6 +143,7 @@ void VaccinInHub::updateVaccins() {
 
     REQUIRE(properlyInitialized(), "Vaccin must be properly initialized");
     fvaccinAmount += fdelivery;
+    std::cout << fvaccinAmount <<std::endl;
     ENSURE(this->getVaccin() >= this->getDelivery(), "The amount of vaccins must be bigger delivery amount (fvaccin += fdelivery)");
 }
 
@@ -154,8 +155,7 @@ void VaccinInHub::updateVaccinsTransport(int transportAmount) {
     // Update amount of vaccins in Hub and Center
     fvaccinAmount -= transportAmount;
     fdelivered += transportAmount;
-
-    ENSURE(this->getVaccin() > 0, "fvaccinAmount can not be negative (fvaccinAmount -= transportAmount)");
+    ENSURE(this->getVaccin() >= 0, "fvaccinAmount can not be negative (fvaccinAmount -= transportAmount)");
     ENSURE(this->getDelivered() >= transportAmount, "fdelivered must be lager then transportAmount (this->getDelivered() >= transportAmount)");
 }
 

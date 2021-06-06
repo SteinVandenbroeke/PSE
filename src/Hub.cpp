@@ -125,10 +125,11 @@ void Hub::distributeRequiredVaccins(VaccinationCenter* vaccinationCenter, std::o
 
             int cargo = ceil((double)(vaccinsNeeded) / (double)(vaccin->getTransport()));
 
-            while(vaccinationCenter->getOpenVaccinStorage(vaccin) < vaccin->getTransport() * cargo)
+            while(vaccinationCenter->getOpenVaccinStorage(vaccin) < vaccin->getTransport() * cargo || cargo * vaccin->getTransport() > vaccin->getVaccin())
             {
                 cargo--;
             }
+
             int vaccinsTransport = cargo * vaccin->getTransport();
             vaccin->updateVaccinsTransport(vaccinsTransport);
             vaccinationCenter->addVaccins(vaccinsTransport, vaccin);
