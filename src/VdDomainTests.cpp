@@ -89,13 +89,13 @@ TEST_F(VaccinDistributorDomainTests, AddCenter) {
 // Test VaccinationCenter constructor with wrong values
 TEST_F(VaccinDistributorDomainTests, CenterWrongValues) {
 
-    EXPECT_DEATH(VaccinationCenter("",
+    EXPECT_DEATH(VaccinationCenter *center = new VaccinationCenter("",
                             "Maaltekouter 1, 9051 Gent",75000, 5500), "Name can't be empty");
-    EXPECT_DEATH(VaccinationCenter("Flanders Expo",
+    EXPECT_DEATH(VaccinationCenter *center = new VaccinationCenter("Flanders Expo",
                             "",75000, 5500), "Adres can't be empty");
-    EXPECT_DEATH(VaccinationCenter("Flanders Expo",
+    EXPECT_DEATH(VaccinationCenter *center = new VaccinationCenter("Flanders Expo",
                          "Maaltekouter 1, 9051 Gent",-7684, 5500), "Negative population");
-    EXPECT_DEATH(VaccinationCenter("Flanders Expo",
+    EXPECT_DEATH(VaccinationCenter *center = new VaccinationCenter("Flanders Expo",
                          "Maaltekouter 1, 9051 Gent",7684, -5500), "Negative capacity");
 }
 
@@ -303,9 +303,9 @@ TEST_F(VaccinDistributorDomainTests, VaccinType) {
     EXPECT_EQ(5500, center->calculateVaccinationAmount());
     EXPECT_EQ("Pfizer", center->getVaccin(true).begin()->first);
     EXPECT_TRUE(center->getVaccin(true).begin()->second->properlyInitialized());
-    EXPECT_EQ("Pfizer", center->getVaccin(true).begin()->second->getType());
-    EXPECT_EQ(-15, center->getVaccin(true).begin()->second->getTemperature());
-    EXPECT_EQ(4, center->getVaccin(true).begin()->second->getRenewal());
+    EXPECT_EQ("Pfizer", center->getVaccin(true).begin()->second->getVaccinType());
+    EXPECT_EQ(-15, center->getVaccin(true).begin()->second->getVaccinTemperature());
+    EXPECT_EQ(4, center->getVaccin(true).begin()->second->getVaccinRenewal());
     EXPECT_EQ(7500, center->getVaccin(true).begin()->second->getVaccinAmount());
     EXPECT_TRUE(center->getVaccin(true).begin()->second->getTracker().empty());
     EXPECT_TRUE(center->getVaccin(true).begin()->second->isRenewal());
@@ -340,9 +340,9 @@ TEST_F(VaccinDistributorDomainTests, VaccinType) {
     EXPECT_EQ(5500, center->calculateVaccinationAmount());
     EXPECT_EQ("Atrazenica", center->getVaccin(false).begin()->first);
     EXPECT_TRUE(center->getVaccin(false).begin()->second->properlyInitialized());
-    EXPECT_EQ("Atrazenica", center->getVaccin(false).begin()->second->getType());
-    EXPECT_EQ(11, center->getVaccin(false).begin()->second->getTemperature());
-    EXPECT_EQ(0, center->getVaccin(false).begin()->second->getRenewal());
+    EXPECT_EQ("Atrazenica", center->getVaccin(false).begin()->second->getVaccinType());
+    EXPECT_EQ(11, center->getVaccin(false).begin()->second->getVaccinTemperature());
+    EXPECT_EQ(0, center->getVaccin(false).begin()->second->getVaccinRenewal());
     EXPECT_EQ(2000, center->getVaccin(false).begin()->second->getVaccinAmount());
     EXPECT_FALSE(center->getVaccin(false).begin()->second->isRenewal());
 
@@ -423,11 +423,11 @@ TEST_F(VaccinDistributorDomainTests, AddVaccin) {
 // Test Vaccin constructor with wrong values
 TEST_F(VaccinDistributorDomainTests, VaccinWrongValues) {
 
-    EXPECT_DEATH(VaccinInHub("", 45000, 12, 2000, 4, -15), "type can't be empty");
-    EXPECT_DEATH(VaccinInHub("Pfizer", -45000, 12, 2000, 4, -15), "Delivery can't be negative");
-    EXPECT_DEATH(VaccinInHub("Pfizer", 45000, -12, 2000, 4, -15), "Interval can't be negative");
-    EXPECT_DEATH(VaccinInHub("Pfizer", 45000, 12, -2000, 4, -15), "Transport can't be negative");
-    EXPECT_DEATH(VaccinInHub("Pfizer", 45000, 12, 2000, -4, -15), "Renewal can't be negative");
+    EXPECT_DEATH(VaccinInHub* vaccin = new VaccinInHub("", 45000, 12, 2000, 4, -15), "type can't be empty");
+    EXPECT_DEATH(VaccinInHub* vaccin = new VaccinInHub("Pfizer", -45000, 12, 2000, 4, -15), "Delivery can't be negative");
+    EXPECT_DEATH(VaccinInHub* vaccin = new VaccinInHub("Pfizer", 45000, -12, 2000, 4, -15), "Interval can't be negative");
+    EXPECT_DEATH(VaccinInHub* vaccin = new VaccinInHub("Pfizer", 45000, 12, -2000, 4, -15), "Transport can't be negative");
+    EXPECT_DEATH(VaccinInHub* vaccin = new VaccinInHub("Pfizer", 45000, 12, 2000, -4, -15), "Renewal can't be negative");
 }
 
 // Double Vaccin addVaccin()
