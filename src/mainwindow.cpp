@@ -232,7 +232,6 @@ void MainWindow::on_buttonPrevious_clicked() {
         msg.timeout = 2;
         msg.exec();
     }
-    std::cout << "back" << std::endl;
 
     std::string imageName = "Day-" + std::to_string(s.getIter() - 1) + ".bmp";
     updateLabelImage(tr(imageName.c_str()));
